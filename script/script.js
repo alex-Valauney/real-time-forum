@@ -13,27 +13,23 @@ export function init() {
         } else {
             console.log("Your browser does not support WebSockets")
         }
-        onLoadPage('register')
-
+        
     }
     onClicksFunctions()
 }
 
 
 function onClicksFunctions() {
+    onLoadPage('register')
     let currentLoad = document.body.querySelector('section:not(.hidden)')
-    console.log(currentLoad)
-
     document.getElementById('linkLogin').onclick = function (e) {
         onLoadPage('login', currentLoad.id)
         currentLoad = document.body.querySelector('section:not(.hidden)')
-        console.log(currentLoad)
     }
 
     document.getElementById('linkRegister').onclick = function (e) { 
         onLoadPage('register', currentLoad.id)
         currentLoad = document.body.querySelector('section:not(.hidden)')
-        console.log(currentLoad)
     }
 }
 
