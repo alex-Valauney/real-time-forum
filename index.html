@@ -12,17 +12,24 @@
 
         <section id="register" class="register hidden">
             <form id="registerForm" method="POST" name="form">
-                <input type="text" name="username" placeholder="Enter a pseudo" required>
-                <input type="text" name="firstname" placeholder="Enter your First Name" required>
-                <input type="text" name="lastname" placeholder="Enter your Last Name" required>
-                <input type="number" name="age" min="13" max="150" placeholder="Enter your Age" required>
-                <label> Gender : </label>
-                <input type="radio" name="gender" value="JPiou" required>
-                <label> JPiou </label>
-                <input type="radio" name="gender" value="JPion" required>
-                <label> JPion </label>
-                <input type="email" name="email" placeholder="Enter your E-mail" required>
-                <input type="password" name="password" placeholder="Enter a password" required>
+                <label> Username </label>
+                <input type="text" name="username" placeholder="Ex : Xorlor54" required>
+                <label> First Name </label>
+                <input type="text" name="firstname" placeholder="Ex : John" required>
+                <label> Last Name </label>
+                <input type="text" name="lastname" placeholder="Ex : Doe" required>
+                <label> Age </label>
+                <input type="number" name="age" min="13" max="150" placeholder="Minimum 13 yo" required>
+                <label> Gender </label>
+                <input type="radio" name="gender" value="Male" required>
+                <label>Male</label>
+                <input type="radio" name="gender" value="Female" required>
+                <label>Female</label>
+                <br></br>
+                <label> Email </label>
+                <input type="email" name="email" placeholder="Ex : Azerty@uipo.com" required>
+                <label> Password </label>
+                <input type="password" name="password" placeholder="At least 10 characters; use numbers, caps and special chars" required>
                 <button type="submit">Register</button>
                 <p>Already registered ? Just <a id="linkLogin">Log In</a></p>
             </form>
@@ -30,7 +37,9 @@
 
         <section id="login" class="login hidden">
             <form id="loginForm" method="POST" name="form">
-                <input type="text" name="username/email" placeholder="Enter your pseudo or E-mail" required>
+                <label> Username or Email </label>
+                <input type="text" name="username/email" placeholder="Ex : Xorlor54 or Azerty@uipo.com" required>
+                <label> Password </label>
                 <input type="password" name="password" placeholder="Enter your password" required>
                 <button type="submit">Log In</button>
                 <p>Not yet registered ? <a id="linkRegister">Register</a></p>
@@ -48,6 +57,7 @@
         </section>
 
         <section id="createPost" class="createPost hidden">
+            
         </section>
 
         <section id="post" class="post hidden">

@@ -14,18 +14,26 @@ export function init() {
             console.log("Your browser does not support WebSockets")
         }
         
-        logForms(conn)
+        handleForms(conn)
     }
     onClicksFunctions()
 }
 
-function logForms(conn) {
+function handleForms(conn) {
     
     let registerForm = document.getElementById("registerForm")
     registerForm.onsubmit = function (e) {
         onSubForm(e, registerForm)
     }
     let loginForm = document.getElementById("loginForm")
+    loginForm.onsubmit = function (e) {
+        onSubForm(e, loginForm)
+    }
+    let postForm = document.getElementById("postForm")
+    loginForm.onsubmit = function (e) {
+        onSubForm(e, loginForm)
+    }
+    let commentForm = document.getElementById("commentForm")
     loginForm.onsubmit = function (e) {
         onSubForm(e, loginForm)
     }
