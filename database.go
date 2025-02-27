@@ -20,14 +20,13 @@ func DefineTables(db *sql.DB) { // define and create all tables
 	usersTable := `CREATE TABLE IF NOT EXISTS users (
 			"id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 			"uuid" VARCHAR(36) NOT NULL UNIQUE,
-			"name" VARCHAR(255) NOT NULL UNIQUE,
+			"nickname" VARCHAR(255) NOT NULL UNIQUE,
+			"age" INTEGER NOT NULL,
+			"gender" INTEGER(1) NOT NULL,
+			"first_name" VARCHAR(25) NOT NULL,
+			"last_name" Varchar(25) NOT NULL,
 			"email" VARCHAR(255) NOT NULL UNIQUE,
 			"password" VARCHAR(72) NOT NULL,
-			"picture" BLOB,
-			"role_id" INTEGER,
-			"is_deleted" BOOL,
-			"is_external" INT,
-			FOREIGN KEY(role_id) REFERENCES roles(id)
 		);`
 	postsTable := `CREATE TABLE IF NOT EXISTS posts (
 			"id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,        
@@ -56,6 +55,15 @@ func DefineTables(db *sql.DB) { // define and create all tables
 			FOREIGN KEY(cat_id) REFERENCES categories(id),
 			FOREIGN KEY(post_id) REFERENCES posts(id) ON DELETE CASCADE
 		);`
+	privateMessageTable := `CREATE TABLE IF NOT EXISTS privatemessages (
+			"id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+			"user_from" INTEGER NOT NULL,
+			"user_to" INTEGER NOT NULL,
+			"content" VARCHAR,
+			"date" VARCHAR(32) NOT NULL,
+			FOREIGN KEY(user_from) REFERENCES users(id) ON DELETE CASCADE,
+			FOREIGN KEY(user_to) REFERENCES users(id) ON DELETE CASCADE
+		);`
 
 	// create all tables with above definitions
 	CreateTable(db, usersTable, "users")
@@ -63,6 +71,7 @@ func DefineTables(db *sql.DB) { // define and create all tables
 	CreateTable(db, commentsTable, "comments")
 	CreateTable(db, categoriesTable, "categories")
 	CreateTable(db, catPostRelTable, "cat_post_rel")
+	CreateTable(db, privateMessageTable, "private_messages")
 }
 
 func CreateTable(db *sql.DB, createTableSQL string, tableName string) { //create one table already defined
