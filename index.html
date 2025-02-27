@@ -8,6 +8,8 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.jade.min.css">
     </head>
     <body>
+        {{if not .LoggedIn}}
+
         <section id="register" class="register hidden">
             <form method="POST" name="form">
                 <input type="text" placeholder="Enter a pseudo" required>
@@ -35,10 +37,23 @@
             </form>
         </section>
 
+        {{else}}
+
+        <header></header>
+
+        <nav></nav>
+
         <section id="index" class="index hidden">
             <div id="postList"></div>
         </section>
 
+        <section id="createPost" class="createPost hidden">
+        </section>
+
+        <section id="post" class="post hidden">
+        </section>
+
+        {{end}}
 
         <script type="module">
             import { init } from '/script/script.js'
