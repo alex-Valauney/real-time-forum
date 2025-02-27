@@ -1,6 +1,6 @@
 export function init() {
     window.onload = function () {
-        var conn;
+        let conn;
         
         if (window["WebSocket"]) {
             conn = new WebSocket(document.location.origin);
@@ -14,8 +14,43 @@ export function init() {
             console.log("Your browser does not support WebSockets")
         }
         
+        logForms(conn)
     }
     onClicksFunctions()
+}
+
+function logForms(conn) {
+    
+    let registerForm = document.getElementById("registerForm")
+    registerForm.onsubmit = function (e) {
+        onSubForm(e, registerForm)
+    }
+    let loginForm = document.getElementById("loginForm")
+    loginForm.onsubmit = function (e) {
+        onSubForm(e, loginForm)
+    }
+    
+    function onSubForm (e, form) {
+        let formData = {}
+        e.preventDefault()
+        let fields = form.querySelectorAll("input")
+
+        fields.forEach(field => {
+            if (field.type === "radio") {
+                if (field.checked) {
+                    formData[field.name] = field.value
+                }
+            } else if (field.type !== "submit") {
+                formData[field.name] = field.value
+            }
+        })
+        console.log(JSON.stringify(formData))
+        if (!conn) {
+            return false
+        }
+        conn.send(JSON.stringify(formData))
+        return false
+    }
 }
 
 
@@ -40,15 +75,3 @@ function onLoadPage(newSection, oldSection) {
     }
 }
 
-/* document.getElementsByClassName
-document.getElementById("form").onsubmit = function () {
-    if (!conn) {
-        return false;
-    }
-    if (!msg.value) {
-        return false;
-    }
-    conn.send(msg.value);
-    msg.value = "";
-    return false;
-}; */

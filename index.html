@@ -11,27 +11,27 @@
         {{if not .LoggedIn}}
 
         <section id="register" class="register hidden">
-            <form method="POST" name="form">
-                <input type="text" placeholder="Enter a pseudo" required>
-                <input type="text" placeholder="Enter your First Name" required>
-                <input type="text" placeholder="Enter your Last Name" required>
-                <input type="number" min="13" max="150" placeholder="Enter your Age" required>
+            <form id="registerForm" method="POST" name="form">
+                <input type="text" name="username" placeholder="Enter a pseudo" required>
+                <input type="text" name="firstname" placeholder="Enter your First Name" required>
+                <input type="text" name="lastname" placeholder="Enter your Last Name" required>
+                <input type="number" name="age" min="13" max="150" placeholder="Enter your Age" required>
                 <label> Gender : </label>
-                <input type="radio" name="gender" required>
+                <input type="radio" name="gender" value="JPiou" required>
                 <label> JPiou </label>
-                <input type="radio" name="gender" required>
+                <input type="radio" name="gender" value="JPion" required>
                 <label> JPion </label>
-                <input type="email" placeholder="Enter your E-mail" required>
-                <input type="password" placeholder="Enter a password" required>
+                <input type="email" name="email" placeholder="Enter your E-mail" required>
+                <input type="password" name="password" placeholder="Enter a password" required>
                 <button type="submit">Register</button>
                 <p>Already registered ? Just <a id="linkLogin">Log In</a></p>
             </form>
         </section>
 
         <section id="login" class="login hidden">
-            <form method="POST" name="form">
-                <input type="text" placeholder="Enter your pseudo or E-mail" required>
-                <input type="password" placeholder="Enter your password" required>
+            <form id="loginForm" method="POST" name="form">
+                <input type="text" name="username/email" placeholder="Enter your pseudo or E-mail" required>
+                <input type="password" name="password" placeholder="Enter your password" required>
                 <button type="submit">Log In</button>
                 <p>Not yet registered ? <a id="linkRegister">Register</a></p>
             </form>
