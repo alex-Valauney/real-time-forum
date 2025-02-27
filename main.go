@@ -43,6 +43,8 @@ func ServerCreate() {
 	}
 
 	mux := http.NewServeMux() // Mux for multiple handlers
+	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
+	mux.Handle("/script/", http.StripPrefix("/script/", http.FileServer(http.Dir("./script"))))
 	mux.HandleFunc("/", indexHandler)
 
 	server := &http.Server{
@@ -55,7 +57,7 @@ func ServerCreate() {
 	}
 
 	log.Println("http://localhost:8080")
-	if err := server.ListenAndServe(); err != nil { // open server with auto-signed SSL certificate
+	if err := server.ListenAndServe(); err != nil { // open server
 		log.Fatal(err)
 	}
 }

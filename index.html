@@ -4,16 +4,17 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>RTF</title>
+        <link rel="stylesheet" href="/static/index.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.jade.min.css">
     </head>
     <body>
-        <section class="register hidden" id="register">
-            <form id="registerForm" method="POST">
+        <section id="register" class="register hidden">
+            <form method="POST" name="form">
                 <input type="text" placeholder="Enter a pseudo" required>
                 <input type="text" placeholder="Enter your First Name" required>
                 <input type="text" placeholder="Enter your Last Name" required>
                 <input type="number" min="13" max="150" placeholder="Enter your Age" required>
-                <legend>Gender : </legend>
+                <label> Gender : </label>
                 <input type="radio" name="gender" required>
                 <label> JPiou </label>
                 <input type="radio" name="gender" required>
@@ -21,22 +22,26 @@
                 <input type="email" placeholder="Enter your E-mail" required>
                 <input type="password" placeholder="Enter a password" required>
                 <button type="submit">Register</button>
+                <p>Already registered ? Just <a id="linkLogin">Log In</a></p>
             </form>
-            <a href="#login">Login</a>
         </section>
 
-        <section class="login hidden" id="login">
-            <form method="POST">
+        <section id="login" class="login hidden">
+            <form method="POST" name="form">
                 <input type="text" placeholder="Enter your pseudo or E-mail" required>
                 <input type="password" placeholder="Enter your password" required>
                 <button type="submit">Log In</button>
-                <a href="#register">Register</a>
+                <p>Not yet registered ? <a id="linkRegister">Register</a></p>
             </form>
+        </section>
+
+        <section id="index" class="index hidden">
+            <div id="postList"></div>
         </section>
 
 
         <script type="module">
-            import { init } from './script.js'
+            import { init } from '/script/script.js'
             init()
         </script>
     </body>
