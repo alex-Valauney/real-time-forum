@@ -63,10 +63,22 @@
         </section>
 
         <section id="createPost" class="createPost hidden">
-            
+            <form id="postForm" method="POST" name="form">
+                <input type="text" name="title" placeholder="Title" maxlength="55" required>
+                <textarea name="content" placeholder="Write your post here" required>
+                <input type="checkbox" name="cat1" value="cat1">
+                <input type="checkbox" name="cat2" value="cat2">
+                <input type="checkbox" name="cat3" value="cat3">
+                <input type="checkbox" name="cat4" value="cat4">
+                <button type="submit">Post this !</button>
+            </form>
         </section>
 
         <section id="post" class="post hidden">
+            <form id="commentForm" method="POST" name="form">
+                <textarea name="content" placeholder="Write your post here" required>
+                <button type="submit">Comment this !</button>
+            </form>
         </section>
 
         {{end}}

@@ -54,7 +54,7 @@ function handleForms(conn) {
     function onSubForm (e, form, method) {
         let formData = {}
         e.preventDefault()
-        let fields = form.querySelectorAll("input")
+        let fields = form.querySelectorAll("input, textarea, select")
 
         fields.forEach(field => {
             if (field.type === "radio") {
