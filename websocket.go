@@ -20,7 +20,7 @@ func wshandler(w http.ResponseWriter, r *http.Request) {
 	// Upgrade http connection to ws connection
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("erreur1 :", err)
 		return
 	}
 	defer conn.Close()
@@ -29,16 +29,16 @@ func wshandler(w http.ResponseWriter, r *http.Request) {
 	for {
 		messType, data, err := conn.ReadMessage()
 		if err != nil {
-			fmt.Println(err)
-			return
+			fmt.Println("erreur2 :", err)
+			continue
 		}
 		fmt.Println("type: ", messType)
 		fmt.Println("data: ", data)
 		fmt.Println()
 		err = conn.WriteMessage(messType, data)
 		if err != nil {
-			fmt.Println(err)
-			return
+			fmt.Println("erreur3 :", err)
+			continue
 		}
 	}
 }
