@@ -46,6 +46,7 @@ func ServerCreate() {
 	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
 	mux.Handle("/script/", http.StripPrefix("/script/", http.FileServer(http.Dir("./script"))))
 	mux.HandleFunc("/", indexHandler)
+	mux.HandleFunc("/ws", wshandler)
 
 	server := &http.Server{
 		Addr:              ":8080",          //adresse du server

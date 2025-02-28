@@ -33,6 +33,37 @@
                 <button type="submit">Register</button>
                 <p>Already registered ? Just <a id="linkLogin">Log In</a></p>
             </form>
+
+            <!--TEST WEBSOCKET-->
+            <script>
+                let socket = new WebSocket("ws://localhost:8080/ws")
+
+                socket.onmessage = function (event) {
+                    let output = document.querySelector("#output")
+                    output.textContent = "received : " + event.data
+                }
+
+                socket.onopen = function (event) {
+                    let output = document.querySelector("#output")
+                    output.textContent = "connection successful"
+                }
+
+                socket.onerror = function (event) {
+                    let output = document.querySelector("#output")
+                    output.textContent = "error : " + event.data
+                }
+
+                function sendMessage() {
+                    let textinputdata = document.querySelector("#testWS").value
+                    console.log(textinputdata)
+                    socket.send(textinputdata)
+                }
+            </script>
+
+            <input type="text" id="testWS">
+            <button id="testbutWS" onclick="sendMessage()">test WebSocket</button>
+            <div id="output">test output</div>
+            <!--TEST WEBSOCKET-->
         </section>
 
         <section id="login" class="login hidden">
