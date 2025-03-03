@@ -17,7 +17,7 @@ func TokenGen() (string, error) { // generate a token (which is an UUID)
 	if err != nil {
 		return "", err
 	}
-	return token.String(), nil
+	return token.String(), nil // nil = 0 banane
 }
 
 func SessionGen(w http.ResponseWriter, user *methods.User, rememberMe bool) { // generate a cookie and a session
