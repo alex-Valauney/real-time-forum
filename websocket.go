@@ -16,7 +16,7 @@ var upgrader = websocket.Upgrader{
 }
 
 // To merge with indexHandler
-func wshandler(w http.ResponseWriter, r *http.Request) {
+func WebsocketHandler(w http.ResponseWriter, r *http.Request) {
 	// Upgrade http connection to ws connection
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {

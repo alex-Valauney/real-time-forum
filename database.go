@@ -6,7 +6,7 @@ import (
 	"log"
 )
 
-func BDD() { // create database and create all table
+func Database() { // create database and create all table
 	db, err := sql.Open("sqlite3", "./")
 	if err != nil {
 		log.Fatal(err)
@@ -79,7 +79,7 @@ func CreateTable(db *sql.DB, createTableSQL string, tableName string) { //create
 	if err != nil {
 		log.Fatalf("Creation table Failed %s : %v", tableName, err)
 	}
-	fmt.Printf("Table %s allready exist.\n", tableName)
+	fmt.Printf("Table %s already exist.\n", tableName)
 }
 
 func InsertNamesInDB(db *sql.DB, chosenNames []string, sqlExecQuery string) error { //fill references tables
