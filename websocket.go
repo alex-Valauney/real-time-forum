@@ -1,8 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
+	"reflect"
 
 	"github.com/gorilla/websocket"
 )
@@ -25,20 +27,30 @@ func WebsocketHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer conn.Close()
 
+	BDDConn := BDD{}
+
 	// Handle messages
 	for {
-		messType, data, err := conn.ReadMessage()
+		_, data, err := conn.ReadMessage()
 		if err != nil {
 			fmt.Println("erreur2 :", err)
 			continue
 		}
-		fmt.Println("type: ", messType)
-		fmt.Println("data: ", data)
-		fmt.Println()
-		err = conn.WriteMessage(messType, data)
-		if err != nil {
-			fmt.Println("erreur3 :", err)
-			continue
-		}
+
+		var obj map[string]any
+
+		json.Unmarshal(data, &obj)
+
+		f := reflect.ValueOf(BDDConn).MethodByName(obj["method"].(string))
+		result := f.Call([]reflect.Value{reflect.ValueOf(obj)})
+		fmt.Println(result)
+		// fmt.Println("type: ", messType)
+		// fmt.Println("data: ", data)
+		// fmt.Println()
+		// err = conn.WriteMessage(messType, data)
+		// if err != nil {
+		// 	fmt.Println("erreur3 :", err)
+		// 	continue
+		// }
 	}
 }
