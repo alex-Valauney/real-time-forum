@@ -1,35 +1,34 @@
 package main
 
 import (
+	"database/sql"
 	"log"
 	"net/http"
 	"text/template"
 	"time"
 )
 
+var DB_PATH string
+
 func main() {
 
-	/* 	BDD() // create database and tables
+	DB_PATH = "forum.db"
+	BDD() // create database and tables
 
-	   	db, err := sql.Open("sqlite3", DBPath) // open database for nexts functions
-	   	if err != nil {
-	   		log.Fatal(err)
-	   	}
-	   	defer db.Close()
+	db, err := sql.Open("sqlite3", DB_PATH) // open database for nexts functions
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
 
-	   	_, err = db.Exec(`PRAGMA foreign_keys = ON;`)
-	   	if err != nil {
-	   		log.Fatalf("pragma en sang")
-	   	}
+	_, err = db.Exec(`PRAGMA foreign_keys = ON;`)
+	if err != nil {
+		log.Fatalf("pragma en sang")
+	}
 
-	   	sSquared := CreateStructSquare(db) // create struct for methods
-	   	sData := CreateStructData()        // create struct for all datas
-
-	   	InsertNamesInDB(db, []string{"Astuces", "Étangs", "Coins pêche", "Prises", "Bateaux", "Crustacés", "Coquillages", "Poissons"}, `INSERT INTO categories (name) VALUES (?)`)
-	   	InsertNamesInDB(db, []string{"Drowned", "Classic", "Moderator", "Administrator"}, `INSERT INTO roles (name) VALUES (?)`)
-	   	InsertNamesInDB(db, []string{"likepost", "dislikepost", "likecom", "dislikecom", "comonpost", "askmod", "reportpost", "reportcom", "adminanswer"}, `INSERT INTO types (name) VALUES (?)`)
-
-	   	FillingStruct(&sSquared, &sData) // fill the data struct with database data */
+	InsertNamesInDB(db, []string{"Astuces", "Étangs", "Coins pêche", "Prises", "Bateaux", "Crustacés", "Coquillages", "Poissons"}, `INSERT INTO categories (name) VALUES (?)`)
+	InsertNamesInDB(db, []string{"Drowned", "Classic", "Moderator", "Administrator"}, `INSERT INTO roles (name) VALUES (?)`)
+	InsertNamesInDB(db, []string{"likepost", "dislikepost", "likecom", "dislikecom", "comonpost", "askmod", "reportpost", "reportcom", "adminanswer"}, `INSERT INTO types (name) VALUES (?)`)
 
 	ServerCreate() // build TLS structure, and then launch server
 
