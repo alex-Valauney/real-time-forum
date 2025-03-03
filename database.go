@@ -4,10 +4,12 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 func BDD() { // create database and create all table
-	db, err := sql.Open("sqlite3", "./")
+	db, err := sql.Open("sqlite3", DB_PATH)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -22,11 +24,11 @@ func DefineTables(db *sql.DB) { // define and create all tables
 			"uuid" VARCHAR(36) NOT NULL UNIQUE,
 			"nickname" VARCHAR(255) NOT NULL UNIQUE,
 			"age" INTEGER NOT NULL,
-			"gender" INTEGER(1) NOT NULL,
+			"gender" INTEGER NOT NULL,
 			"first_name" VARCHAR(25) NOT NULL,
 			"last_name" Varchar(25) NOT NULL,
 			"email" VARCHAR(255) NOT NULL UNIQUE,
-			"password" VARCHAR(72) NOT NULL,
+			"password" VARCHAR(72) NOT NULL
 		);`
 	postsTable := `CREATE TABLE IF NOT EXISTS posts (
 			"id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,        
