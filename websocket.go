@@ -46,10 +46,13 @@ func WebsocketHandler(w http.ResponseWriter, r *http.Request) {
 			continue
 		}
 
+		BDDConn.OpenConn()
+
 		f := reflect.ValueOf(BDDConn).MethodByName(obj["method"].(string))
 		result := f.Call([]reflect.Value{reflect.ValueOf(obj)})[0].Interface().(Response)
-		fmt.Println(result)
 		resultJSON, err := json.Marshal(result)
+
+		BDDConn.CloseConn()
 
 		if err != nil {
 			fmt.Println("erreur3 :", err)

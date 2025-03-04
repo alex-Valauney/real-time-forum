@@ -26,7 +26,7 @@ func DefineTables(db *sql.DB) { // define and create all tables
 			"first_name" VARCHAR(25) NOT NULL,
 			"last_name" Varchar(25) NOT NULL,
 			"email" VARCHAR(255) NOT NULL UNIQUE,
-			"password" VARCHAR(72) NOT NULL,
+			"password" VARCHAR(72) NOT NULL
 		);`
 	postsTable := `CREATE TABLE IF NOT EXISTS posts (
 			"id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,        
