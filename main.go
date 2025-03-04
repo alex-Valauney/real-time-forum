@@ -75,7 +75,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		LoggedIn bool
 	}{
-		LoggedIn: true,
+		LoggedIn: false,
 	}
 
 	// Exécute le template avec les données

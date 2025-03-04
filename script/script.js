@@ -45,7 +45,7 @@ function handleForms(conn) {
     }
     let loginForm = document.getElementById("loginForm")
     loginForm.onsubmit = function (e) {
-        onSubForm(e, loginForm) //manque method
+        onSubForm(e, loginForm, "InsertPost") //manque method
     }
     let postForm = document.getElementById("postForm")
     postForm.onsubmit = function (e) {
@@ -72,7 +72,7 @@ function handleForms(conn) {
         })
         formData["method"] = method
 
-        console.log(JSON.stringify(formData)) //Checking for us if everything's working fine, will be deleted later
+        //console.log(JSON.stringify(formData)) //Checking for us if everything's working fine, will be deleted later
         if (!conn) {
             return false
         }
@@ -82,6 +82,8 @@ function handleForms(conn) {
 }
 
 function onMessagesFunctions(response) {
+
+    console.log(response)
     let parsedResponse = JSON.parse(response)
     let mapIdentifier = {
         login : loginFunc,

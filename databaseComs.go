@@ -36,14 +36,14 @@ func (db BDD) InsertPost(obj map[string]any) Response {
 		in case of an error, response will be equal to 0
 	*/
 
-	// fmt.Println("post to insert : ", obj)
-	// fmt.Println("method called : ", obj["method"])
-	// fmt.Println("title of the post : ", obj["title"])
-	// return Response{0}
+	fmt.Println("post to insert : ", obj)
+	fmt.Println("method called : ", obj["method"])
+	fmt.Println("title of the post : ", obj["title"])
+	return Response{0}
 
-	result, err := db.conn.Exec("INSERT INTO posts(user_id, title, content, date) VALUES (?, ?, ?, ?);", obj["user_id"], obj["title"], obj["content"], obj["date"])
+	//result, err := db.conn.Exec("INSERT INTO posts(user_id, title, content, date) VALUES (?, ?, ?, ?);", obj["user_id"], obj["title"], obj["content"], obj["date"])
 
-	if err != nil {
+	/* if err != nil {
 		fmt.Println(err)
 		return Response{0}
 	}
@@ -54,5 +54,5 @@ func (db BDD) InsertPost(obj map[string]any) Response {
 		fmt.Println(err)
 		return Response{0}
 	}
-	return Response{id}
+	return Response{id} */
 }
