@@ -8,7 +8,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-func BDD() { // create database and create all table
+func Batabase() { // create database and create all table
 	db, err := sql.Open("sqlite3", DB_PATH)
 	if err != nil {
 		log.Fatal(err)
@@ -81,7 +81,7 @@ func CreateTable(db *sql.DB, createTableSQL string, tableName string) { //create
 	if err != nil {
 		log.Fatalf("Creation table Failed %s : %v", tableName, err)
 	}
-	fmt.Printf("Table %s allready exist.\n", tableName)
+	fmt.Printf("Table %s already exist.\n", tableName)
 }
 
 func InsertNamesInDB(db *sql.DB, chosenNames []string, sqlExecQuery string) error { //fill references tables

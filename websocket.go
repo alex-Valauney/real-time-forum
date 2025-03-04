@@ -1,8 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
+	"reflect"
 
 	"github.com/gorilla/websocket"
 )
@@ -16,7 +18,7 @@ var upgrader = websocket.Upgrader{
 }
 
 // To merge with indexHandler
-func wshandler(w http.ResponseWriter, r *http.Request) {
+func WebsocketHandler(w http.ResponseWriter, r *http.Request) {
 	// Upgrade http connection to ws connection
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
@@ -25,6 +27,8 @@ func wshandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer conn.Close()
 
+	BDDConn := BDD{}
+
 	// Handle messages
 	for {
 		messType, data, err := conn.ReadMessage()
@@ -32,12 +36,33 @@ func wshandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("erreur2 :", err)
 			continue
 		}
-		fmt.Println("type: ", messType)
-		fmt.Println("data: ", data)
-		fmt.Println()
-		err = conn.WriteMessage(messType, data)
+
+		var obj map[string]any
+
+		json.Unmarshal(data, &obj)
+
+		if obj["method"] == nil {
+			fmt.Println("missing method")
+			continue
+		}
+
+		f := reflect.ValueOf(BDDConn).MethodByName(obj["method"].(string))
+		result := f.Call([]reflect.Value{reflect.ValueOf(obj)})[0].Interface().(Response)
+		fmt.Println(result)
+		resultJSON, err := json.Marshal(result)
+
 		if err != nil {
 			fmt.Println("erreur3 :", err)
+			continue
+		}
+		// fmt.Println(string(resultJSON))
+		// fmt.Println("type: ", messType)
+		// fmt.Println("data: ", data)
+		// fmt.Println()
+
+		err = conn.WriteMessage(messType, resultJSON)
+		if err != nil {
+			fmt.Println("erreur4 :", err)
 			continue
 		}
 	}

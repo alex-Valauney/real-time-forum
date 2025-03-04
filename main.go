@@ -13,7 +13,7 @@ var DB_PATH string
 func main() {
 
 	DB_PATH = "forum.db"
-	BDD() // create database and tables
+	Batabase() // create database and tables
 
 	db, err := sql.Open("sqlite3", DB_PATH) // open database for nexts functions
 	if err != nil {
@@ -45,7 +45,7 @@ func ServerCreate() {
 	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
 	mux.Handle("/script/", http.StripPrefix("/script/", http.FileServer(http.Dir("./script"))))
 	mux.HandleFunc("/", indexHandler)
-	mux.HandleFunc("/ws", wshandler)
+	mux.HandleFunc("/ws", WebsocketHandler)
 
 	server := &http.Server{
 		Addr:              ":8080",          //adresse du server
