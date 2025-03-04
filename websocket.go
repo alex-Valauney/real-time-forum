@@ -31,7 +31,7 @@ func WebsocketHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Handle messages
 	for {
-		_, data, err := conn.ReadMessage()
+		messType, data, err := conn.ReadMessage()
 		if err != nil {
 			fmt.Println("erreur2 :", err)
 			continue
@@ -41,16 +41,29 @@ func WebsocketHandler(w http.ResponseWriter, r *http.Request) {
 
 		json.Unmarshal(data, &obj)
 
+		if obj["method"] == nil {
+			fmt.Println("missing method")
+			continue
+		}
+
 		f := reflect.ValueOf(BDDConn).MethodByName(obj["method"].(string))
-		result := f.Call([]reflect.Value{reflect.ValueOf(obj)})
+		result := f.Call([]reflect.Value{reflect.ValueOf(obj)})[0].Interface().(Response)
 		fmt.Println(result)
+		resultJSON, err := json.Marshal(result)
+
+		if err != nil {
+			fmt.Println("erreur3 :", err)
+			continue
+		}
+		// fmt.Println(string(resultJSON))
 		// fmt.Println("type: ", messType)
 		// fmt.Println("data: ", data)
 		// fmt.Println()
-		// err = conn.WriteMessage(messType, data)
-		// if err != nil {
-		// 	fmt.Println("erreur3 :", err)
-		// 	continue
-		// }
+
+		err = conn.WriteMessage(messType, resultJSON)
+		if err != nil {
+			fmt.Println("erreur4 :", err)
+			continue
+		}
 	}
 }

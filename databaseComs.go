@@ -9,7 +9,11 @@ type BDD struct {
 	conn *sql.DB
 }
 
-func (db BDD) InsertPost(obj map[string]any) int64 {
+type Response struct {
+	Result any
+}
+
+func (db BDD) InsertPost(obj map[string]any) Response {
 	/*
 		expected input (as json object) :
 
@@ -25,25 +29,30 @@ func (db BDD) InsertPost(obj map[string]any) int64 {
 
 		expected output :
 
-		the id of the created post
-		in case of an error, the method will return 0
+		{
+			response : int (id of the created post)
+		}
+
+		in case of an error, response will be equal to 0
 	*/
 
-	fmt.Println("post to insert : ", obj)
-	return 0
+	// fmt.Println("post to insert : ", obj)
+	// fmt.Println("method called : ", obj["method"])
+	// fmt.Println("title of the post : ", obj["title"])
+	// return Response{0}
 
-	// result, err := db.conn.Exec("INSERT INTO posts(user_id, title, content, date) VALUES (?, ?, ?, ?);", obj["user_id"], obj["title"], obj["content"], obj["date"])
+	result, err := db.conn.Exec("INSERT INTO posts(user_id, title, content, date) VALUES (?, ?, ?, ?);", obj["user_id"], obj["title"], obj["content"], obj["date"])
 
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	return 0
-	// }
+	if err != nil {
+		fmt.Println(err)
+		return Response{0}
+	}
 
-	// id, err := result.LastInsertId()
+	id, err := result.LastInsertId()
 
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	return 0
-	// }
-	// return id
+	if err != nil {
+		fmt.Println(err)
+		return Response{0}
+	}
+	return Response{id}
 }
