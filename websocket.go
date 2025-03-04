@@ -31,7 +31,7 @@ func WebsocketHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Handle messages
 	for {
-		messType, data, err := conn.ReadMessage()
+		_, data, err := conn.ReadMessage()
 		if err != nil {
 			fmt.Println("erreur2 :", err)
 			continue
@@ -48,8 +48,6 @@ func WebsocketHandler(w http.ResponseWriter, r *http.Request) {
 
 		f := reflect.ValueOf(BDDConn).MethodByName(obj["method"].(string))
 		result := f.Call([]reflect.Value{reflect.ValueOf(obj)})[0].Interface().(Response)
-		fmt.Println(result)
-		resultJSON, err := json.Marshal(result)
 
 		if err != nil {
 			fmt.Println("erreur3 :", err)
@@ -60,7 +58,7 @@ func WebsocketHandler(w http.ResponseWriter, r *http.Request) {
 		// fmt.Println("data: ", data)
 		// fmt.Println()
 
-		err = conn.WriteMessage(messType, resultJSON)
+		err = conn.WriteJSON(result)
 		if err != nil {
 			fmt.Println("erreur4 :", err)
 			continue
