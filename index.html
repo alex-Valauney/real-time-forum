@@ -8,6 +8,12 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.jade.min.css">
     </head>
     <body>
+        <!--TEST WEBSOCKET-->
+        <input type="text" id="testWS">
+        <button id="testbutWS">test WebSocket</button>
+        <div id="output">test output</div>
+        <!--TEST WEBSOCKET-->
+
         {{if not .LoggedIn}}
 
         <section id="register" class="register hidden">
@@ -33,12 +39,6 @@
                 <button type="submit">Register</button>
                 <p>Already registered ? Just <a id="linkLogin">Log In</a></p>
             </form>
-
-            <!--TEST WEBSOCKET-->
-            <input type="text" id="testWS">
-            <button id="testbutWS">test WebSocket</button>
-            <div id="output">test output</div>
-            <!--TEST WEBSOCKET-->
         </section>
 
         <section id="login" class="login hidden">
@@ -56,7 +56,10 @@
 
         <header></header>
 
-        <nav></nav>
+        <nav>
+            <p><a id="linkIndex">Index</a></p>
+            <p><a id="linkCreatePost">Create Post</a></p>
+        </nav>
 
         <section id="index" class="index hidden">
             <div id="postList"></div>
@@ -65,7 +68,7 @@
         <section id="createPost" class="createPost hidden">
             <form id="postForm" method="POST" name="form">
                 <input type="text" name="title" placeholder="Title" maxlength="55" required>
-                <textarea name="content" placeholder="Write your post here" required>
+                <textarea name="content" placeholder="Write your post here" required></textarea>
                 <input type="checkbox" name="cat1" value="cat1">
                 <input type="checkbox" name="cat2" value="cat2">
                 <input type="checkbox" name="cat3" value="cat3">
@@ -75,8 +78,10 @@
         </section>
 
         <section id="post" class="post hidden">
+            <div id="postContent"></div>
+            <div id="commentList"></div>
             <form id="commentForm" method="POST" name="form">
-                <textarea name="content" placeholder="Write your comment" required>
+                <textarea name="content" placeholder="Write your comment" required></textarea>
                 <button type="submit">Comment this !</button>
             </form>
         </section>

@@ -1,9 +1,7 @@
-.register {
+.register, .login, .index, .createPost, .post {
     display: flex;
 }
-.login {
-    display: flex;
-}
+
 .hidden {
     display: none;
 }

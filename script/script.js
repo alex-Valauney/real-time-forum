@@ -1,3 +1,8 @@
+export let user = {
+    username : "",
+    loggedIn : false,
+}
+
 export function init() {
     window.onload = function () { //Launched when window is loading
         let conn
@@ -17,12 +22,12 @@ export function init() {
                 output.textContent = "error : " + e.data
             }
             conn.onmessage = function (e) { //Will be splitted in further cases depending on the nature of the message
-                output.textContent = "received : " + e.data
+                onMessagesFunctions(e.data)
             }
         } else {
             console.log("Your browser does not support WebSockets")
         }
-        document.getElementById("testbutWS").onclick = function (e) {
+        document.getElementById("testWS").onclick = function (e) {
             let textinputdata = document.querySelector("#testWS").value
             console.log(textinputdata)
             conn.send(textinputdata)
@@ -36,19 +41,19 @@ function handleForms(conn) {
     //All forms got by id
     let registerForm = document.getElementById("registerForm")
     registerForm.onsubmit = function (e) {
-        onSubForm(e, registerForm) //manque method
+        onSubForm(e, registerForm, "InsertUser")
     }
     let loginForm = document.getElementById("loginForm")
     loginForm.onsubmit = function (e) {
         onSubForm(e, loginForm) //manque method
     }
     let postForm = document.getElementById("postForm")
-    loginForm.onsubmit = function (e) {
-        onSubForm(e, loginForm) //manque method
+    postForm.onsubmit = function (e) {
+        onSubForm(e, postForm, "InsertPost")
     }
     let commentForm = document.getElementById("commentForm")
-    loginForm.onsubmit = function (e) {
-        onSubForm(e, loginForm) //manque method
+    commentForm.onsubmit = function (e) {
+        onSubForm(e, commentForm, "InsertComment")
     }
     //Local function putting in object shape forms to pass through the ws
     function onSubForm (e, form, method) {
@@ -76,18 +81,46 @@ function handleForms(conn) {
     }
 }
 
+function onMessagesFunctions(response) {
+    let parsedResponse = JSON.parse(response)
+    let mapIdentifier = {
+        login : loginFunc,
+        post : postFunc,
+    }
+    mapIdentifier[parsedResponse.identifier]()
+
+    function loginFunc() {
+        user.username = parsedResponse.username
+        user.loggedIn = true
+    }
+    function postFunc() {
+
+    }
+}
+
 //Events that will used with onLoadPage() to switch sections
 function onClicksFunctions() {
-    onLoadPage('register') //If unlogged, display register section, by default
+    if (!user.loggedIn) {
+        onLoadPage('register') //If unlogged, display register section, by default
+    } else {
+        onLoadPage('index')
+    }
     let currentLoad = document.body.querySelector('section:not(.hidden)')
 
     document.getElementById('linkLogin').onclick = function (e) {
         onLoadPage('login', currentLoad.id)
         currentLoad = document.body.querySelector('section:not(.hidden)')
     }
-
     document.getElementById('linkRegister').onclick = function (e) { 
         onLoadPage('register', currentLoad.id)
+        currentLoad = document.body.querySelector('section:not(.hidden)')
+    }
+    document.getElementById('linkIndex').onclick = function (e) {
+        onLoadPage('index', currentLoad.id)
+        currentLoad = document.body.querySelector('section:not(.hidden)')
+    }
+    document.getElementById('linkCreatePost').onclick = function (e) {
+        onLoadPage('createPost', currentLoad.id)
         currentLoad = document.body.querySelector('section:not(.hidden)')
     }
 }
@@ -99,4 +132,3 @@ function onLoadPage(newSection, oldSection) {
         document.getElementById(oldSection).classList.add('hidden')
     }
 }
-
