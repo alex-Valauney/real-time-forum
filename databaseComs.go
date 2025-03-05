@@ -34,7 +34,11 @@ func (db *BDD) CloseConn() {
 	}
 }
 
-func (db *BDD) InsertPost(obj map[string]any) Response {
+/*
+	DO NOT PUT THE BDD ORIGIN OBJECT AS A POINTER ON THE METHODS THAT INTERACT WITH THE DATABASE OR THEY WON'T BE FOUND BY REFLECT
+*/
+
+func (db BDD) InsertPost(obj map[string]any) Response {
 	/*
 		expected input (as json object) :
 
@@ -79,7 +83,7 @@ func (db *BDD) InsertPost(obj map[string]any) Response {
 	return Response{id}
 }
 
-func (db *BDD) InsertUser(obj map[string]any) Response {
+func (db BDD) InsertUser(obj map[string]any) Response {
 	/*
 		expected input (as json object) :
 
