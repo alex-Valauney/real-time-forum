@@ -27,11 +27,11 @@ func WebsocketHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer conn.Close()
 
-	BDDConn := BDD{}
+	BDDConn := &BDD{}
 
 	// Handle messages
 	for {
-		messType, data, err := conn.ReadMessage()
+		_, data, err := conn.ReadMessage()
 		if err != nil {
 			fmt.Println("erreur2 :", err)
 			continue
@@ -46,23 +46,20 @@ func WebsocketHandler(w http.ResponseWriter, r *http.Request) {
 			continue
 		}
 
-		f := reflect.ValueOf(BDDConn).MethodByName(obj["method"].(string))
-		result := f.Call([]reflect.Value{reflect.ValueOf(obj)})[0].Interface().(Response)
-		fmt.Println(result)
-		resultJSON, err := json.Marshal(result)
+		BDDConn.OpenConn()
 
-		if err != nil {
-			fmt.Println("erreur3 :", err)
+		f := reflect.ValueOf(BDDConn).MethodByName(obj["method"].(string))
+		if !f.IsValid() {
+			fmt.Println("invalid method")
 			continue
 		}
-		// fmt.Println(string(resultJSON))
-		// fmt.Println("type: ", messType)
-		// fmt.Println("data: ", data)
-		// fmt.Println()
+		result := f.Call([]reflect.Value{reflect.ValueOf(obj)})[0].Interface().(Response)
 
-		err = conn.WriteMessage(messType, resultJSON)
+		BDDConn.CloseConn()
+
+		err = conn.WriteJSON(result)
 		if err != nil {
-			fmt.Println("erreur4 :", err)
+			fmt.Println("erreur3 :", err)
 			continue
 		}
 	}

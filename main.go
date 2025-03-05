@@ -13,7 +13,7 @@ var DB_PATH string
 func main() {
 
 	DB_PATH = "forum.db"
-	Batabase() // create database and tables
+	Database() // create database and tables
 
 	db, err := sql.Open("sqlite3", DB_PATH) // open database for nexts functions
 	if err != nil {
