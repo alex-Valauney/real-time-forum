@@ -12,7 +12,6 @@ var DB_PATH string
 
 func main() {
 
-	DB_PATH = "forum.db"
 	Database() // create database and tables
 
 	db, err := sql.Open("sqlite3", DB_PATH) // open database for nexts functions
@@ -25,10 +24,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("pragma en sang")
 	}
-
-	InsertNamesInDB(db, []string{"Astuces", "reccette", "où trouver", "legislation"}, `INSERT INTO categories (name) VALUES (?)`)
-	InsertNamesInDB(db, []string{"Drowned", "Classic", "Moderator", "Administrator"}, `INSERT INTO roles (name) VALUES (?)`)
-	InsertNamesInDB(db, []string{"likepost", "dislikepost", "likecom", "dislikecom", "comonpost", "askmod", "reportpost", "reportcom", "adminanswer"}, `INSERT INTO types (name) VALUES (?)`)
 
 	ServerCreate() // build TLS structure, and then launch server
 
