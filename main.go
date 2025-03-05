@@ -26,7 +26,7 @@ func main() {
 		log.Fatalf("pragma en sang")
 	}
 
-	InsertNamesInDB(db, []string{"Astuces", "Étangs", "Coins pêche", "Prises", "Bateaux", "Crustacés", "Coquillages", "Poissons"}, `INSERT INTO categories (name) VALUES (?)`)
+	InsertNamesInDB(db, []string{"Astuces", "reccette", "où trouver", "legislation"}, `INSERT INTO categories (name) VALUES (?)`)
 	InsertNamesInDB(db, []string{"Drowned", "Classic", "Moderator", "Administrator"}, `INSERT INTO roles (name) VALUES (?)`)
 	InsertNamesInDB(db, []string{"likepost", "dislikepost", "likecom", "dislikecom", "comonpost", "askmod", "reportpost", "reportcom", "adminanswer"}, `INSERT INTO types (name) VALUES (?)`)
 
