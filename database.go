@@ -4,10 +4,12 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 func Database() { // create database and create all table
-	db, err := sql.Open("sqlite3", "./")
+	db, err := sql.Open("sqlite3", "./RTF.db")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -80,15 +82,4 @@ func CreateTable(db *sql.DB, createTableSQL string, tableName string) { //create
 		log.Fatalf("Creation table Failed %s : %v", tableName, err)
 	}
 	fmt.Printf("Table %s already exist.\n", tableName)
-}
-
-func InsertNamesInDB(db *sql.DB, chosenNames []string, sqlExecQuery string) error { //fill references tables
-	var err error
-	for _, name := range chosenNames {
-		_, err := db.Exec(sqlExecQuery, name)
-		if err != nil {
-			return err
-		}
-	}
-	return err
 }

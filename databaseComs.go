@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/gofrs/uuid"
+	_ "github.com/mattn/go-sqlite3"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -17,7 +18,7 @@ type Response struct {
 }
 
 func (db *BDD) OpenConn() {
-	conn, err := sql.Open("sqlite3", "./")
+	conn, err := sql.Open("sqlite3", "./RTF.db")
 	if err != nil {
 		fmt.Println(err)
 		return
