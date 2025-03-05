@@ -27,7 +27,7 @@ func WebsocketHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer conn.Close()
 
-	BDDConn := BDD{}
+	BDDConn := &BDD{}
 
 	// Handle messages
 	for {
