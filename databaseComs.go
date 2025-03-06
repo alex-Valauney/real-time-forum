@@ -79,6 +79,32 @@ func (db *BDD) InsertPost(obj map[string]any) Response {
 	return Response{id}
 }
 
+func (db *BDD) SelectAllPosts(obj map[string]any) Response {
+	/*
+		expected input (as json object) :
+
+		{
+			method : SelectAllPosts
+		}
+	*/
+	tabResult := []Post{}
+
+	stmt := "SELECT * FROM posts ORDER BY date;"
+	result, err := db.conn.Query(stmt)
+	if err != nil {
+		fmt.Println(err)
+		return Response{[]Post{}}
+	}
+
+	for result.Next() {
+		post := Post{}
+		result.Scan(&post.id, &post.title, &post.content, &post.date, &post.user_id)
+		tabResult = append(tabResult, post)
+	}
+
+	return Response{tabResult}
+}
+
 func (db *BDD) InsertUser(obj map[string]any) Response {
 	/*
 		expected input (as json object) :
