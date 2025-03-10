@@ -62,5 +62,15 @@ func WebsocketHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("erreur3 :", err)
 			continue
 		}
+		// fmt.Println(string(resultJSON))
+		// fmt.Println("type: ", messType)
+		// fmt.Println("data: ", data)
+		// fmt.Println()
+
+		err = conn.WriteJSON(result)
+		if err != nil {
+			fmt.Println("erreur4 :", err)
+			continue
+		}
 	}
 }
