@@ -1,5 +1,3 @@
-// script/script.js
-
 window.onload = function () {
     let conn;
     console.log(document.location);
@@ -57,7 +55,7 @@ window.onload = function () {
       });
     }
   
-    // Bouton 3 : bascule entre l'affichage des sujets et celui du bloc Post/Comment
+    // Bouton 3 : alterne entre l'affichage des sujets et celui du bloc Post/Comment
     if (testButtons[2]) {
       testButtons[2].addEventListener('click', () => {
         const header = document.querySelector('header');
@@ -67,14 +65,14 @@ window.onload = function () {
         header.dataset.visible = "true";
         navElement.dataset.visible = "true";
         sidebar.dataset.visible = "true";
-        
+  
         const gridItems = document.querySelectorAll('.grid-item');
         const postBlock = document.querySelector('.post');
         const commentBlock = document.querySelector('.comment');
         const authContainer = document.querySelector('.auth-container');
         // Masque toujours l'authentification
         authContainer.dataset.visible = "false";
-        
+  
         // Bascule l'affichage des sujets et du bloc Post/Comment
         if (gridItems[0].dataset.visible === "true") {
           gridItems.forEach(item => item.dataset.visible = "false");
@@ -99,7 +97,7 @@ window.onload = function () {
         const commentBlock = document.querySelector('.comment');
   
         if (authContainer.dataset.visible === "true") {
-          // Si l'authentification est visible, on la masque et on réaffiche le forum
+          // Masquer l'authentification et réafficher le forum
           authContainer.dataset.visible = "false";
           navElement.dataset.visible = "true";
           sidebarElement.dataset.visible = "true";
@@ -107,13 +105,53 @@ window.onload = function () {
           postBlock.dataset.visible = "false";
           commentBlock.dataset.visible = "false";
         } else {
-          // Sinon, on affiche l'authentification et on masque le forum
+          // Afficher l'authentification et masquer le forum
           authContainer.dataset.visible = "true";
           navElement.dataset.visible = "false";
           sidebarElement.dataset.visible = "false";
           gridItems.forEach(item => item.dataset.visible = "false");
           postBlock.dataset.visible = "false";
           commentBlock.dataset.visible = "false";
+        }
+      });
+    }
+  
+    // --- Fonctionnalité sur le bouton d'authentification (Register) ---
+    const registerBtn = document.querySelector('.register-btn');
+    if (registerBtn) {
+      registerBtn.addEventListener('click', (e) => {
+        e.preventDefault(); // Empêche le comportement par défaut
+  
+        // Récupération des valeurs du formulaire d'authentification
+        const firstName = document.getElementById('first-name').value;
+        const lastName = document.getElementById('last-name').value;
+        const nickname = document.getElementById('nickname').value;
+        const age = parseInt(document.getElementById('age').value, 10);
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+  
+        // Récupération et conversion du genre via le bouton radio sélectionné
+        let gender = 0;
+        const genderInput = document.querySelector('input[name="gender"]:checked');
+        if (genderInput) {
+          gender = (genderInput.value === "male") ? 1 : 2;
+        }
+  
+        // Construction de l'objet JSON
+        const data = {
+          nickname: nickname,
+          first_name: firstName,
+          last_name: lastName,
+          age: age,
+          gender: gender,
+          email: email,
+          password: password,
+          method: "InsertUser"
+        };
+  
+        console.log("JSON généré :", JSON.stringify(data));
+        if (conn) {
+          conn.send(JSON.stringify(data));
         }
       });
     }
