@@ -36,7 +36,7 @@ func DefineTables(db *sql.DB) { // define and create all tables
 			"content" TEXT NOT NULL,
 			"date" VARCHAR(32) NOT NULL,
 			"user_id" INTEGER NOT NULL,
-			FOREIGN KEY(user_id) REFERENCES users(id)
+			FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
 		);`
 	commentsTable := `CREATE TABLE IF NOT EXISTS comments (
 			"id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,        
@@ -44,7 +44,7 @@ func DefineTables(db *sql.DB) { // define and create all tables
 			"date" VARCHAR(32) NOT NULL,
 			"user_id" INTEGER, 
 			"post_id" INTEGER NOT NULL,
-			FOREIGN KEY(user_id) REFERENCES users(id),
+			FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
 			FOREIGN KEY(post_id) REFERENCES posts(id) ON DELETE CASCADE
 		);`
 	categoriesTable := `CREATE TABLE IF NOT EXISTS categories (
@@ -54,7 +54,7 @@ func DefineTables(db *sql.DB) { // define and create all tables
 	catPostRelTable := `CREATE TABLE IF NOT EXISTS catpostrel (
 			"cat_id" INTEGER NOT NULL,
 			"post_id" INTEGER NOT NULL,
-			FOREIGN KEY(cat_id) REFERENCES categories(id),
+			FOREIGN KEY(cat_id) REFERENCES categories(id) ON DELETE CASCADE,
 			FOREIGN KEY(post_id) REFERENCES posts(id) ON DELETE CASCADE
 		);`
 	privateMessageTable := `CREATE TABLE IF NOT EXISTS privatemessages (
