@@ -139,6 +139,7 @@ func (db *BDD) InsertUser(obj map[string]any) Response {
 			gender : int,
 			email : string,
 			password : string
+			method : InsertUser
 		}
 	*/
 
