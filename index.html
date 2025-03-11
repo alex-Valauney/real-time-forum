@@ -1,79 +1,225 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>RTF</title>
-        <link rel="stylesheet" href="/static/index.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.jade.min.css">
-    </head>
-    <body>
-        {{if not .LoggedIn}}
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Site Web Minimal</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-visible="true">
+  <header data-visible="true">
+    <h1 data-visible="true">Mon Header</h1>
+  </header>
 
-        <section id="register" class="register hidden">
-            <form id="registerForm" method="POST" name="form">
-                <label> Username </label>
-                <input type="text" name="username" placeholder="Ex : Xorlor54" required>
-                <label> First Name </label>
-                <input type="text" name="firstname" placeholder="Ex : John" required>
-                <label> Last Name </label>
-                <input type="text" name="lastname" placeholder="Ex : Doe" required>
-                <label> Age </label>
-                <input type="number" name="age" min="13" max="150" placeholder="Minimum 13 yo" required>
-                <label> Gender </label>
-                <input type="radio" name="gender" value="Male" required>
-                <label>Male</label>
-                <input type="radio" name="gender" value="Female" required>
-                <label>Female</label>
-                <br></br>
-                <label> Email </label>
-                <input type="email" name="email" placeholder="Ex : Azerty@uipo.com" required>
-                <label> Password </label>
-                <input type="password" name="password" placeholder="At least 10 characters; use numbers, caps and special chars" required>
-                <button type="submit">Register</button>
-                <p>Already registered ? Just <a id="linkLogin">Log In</a></p>
-            </form>
+  <nav data-visible="true">
+    <button class="nav-btn" data-visible="true">Catégorie A</button>
+    <button class="nav-btn" data-visible="true">Catégorie B</button>
+    <button class="nav-btn" data-visible="true">Catégorie C</button>
+    <button class="nav-btn" data-visible="true">Catégorie D</button>
+    <button class="nav-btn chat-btn" data-visible="true">Chat</button>
+  </nav>
 
-            <!--TEST WEBSOCKET-->
-            <input type="text" id="testWS">
-            <button id="testbutWS">test WebSocket</button>
-            <div id="output">test output</div>
-            <!--TEST WEBSOCKET-->
-        </section>
+  <div class="content" data-visible="true">
+    <aside class="sidebar" data-visible="true">
+      <h2 data-visible="true">Liste des membres</h2>
+      <ul data-visible="true">
+        <li data-visible="true">Marie Curie</li>
+        <li data-visible="true">Dmitri Mendeleïev</li>
+        <li data-visible="true">Linus Pauling</li>
+        <li data-visible="true">Rosalind Franklin</li>
+        <li data-visible="true">Antoine Lavoisier</li>
+      </ul>
+    </aside>
+    <main data-visible="true">
+      <!-- Blocs Sujets -->
+      <button class="grid-item item-large" data-visible="true">Sujet 1</button>
+      <button class="grid-item" data-visible="true">Sujet 2</button>
+      <button class="grid-item" data-visible="true">Sujet 3</button>
+      <button class="grid-item" data-visible="true">Sujet 4</button>
+      <button class="grid-item" data-visible="true">Sujet 5</button>
+      <button class="grid-item item-vertical" data-visible="true">Sujet 6</button>
+      <button class="grid-item" data-visible="true">Sujet 7</button>
+      <button class="grid-item" data-visible="true">Sujet 8</button>
+      <button class="grid-item item-horizontal" data-visible="true">Sujet 9</button>
+      <button class="grid-item" data-visible="true">Sujet 10</button>
+      
+      <!-- Bloc Post -->
+      <div class="post" data-visible="false">
+        <p>Post</p>
+      </div>
+      
+      <!-- Bloc Comment -->
+      <div class="comment" data-visible="false">
+        <p>Comment</p>
+      </div>
+      
+      <!-- Vue Authentification regroupée dans un conteneur -->
+      <div class="auth-container" data-visible="false">
+        <div class="auth">
+          <div class="auth-item">
+            <label for="first-name">First Name</label>
+            <input type="text" id="first-name" name="first-name">
+          </div>
+          <div class="auth-item">
+            <label for="last-name">Last Name</label>
+            <input type="text" id="last-name" name="last-name">
+          </div>
+          <div class="auth-item">
+            <label for="nickname">Nickname</label>
+            <input type="text" id="nickname" name="nickname">
+          </div>
+          <div class="auth-item">
+            <label for="age">Age</label>
+            <input type="number" id="age" name="age">
+          </div>
+          <div class="auth-item">
+            <label>Gender</label>
+            <div class="gender-options">
+              <label for="male">Homme
+                <input type="radio" id="male" name="gender" value="male">
+              </label>
+              <label for="female">Femme
+                <input type="radio" id="female" name="gender" value="female">
+              </label>
+            </div>
+          </div>
+          <div class="auth-item">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" name="email">
+          </div>
+          <div class="auth-item">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password">
+          </div>
+        </div>
+        <!-- Bouton Register -->
+        <button class="register-btn">Register</button>
+      </div>
+    </main>
+  </div>
 
-        <section id="login" class="login hidden">
-            <form id="loginForm" method="POST" name="form">
-                <label> Username or Email </label>
-                <input type="text" name="username/email" placeholder="Ex : Xorlor54 or Azerty@uipo.com" required>
-                <label> Password </label>
-                <input type="password" name="password" placeholder="Enter your password" required>
-                <button type="submit">Log In</button>
-                <p>Not yet registered ? <a id="linkRegister">Register</a></p>
-            </form>
-        </section>
+  <!-- Boutons de test déplacés hors de la grille -->
+  <div class="test-buttons" data-visible="true">
+    <button data-test="true">Test Bouton 1 (Header)</button>
+    <button data-test="true">Test Bouton 2 (Sidebar)</button>
+    <button data-test="true">Test Bouton 3 (Sujets / Post-Comment)</button>
+    <button data-test="true">Test Bouton 4 (Auth + Forum/Membres)</button>
+  </div>
 
-        {{else}}
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Gestion des boutons de test
+      const testButtons = document.querySelectorAll('[data-test="true"]');
 
-        <header></header>
+      // Bouton 1 : bascule la visibilité du header
+      testButtons[0].addEventListener('click', () => {
+        const header = document.querySelector('header');
+        header.dataset.visible = header.dataset.visible === "true" ? "false" : "true";
+      });
 
-        <nav></nav>
+      // Bouton 2 : bascule la visibilité de la sidebar
+      testButtons[1].addEventListener('click', () => {
+        const sidebar = document.querySelector('.sidebar');
+        sidebar.dataset.visible = sidebar.dataset.visible === "true" ? "false" : "true";
+      });
 
-        <section id="index" class="index hidden">
-            <div id="postList"></div>
-        </section>
+      // Bouton 3 : alterne entre l'affichage des sujets et celui du bloc Post/Comment
+      // et masque la vue Authentification
+      testButtons[2].addEventListener('click', () => {
+        const header = document.querySelector('header');
+        const navElement = document.querySelector('nav');
+        const sidebar = document.querySelector('.sidebar');
+        // Restauration du forum
+        header.dataset.visible = "true";
+        navElement.dataset.visible = "true";
+        sidebar.dataset.visible = "true";
+        
+        const gridItems = document.querySelectorAll('.grid-item');
+        const postBlock = document.querySelector('.post');
+        const commentBlock = document.querySelector('.comment');
+        const authContainer = document.querySelector('.auth-container');
+        // Masquer toujours l'authentification
+        authContainer.dataset.visible = "false";
+        
+        // Si les sujets sont actuellement visibles, on les masque et on affiche post/comment
+        if (gridItems[0].dataset.visible === "true") {
+          gridItems.forEach(item => item.dataset.visible = "false");
+          postBlock.dataset.visible = "true";
+          commentBlock.dataset.visible = "true";
+        } else {
+          // Sinon, on affiche les sujets et on masque post/comment
+          gridItems.forEach(item => item.dataset.visible = "true");
+          postBlock.dataset.visible = "false";
+          commentBlock.dataset.visible = "false";
+        }
+      });
 
-        <section id="createPost" class="createPost hidden">
-            
-        </section>
+      // Bouton 4 : bascule la visibilité de la vue Authentification et des éléments du forum (navbar, sidebar, grid-items)
+      // Lors de l'affichage de l'authentification, les blocs Post et Comment restent cachés.
+      testButtons[3].addEventListener('click', () => {
+        const authContainer = document.querySelector('.auth-container');
+        const navElement = document.querySelector('nav');
+        const sidebarElement = document.querySelector('.sidebar');
+        const gridItems = document.querySelectorAll('.grid-item');
+        const postBlock = document.querySelector('.post');
+        const commentBlock = document.querySelector('.comment');
+        const isAuthVisible = authContainer.dataset.visible === "true";
+        if (isAuthVisible) {
+          // Masquer Auth et réafficher les éléments du forum
+          authContainer.dataset.visible = "false";
+          navElement.dataset.visible = "true";
+          sidebarElement.dataset.visible = "true";
+          gridItems.forEach(item => item.dataset.visible = "true");
+          postBlock.dataset.visible = "false";
+          commentBlock.dataset.visible = "false";
+        } else {
+          // Afficher Auth et masquer tous les éléments du forum
+          authContainer.dataset.visible = "true";
+          navElement.dataset.visible = "false";
+          sidebarElement.dataset.visible = "false";
+          gridItems.forEach(item => item.dataset.visible = "false");
+          postBlock.dataset.visible = "false";
+          commentBlock.dataset.visible = "false";
+        }
+      });
+      
+      // Script pour transformer les entrées du formulaire en JSON et l'envoyer au back-end
+      const registerBtn = document.querySelector('.register-btn');
+      registerBtn.addEventListener('click', (e) => {
+        e.preventDefault(); // Empêche le comportement par défaut
 
-        <section id="post" class="post hidden">
-        </section>
+        // Récupération des valeurs des champs du formulaire
+        const firstName = document.getElementById('first-name').value;
+        const lastName  = document.getElementById('last-name').value;
+        const nickname  = document.getElementById('nickname').value;
+        const age       = parseInt(document.getElementById('age').value, 10);
+        const email     = document.getElementById('email').value;
+        const password  = document.getElementById('password').value;
 
-        {{end}}
+        // Récupération et conversion du genre via le bouton radio sélectionné
+        let gender = 0;
+        const genderElement = document.querySelector('input[name="gender"]:checked');
+        if (genderElement) {
+          // Par exemple : 1 pour "male" et 2 pour "female"
+          gender = (genderElement.value === "male") ? 1 : 2;
+        }
 
-        <script type="module">
-            import { init } from '/script/script.js'
-            init()
-        </script>
-    </body>
+        // Construction de l'objet JSON
+        const data = {
+          nickname: nickname,
+          first_name: firstName,
+          last_name: lastName,
+          age: age,
+          gender: gender,
+          email: email,
+          password: password,
+          method: "InsertUser"
+        };
+
+        // Affichage dans la console pour vérification
+        console.log("JSON généré :", JSON.stringify(data));
+      });
+    });
+  </script>
+</body>
 </html>
