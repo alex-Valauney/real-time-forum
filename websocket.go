@@ -49,10 +49,6 @@ func WebsocketHandler(w http.ResponseWriter, r *http.Request) {
 		f := reflect.ValueOf(BDDConn).MethodByName(obj["method"].(string))
 		result := f.Call([]reflect.Value{reflect.ValueOf(obj)})[0].Interface().(Response)
 
-		if err != nil {
-			fmt.Println("erreur3 :", err)
-			continue
-		}
 		// fmt.Println(string(resultJSON))
 		// fmt.Println("type: ", messType)
 		// fmt.Println("data: ", data)

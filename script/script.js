@@ -45,7 +45,7 @@ function handleForms(conn) {
     }
     let loginForm = document.getElementById("loginForm")
     loginForm.onsubmit = function (e) {
-        onSubForm(e, loginForm, "InsertPost") //manque method
+        onSubForm(e, loginForm) //manque method
     }
     let postForm = document.getElementById("postForm")
     postForm.onsubmit = function (e) {
@@ -83,8 +83,8 @@ function handleForms(conn) {
 
 function onMessagesFunctions(response) {
 
-    console.log(response)
     let parsedResponse = JSON.parse(response)
+    console.log(parsedResponse)
     let mapIdentifier = {
         login : loginFunc,
         post : postFunc,
@@ -134,3 +134,4 @@ function onLoadPage(newSection, oldSection) {
         document.getElementById(oldSection).classList.add('hidden')
     }
 }
+
