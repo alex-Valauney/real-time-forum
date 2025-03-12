@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"real-time-forum/methods"
 	"time"
 
 	"github.com/gofrs/uuid"
@@ -20,13 +19,13 @@ func TokenGen() (string, error) { // generate a token (which is an UUID)
 	return token.String(), nil // nil = 0 banane
 }
 
-func SessionGen(w http.ResponseWriter, user *methods.User, rememberMe bool) { // generate a cookie and a session
+func SessionGen(w http.ResponseWriter, user User, rememberMe bool) { // generate a cookie and a session
 	sessionToken, err := TokenGen() // see previous function
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
-	sessions[sessionToken] = user.UUID
+	sessions[sessionToken] = user.uuid
 	fmt.Println(sessions)
 	cookie := &http.Cookie{
 		Name:     "session_token",
