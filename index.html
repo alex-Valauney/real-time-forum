@@ -1,4 +1,82 @@
 <!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>RTF</title>
+        <link rel="stylesheet" href="/static/index.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.jade.min.css">
+    </head>
+    <body>
+        {{if not .LoggedIn}}
+
+        <section id="register" class="register hidden">
+            <form id="registerForm" method="POST" name="form">
+                <label> Username </label>
+                <input type="text" name="username" placeholder="Ex : Xorlor54" required>
+                <label> First Name </label>
+                <input type="text" name="firstname" placeholder="Ex : John" required>
+                <label> Last Name </label>
+                <input type="text" name="lastname" placeholder="Ex : Doe" required>
+                <label> Age </label>
+                <input type="number" name="age" min="13" max="150" placeholder="Minimum 13 yo" required>
+                <label> Gender </label>
+                <input type="radio" name="gender" value="Male" required>
+                <label>Male</label>
+                <input type="radio" name="gender" value="Female" required>
+                <label>Female</label>
+                <br></br>
+                <label> Email </label>
+                <input type="email" name="email" placeholder="Ex : Azerty@uipo.com" required>
+                <label> Password </label>
+                <input type="password" name="password" placeholder="At least 10 characters; use numbers, caps and special chars" required>
+                <button type="submit">Register</button>
+                <p>Already registered ? Just <a id="linkLogin">Log In</a></p>
+            </form>
+
+            <!--TEST WEBSOCKET-->
+            <input type="text" id="testWS">
+            <button id="testbutWS">test WebSocket</button>
+            <div id="output">test output</div>
+            <!--TEST WEBSOCKET-->
+        </section>
+
+        <section id="login" class="login hidden">
+            <form id="loginForm" method="POST" name="form">
+                <label> Username or Email </label>
+                <input type="text" name="username/email" placeholder="Ex : Xorlor54 or Azerty@uipo.com" required>
+                <label> Password </label>
+                <input type="password" name="password" placeholder="Enter your password" required>
+                <button type="submit">Log In</button>
+                <p>Not yet registered ? <a id="linkRegister">Register</a></p>
+            </form>
+        </section>
+
+        {{else}}
+
+        <header></header>
+
+        <nav></nav>
+
+        <section id="index" class="index hidden">
+            <div id="postList"></div>
+        </section>
+
+        <section id="createPost" class="createPost hidden">
+            
+        </section>
+
+        <section id="post" class="post hidden">
+        </section>
+
+        {{end}}
+
+        <script type="module">
+            import { init } from '/script/script.js'
+            init()
+        </script>
+    </body>
+</html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">

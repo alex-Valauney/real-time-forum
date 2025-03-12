@@ -66,8 +66,14 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	data := struct {
+		LoggedIn bool
+	}{
+		LoggedIn: false,
+	}
+
 	// Exécute le template avec les données
-	err = tmpl.Execute(w, nil)
+	err = tmpl.Execute(w, data)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

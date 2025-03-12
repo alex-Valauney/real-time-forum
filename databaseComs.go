@@ -57,35 +57,35 @@ func (db *BDD) InsertPost(obj map[string]any) Response {
 		in case of an error, response will be equal to 0
 	*/
 
-	// fmt.Println("post to insert : ", obj)
-	// fmt.Println("method called : ", obj["method"])
-	// fmt.Println("title of the post : ", obj["title"])
-	// return Response{0}
+	fmt.Println("post to insert : ", obj)
+	fmt.Println("method called : ", obj["method"])
+	fmt.Println("title of the post : ", obj["title"])
+	return Response{0}
 
 	stmt := "INSERT INTO posts(user_id, title, content, date) VALUES (?, ?, ?, ?);"
 	result, err := db.conn.Exec(stmt, obj["user_id"], obj["title"], obj["content"], obj["date"])
 
-	if err != nil {
-		fmt.Println(err)
-		return Response{0}
-	}
-
-	id, err := result.LastInsertId()
-
-	if err != nil {
-		fmt.Println(err)
-		return Response{0}
-	}
-	return Response{id}
-}
-
-func (db *BDD) SelectAllPosts(obj map[string]any) Response {
-	/*
-		expected input (as json object) :
-
-		{
-			method : SelectAllPosts
+	/* if err != nil {
+			fmt.Println(err)
+			return Response{0}
 		}
+
+		id, err := result.LastInsertId()
+
+		if err != nil {
+			fmt.Println(err)
+			return Response{0}
+		}
+		return Response{id}
+	}
+
+	func (db *BDD) SelectAllPosts(obj map[string]any) Response {
+		/*
+			expected input (as json object) :
+
+			{
+				method : SelectAllPosts
+			}
 	*/
 	tabResult := []Post{}
 
