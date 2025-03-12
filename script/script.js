@@ -22,6 +22,7 @@ export function init() {
         } else {
             console.log("Your browser does not support WebSockets")
         }
+        // Gestion du bouton de test WebSocket
         document.getElementById("testbutWS").onclick = function (e) {
             let textinputdata = document.querySelector("#testWS").value
             console.log(textinputdata)
@@ -36,19 +37,19 @@ function handleForms(conn) {
     //All forms got by id
     let registerForm = document.getElementById("registerForm")
     registerForm.onsubmit = function (e) {
-        onSubForm(e, registerForm) //manque method
+        onSubForm(e, registerForm, "InsertUser")
     }
     let loginForm = document.getElementById("loginForm")
     loginForm.onsubmit = function (e) {
-        onSubForm(e, loginForm) //manque method
+        onSubForm(e, loginForm, "Authenticate")
     }
     let postForm = document.getElementById("postForm")
     loginForm.onsubmit = function (e) {
-        onSubForm(e, loginForm) //manque method
+        onSubForm(e, loginForm, "InsertPost")
     }
     let commentForm = document.getElementById("commentForm")
     loginForm.onsubmit = function (e) {
-        onSubForm(e, loginForm) //manque method
+        onSubForm(e, loginForm, "InsertComment")
     }
     //Local function putting in object shape forms to pass through the ws
     function onSubForm (e, form, method) {
@@ -74,13 +75,14 @@ function handleForms(conn) {
         conn.send(JSON.stringify(formData)) //Only strings, blobs, ArrayBuffers are accepted to be sent
         return false
     }
+
 }
 
 //Events that will used with onLoadPage() to switch sections
 function onClicksFunctions() {
     onLoadPage('register') //If unlogged, display register section, by default
     let currentLoad = document.body.querySelector('section:not(.hidden)')
-
+    
     document.getElementById('linkLogin').onclick = function (e) {
         onLoadPage('login', currentLoad.id)
         currentLoad = document.body.querySelector('section:not(.hidden)')
@@ -100,45 +102,9 @@ function onLoadPage(newSection, oldSection) {
     }
 }
 
-window.onload = function () {
-    let conn;
-    console.log(document.location);
+/*     // --- Logiques de changement d'affichage via les boutons tests ---
   
-    // Création de la connexion WebSocket côté client
-    if (window["WebSocket"]) {
-      conn = new WebSocket("ws://" + document.location.host + "/ws");
-      const output = document.querySelector("#output");
-  
-      conn.onopen = function (e) {
-        output.textContent = "connection successful";
-      };
-  
-      conn.onclose = function (e) {
-        console.log("Closed WS");
-      };
-  
-      conn.onerror = function (e) {
-        output.textContent = "error: " + e.data;
-      };
-  
-      conn.onmessage = function (e) {
-        output.textContent = "received: " + e.data;
-      };
-    } else {
-      console.log("Your browser does not support WebSockets");
-    }
-  
-    // Gestion du bouton de test WebSocket
-    document.getElementById("testbutWS").onclick = function (e) {
-      const textInput = document.querySelector("#testWS").value;
-      console.log(textInput);
-      if (conn) {
-        conn.send(textInput);
-      }
-    };
-  
-    // --- Logiques de changement d'affichage via les boutons tests ---
-  
+
     const testButtons = document.querySelectorAll('[data-test="true"]');
   
     // Bouton 1 : bascule la visibilité du header
@@ -216,46 +182,6 @@ window.onload = function () {
           commentBlock.dataset.visible = "false";
         }
       });
-    }
+    } */
   
-    // --- Fonctionnalité sur le bouton d'authentification (Register) ---
-    const registerBtn = document.querySelector('.register-btn');
-    if (registerBtn) {
-      registerBtn.addEventListener('click', (e) => {
-        e.preventDefault(); // Empêche le comportement par défaut
-  
-        // Récupération des valeurs du formulaire d'authentification
-        const firstName = document.getElementById('first-name').value;
-        const lastName = document.getElementById('last-name').value;
-        const nickname = document.getElementById('nickname').value;
-        const age = parseInt(document.getElementById('age').value, 10);
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-  
-        // Récupération et conversion du genre via le bouton radio sélectionné
-        let gender = 0;
-        const genderInput = document.querySelector('input[name="gender"]:checked');
-        if (genderInput) {
-          gender = (genderInput.value === "male") ? 1 : 2;
-        }
-  
-        // Construction de l'objet JSON
-        const data = {
-          nickname: nickname,
-          first_name: firstName,
-          last_name: lastName,
-          age: age,
-          gender: gender,
-          email: email,
-          password: password,
-          method: "InsertUser"
-        };
-  
-        console.log("JSON généré :", JSON.stringify(data));
-        if (conn) {
-          conn.send(JSON.stringify(data));
-        }
-      });
-    }
-  };
   
