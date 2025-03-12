@@ -43,6 +43,7 @@ func (db *BDD) InsertPost(obj map[string]any) Response {
 			title : string,
 			content : string,
 			date : string,
+			categories : []int,
 			method : InsertPost
 		}
 
@@ -76,6 +77,14 @@ func (db *BDD) InsertPost(obj map[string]any) Response {
 		fmt.Println(err)
 		return Response{0}
 	}
+	stmt = "INSERT INTO catpostrel(cat_id, post_id) VALUES (?, ?);"
+	for i := 0; i < len(obj["categories"].([]int))-1; i++ {
+		_, err = db.conn.Exec(stmt, obj["categories"].([]int)[i], id)
+		if err != nil {
+			fmt.Println(err)
+		}
+	}
+
 	return Response{id}
 }
 
