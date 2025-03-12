@@ -28,9 +28,9 @@ type Comment struct {
 }
 
 type PrivateMessage struct {
-	id      int
-	from_id int
-	to_id   int
-	content string
-	date    string
+	id        int
+	user_from int
+	user_to   int
+	content   string
+	date      string
 }

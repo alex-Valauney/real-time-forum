@@ -43,6 +43,7 @@ func (db *BDD) InsertPost(obj map[string]any) Response {
 			title : string,
 			content : string,
 			date : string,
+			categories : []int,
 			method : InsertPost
 		}
 
@@ -66,26 +67,34 @@ func (db *BDD) InsertPost(obj map[string]any) Response {
 	result, err := db.conn.Exec(stmt, obj["user_id"], obj["title"], obj["content"], obj["date"])
 	*/
 	/* if err != nil {
-			fmt.Println(err)
-			return Response{0}
-		}
+				fmt.Println(err)
+				return Response{0}
+			}
 
-		id, err := result.LastInsertId()
+			id, err := result.LastInsertId()
 
 		if err != nil {
 			fmt.Println(err)
 			return Response{0}
 		}
+		stmt = "INSERT INTO catpostrel(cat_id, post_id) VALUES (?, ?);"
+		for i := 0; i < len(obj["categories"].([]int))-1; i++ {
+			_, err = db.conn.Exec(stmt, obj["categories"].([]int)[i], id)
+			if err != nil {
+				fmt.Println(err)
+			}
+		}
+
 		return Response{id}
 	}
 
-	func (db *BDD) SelectAllPosts(obj map[string]any) Response {
-		/*
-			expected input (as json object) :
+		func (db *BDD) SelectAllPosts(obj map[string]any) Response {
+			/*
+				expected input (as json object) :
 
-			{
-				method : SelectAllPosts
-			}
+				{
+					method : SelectAllPosts
+				}
 	*/
 	tabResult := []Post{}
 
@@ -192,6 +201,32 @@ func (db *BDD) SelectUserById(obj map[string]any) Response {
 	return Response{user}
 }
 
+func (db *BDD) Authenticate(obj map[string]any) Response {
+	/*
+		expected input (as json object) :
+		{
+			name : string, (can be either a nickname or an email)
+			password : string,
+			method : Authenticate
+		}
+	*/
+	var id int
+	var password []byte
+	stmt := "SELECT id, password FROM users WHERE nickname = ? OR email = ?;"
+	result := db.conn.QueryRow(stmt, obj["name"], obj["name"])
+	err := result.Scan(&id, &password)
+	if err != nil {
+		return Response{User{}}
+	}
+
+	err = bcrypt.CompareHashAndPassword(password, []byte(obj["password"].(string)))
+	if err != nil {
+		return Response{User{}}
+	}
+
+	return db.SelectUserById(map[string]any{"id": id})
+}
+
 func (db *BDD) InsertComment(obj map[string]any) Response {
 	/*
 		expected input (as json object) :
@@ -244,4 +279,56 @@ func (db *BDD) SelectCommentsByPostId(obj map[string]any) Response {
 		tabCom = append(tabCom, comment)
 	}
 	return Response{tabCom}
+}
+
+func (db *BDD) InsertPrivateMessage(obj map[string]any) Response {
+	/*
+		expected input (as json object) :
+			{
+				user_from : int,
+				user_to : int,
+				content : string,
+				date : string,
+				method : InsertPrivateMessage
+			}
+	*/
+
+	stmt := "INSERT INTO privatemessages(user_from, user_to, content, date) VALUES (?, ?, ?, ?);"
+	result, err := db.conn.Exec(stmt, obj["user_from"], obj["user_to"], obj["content"], obj["date"])
+	if err != nil {
+		fmt.Println(err)
+		return Response{0}
+	}
+
+	newMesId, err := result.LastInsertId()
+	if err != nil {
+		fmt.Println(err)
+		return Response{0}
+	}
+	return Response{newMesId}
+}
+
+func (db *BDD) SelectPMByFromTo(obj map[string]any) Response {
+	/*
+		expected input (as json object) :
+		{
+			user_from : int,
+			user_to : int,
+			method : SelectPMByFromTo
+		}
+	*/
+	stmt := "SELECT * FROM privatemessages WHERE (user_from = ? AND user_to = ?) OR (user_from = ? AND user_to = ?);"
+	result, err := db.conn.Query(stmt, obj["user_from"], obj["user_to"], obj["user_to"], obj["user_from"])
+	if err != nil {
+		fmt.Println(err)
+		return Response{[]PrivateMessage{}}
+	}
+
+	tabPrivateMessages := []PrivateMessage{}
+	for result.Next() {
+		privateMessage := PrivateMessage{}
+		result.Scan(&privateMessage.id, &privateMessage.user_from, &privateMessage.user_to, &privateMessage.content, &privateMessage.date)
+		tabPrivateMessages = append(tabPrivateMessages, privateMessage)
+	}
+	return Response{tabPrivateMessages}
 }
