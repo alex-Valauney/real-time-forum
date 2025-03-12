@@ -191,6 +191,32 @@ func (db *BDD) SelectUserById(obj map[string]any) Response {
 	return Response{user}
 }
 
+func (db *BDD) Authenticate(obj map[string]any) Response {
+	/*
+		expected input (as json object) :
+		{
+			name : string, (can be either a nickname or an email)
+			password : string,
+			method : Authenticate
+		}
+	*/
+	var id int
+	var password []byte
+	stmt := "SELECT id, password FROM users WHERE nickname = ? OR email = ?;"
+	result := db.conn.QueryRow(stmt, obj["name"], obj["name"])
+	err := result.Scan(&id, &password)
+	if err != nil {
+		return Response{User{}}
+	}
+
+	err = bcrypt.CompareHashAndPassword(password, []byte(obj["password"].(string)))
+	if err != nil {
+		return Response{User{}}
+	}
+
+	return db.SelectUserById(map[string]any{"id": id})
+}
+
 func (db *BDD) InsertComment(obj map[string]any) Response {
 	/*
 		expected input (as json object) :
