@@ -279,3 +279,30 @@ func (db *BDD) SelectCommentsByPostId(obj map[string]any) Response {
 	}
 	return Response{tabCom}
 }
+
+func (db *BDD) InsertPrivateMessage(obj map[string]any) Response {
+	/*
+		expected input (as json object) :
+			{
+				user_from : int,
+				user_to : int,
+				content : string,
+				date : string,
+				method : InsertPrivateMessage
+			}
+	*/
+
+	stmt := "INSERT INTO privatemessages(user_from, user_to, content, date) VALUES (?, ?, ?, ?);"
+	result, err := db.conn.Exec(stmt, obj["user_from"], obj["user_to"], obj["content"], obj["date"])
+	if err != nil {
+		fmt.Println(err)
+		return Response{0}
+	}
+
+	newMesId, err := result.LastInsertId()
+	if err != nil {
+		fmt.Println(err)
+		return Response{0}
+	}
+	return Response{newMesId}
+}
