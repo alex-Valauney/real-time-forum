@@ -58,8 +58,10 @@ func WebsocketHandler(w http.ResponseWriter, r *http.Request) {
 		BDDConn.CloseConn()
 
 		if obj["method"] == "Authenticate" || obj["method"] == "InsertUser" {
-			SessionGen(w, User, Bool)
-
+			if obj["remember"] == nil {
+				obj["remember"] = false
+			}
+			SessionGen(w, result.Result.(User), obj["remember"].(bool))
 		}
 
 		err = conn.WriteJSON(result)
