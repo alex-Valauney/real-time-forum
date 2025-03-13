@@ -60,10 +60,17 @@ function handleForms(conn) {
         fields.forEach(field => {
             if (field.type === "radio") {
                 if (field.checked) {
-                    formData[field.name] = field.value
+                    let gender = field.value === "male" ? 1 : 0;
+                    formData[field.name] = gender
                 }
             } else if (field.type !== "submit") {
-                formData[field.name] = field.value
+                switch (field.name) {
+                    case ("age") :
+                        formData[field.name] = parseInt(field.value, 10)
+                        break
+                    default : 
+                        formData[field.name] = field.value
+                }
             }
         })
         formData["method"] = method
@@ -75,7 +82,6 @@ function handleForms(conn) {
         conn.send(JSON.stringify(formData)) //Only strings, blobs, ArrayBuffers are accepted to be sent
         return false
     }
-
 }
 
 //Events that will used with onLoadPage() to switch sections
