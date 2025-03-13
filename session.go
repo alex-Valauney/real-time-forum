@@ -23,7 +23,6 @@ func SessionGen(w http.ResponseWriter, user User, rememberMe bool) { // generate
 	sessionToken, err := TokenGen() // see previous function
 	if err != nil {
 		log.Fatal(err)
-		return
 	}
 	sessions[sessionToken] = user.uuid
 	fmt.Println(sessions)
@@ -32,12 +31,14 @@ func SessionGen(w http.ResponseWriter, user User, rememberMe bool) { // generate
 		Value:    sessionToken,
 		Expires:  time.Now().Add(1 * time.Hour),
 		HttpOnly: true,
+		Path:     "/",
 	}
 	if rememberMe { // if remember option chosen give more time to the cookie
 		cookie.Expires = time.Now().Add(72 * time.Hour)
 	}
 	fmt.Println(cookie.Expires)
 	http.SetCookie(w, cookie)
+	fmt.Fprintln(w, "Cookie set!")
 }
 
 func LoggedInVerif(r *http.Request) bool { // verify the existence of a cookie

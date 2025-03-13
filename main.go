@@ -26,20 +26,13 @@ func main() {
 	}
 
 	ServerCreate() // build TLS structure, and then launch server
-
 }
 
 func ServerCreate() {
-
-	// No error/logout handler directly, see handlersBasic.go/handlersLog.go for this
-	indexHandler := func(w http.ResponseWriter, r *http.Request) {
-		IndexHandler(w, r)
-	}
-
 	mux := http.NewServeMux() // Mux for multiple handlers
 	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
 	mux.Handle("/script/", http.StripPrefix("/script/", http.FileServer(http.Dir("./script"))))
-	mux.HandleFunc("/", indexHandler)
+	mux.HandleFunc("/", IndexHandler)
 	mux.HandleFunc("/ws", WebsocketHandler)
 
 	server := &http.Server{
@@ -59,7 +52,6 @@ func ServerCreate() {
 
 // function to handle the index requests
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
-
 	loggedIn := LoggedInVerif(r) // verify if the cookie is setup with a session token
 	DuplicateLog(loggedIn, w, r) // verify if the cookie is unique (handle double connection)
 
