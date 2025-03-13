@@ -176,7 +176,7 @@ func (db *BDD) InsertUser(obj map[string]any) Response {
 		fmt.Println(err)
 		return Response{0}
 	}
-	return Response{newUserId}
+	return db.SelectUserById(map[string]any{"id": newUserId})
 }
 
 func (db *BDD) SelectUserById(obj map[string]any) Response {
