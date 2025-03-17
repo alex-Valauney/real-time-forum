@@ -40,12 +40,16 @@ func GetNextPostsHandler(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			fmt.Println(err)
 			json.NewEncoder(w).Encode(methods.Response{})
+			BDDConn.CloseConn()
+			return
 		}
 	} else {
 		result, err = BDDConn.Conn.Query(stmt)
 		if err != nil {
 			fmt.Println(err)
 			json.NewEncoder(w).Encode(methods.Response{})
+			BDDConn.CloseConn()
+			return
 		}
 	}
 	BDDConn.CloseConn()
@@ -59,4 +63,42 @@ func GetNextPostsHandler(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(methods.Response{Result: tabResult})
 
+}
+
+func GetNewPosts(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	lastId := r.URL.Query().Get("id")
+	lastIdInt := 0
+	if lastId != "" {
+		lastIdTab := strings.Split(lastId, "-")
+		lastIdInt, _ = strconv.Atoi(lastIdTab[1])
+	} else {
+		return
+	}
+
+	BDDConn := &methods.BDD{}
+
+	stmt := "SELECT * FROM posts WHERE id > ? ORDER BY id DESC;"
+
+	BDDConn.OpenConn()
+	result, err := BDDConn.Conn.Query(stmt, lastIdInt)
+	BDDConn.CloseConn()
+	if err != nil {
+		fmt.Println(err)
+		json.NewEncoder(w).Encode(methods.Response{})
+		return
+	}
+
+	tabResult := []methods.Post{}
+	for result.Next() {
+		post := methods.Post{}
+		result.Scan(&post.Id, &post.Title, &post.Content, &post.Date, &post.User_id)
+		tabResult = append(tabResult, post)
+	}
+
+	json.NewEncoder(w).Encode(methods.Response{Result: tabResult})
 }
