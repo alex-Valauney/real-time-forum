@@ -1,5 +1,5 @@
 import { connWebSocket } from "./websocket.js"
-import { getPosts } from "./post.js"
+import { scrollPosts, refreshPosts } from "./post.js"
 
 let currentLoad
 
@@ -9,8 +9,8 @@ export function init() {
     if (isLoggedIn) {
       onLoadPage('index')
       currentLoad = document.body.querySelector('section:not(.hidden)')
-      getPosts()
-      setInterval(getPosts, 10000)
+      scrollPosts()
+      setInterval(refreshPosts, 10000)
       connWebSocket()
     } else {
       onLoadPage('register') //If unlogged, display register section, by default
