@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"rtf/back/methods"
 	"strconv"
+	"strings"
 )
 
 func GetNextPostsHandler(w http.ResponseWriter, r *http.Request) {
@@ -18,7 +19,8 @@ func GetNextPostsHandler(w http.ResponseWriter, r *http.Request) {
 	lastId := r.URL.Query().Get("id")
 	lastIdInt := 0
 	if lastId != "" {
-		lastIdInt, _ = strconv.Atoi(lastId)
+		lastIdTab := strings.Split(lastId, "-")
+		lastIdInt, _ = strconv.Atoi(lastIdTab[1])
 	}
 
 	BDDConn := &methods.BDD{}
