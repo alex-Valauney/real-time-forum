@@ -12,7 +12,8 @@ export async function getPosts() {
 }
 
 export function displayLastPosts(tabPost) {
-    let indexSection = document.getElementById("indexTable")
+    console.log(tabPost)
+    const indexSection = document.getElementById("indexTable")
     indexSection.replaceChildren()
 
     tabPost.forEach(post => {
@@ -25,6 +26,10 @@ export function displayLastPosts(tabPost) {
         postCell2.setAttribute("id", 'postStats-'+`${post.Id}`)
         const postNbCom = document.createElement("span")
         postNbCom.innerText = `${post.Id}`+'Comments' //Mettre le nb de comment au lieu de l'id
+        postCell1.appendChild(postTitle)
+        postCell2.appendChild(postNbCom)
+        postLine.appendChild(postCell1, postCell2)
+        indexSection.prepend(postLine)
     })
 }
 

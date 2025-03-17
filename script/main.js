@@ -47,8 +47,6 @@ function onClicksFunctions() {
     document.getElementById('linkLogin').onclick = function (e) {
       onLoadPage('login', currentLoad.id)
       currentLoad = document.body.querySelector('section:not(.hidden)')
-      onLoadPage('login', currentLoad.id)
-      currentLoad = document.body.querySelector('section:not(.hidden)')
     }
   }
   if (document.getElementById('linkRegister')) {
