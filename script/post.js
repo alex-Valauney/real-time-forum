@@ -19,16 +19,23 @@ export function displayLastPosts(tabPost) {
     tabPost.forEach(post => {
         const postLine = document.createElement("tr")
         const postCell1 = document.createElement("td")
-        postCell1.setAttribute("id", 'post-'+`${post.Id}`)
-        const postTitle = document.createElement("a")
-        postTitle.innerText = `${post.Title}`
         const postCell2 = document.createElement("td")
-        postCell2.setAttribute("id", 'postStats-'+`${post.Id}`)
-        const postNbCom = document.createElement("span")
-        postNbCom.innerText = `${post.Id}`+'Comments' //Mettre le nb de comment au lieu de l'id
+        const postCell3 = document.createElement("td")
+        const postTitle = document.createElement("a")
+        const postAuthor = document.createElement("p")
+        const postNbCom = document.createElement("p")
+        postCell1.setAttribute("id", `post-${post.Id}`)
+        postCell2.setAttribute("id", `postAuth-${post.Id}`)
+        postCell3.setAttribute("id", `postStats-${post.Id}`)
+        postTitle.innerText = `${post.Title}`
+        postAuthor.innerText = `${post.Author}` // Mettre le nom de l'auteur
+        postNbCom.textContent = `${post.Comment} Comments` //Mettre le nb de comment au lieu de l'id
         postCell1.appendChild(postTitle)
-        postCell2.appendChild(postNbCom)
-        postLine.appendChild(postCell1, postCell2)
+        postCell2.appendChild(postAuthor)
+        postCell3.appendChild(postNbCom)
+        postLine.appendChild(postCell1)
+        postLine.appendChild(postCell2)
+        postLine.appendChild(postCell3)
         indexSection.prepend(postLine)
     })
 }

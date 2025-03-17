@@ -29,7 +29,6 @@ async function checkSession() {
 
     if (!response.ok) {
       return false
-      return false
     }
 
     let data = await response.json()
