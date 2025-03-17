@@ -1,112 +1,108 @@
-export function init() {
-    window.onload = function () { //Launched when window is loading
-        let conn
-        console.log(document.location)
+import { connWebSocket } from "./websocket.js"
+import { getPosts } from "./post.js"
 
-        //Creating the front websocket connection 
-        if (window["WebSocket"]) {
-            conn = new WebSocket("ws://" + document.location.host + "/ws")
-            let output = document.querySelector("#output")
-            conn.onopen = function (e) {
-                output.textContent = "connection successful"
-            }
-            conn.onclose = function (e) { //Display that the user was disconnected of the ws 
-                console.log("Closed WS")
-            }
-            conn.onerror = function (e) {
-                output.textContent = "error : " + e.data
-            }
-            conn.onmessage = function (e) { //Will be splitted in further cases depending on the nature of the message
-                output.textContent = "received : " + e.data
-            }
-        } else {
-            console.log("Your browser does not support WebSockets")
-        }
-        // Gestion du bouton de test WebSocket
-        document.getElementById("testbutWS").onclick = function (e) {
-            let textinputdata = document.querySelector("#testWS").value
-            console.log(textinputdata)
-            conn.send(textinputdata)
-        }
-        handleForms(conn) //Getting forms and using the ws
+let currentLoad
+
+export function init() {
+  window.onload = async function () {//Launched when window is loading
+    let isLoggedIn = await checkSession();
+    if (isLoggedIn) {
+      onLoadPage('index')
+      currentLoad = document.body.querySelector('section:not(.hidden)')
+      getPosts()
+      setInterval(getPosts, 10000)
+      connWebSocket()
+    } else {
+      onLoadPage('register') //If unlogged, display register section, by default
+      currentLoad = document.body.querySelector('section:not(.hidden)')
     }
-    onClicksFunctions()
+  }
+  onClicksFunctions()
 }
 
-function handleForms(conn) {
-    //All forms got by id
-    let registerForm = document.getElementById("registerForm")
-    registerForm.onsubmit = function (e) {
-        onSubForm(e, registerForm, "InsertUser")
-    }
-    let loginForm = document.getElementById("loginForm")
-    loginForm.onsubmit = function (e) {
-        onSubForm(e, loginForm, "Authenticate")
-    }
-    let postForm = document.getElementById("postForm")
-    loginForm.onsubmit = function (e) {
-        onSubForm(e, loginForm, "InsertPost")
-    }
-    let commentForm = document.getElementById("commentForm")
-    loginForm.onsubmit = function (e) {
-        onSubForm(e, loginForm, "InsertComment")
-    }
-    //Local function putting in object shape forms to pass through the ws
-    function onSubForm (e, form, method) {
-        let formData = {}
-        e.preventDefault()
-        let fields = form.querySelectorAll("input")
+async function checkSession() {
+  try {
+    let response = await fetch("/checkSession", { 
+      method: "GET",
+      credentials: "include"
+    })
 
-        fields.forEach(field => {
-            if (field.type === "radio") {
-                if (field.checked) {
-                    let gender = field.value === "male" ? 1 : 0;
-                    formData[field.name] = gender
-                }
-            } else if (field.type !== "submit") {
-                switch (field.name) {
-                    case ("age") :
-                        formData[field.name] = parseInt(field.value, 10)
-                        break
-                    default : 
-                        formData[field.name] = field.value
-                }
-            }
-        })
-        formData["method"] = method
-
-        console.log(JSON.stringify(formData)) //Checking for us if everything's working fine, will be deleted later
-        if (!conn) {
-            return false
-        }
-        conn.send(JSON.stringify(formData)) //Only strings, blobs, ArrayBuffers are accepted to be sent
-        return false
+    if (!response.ok) {
+      return false
+      return false
     }
+
+    let data = await response.json()
+    return data.status === "authenticated"
+
+  } catch (error) {
+    console.error("Erreur lors de la vérification de session:", error)
+    return false
+  }
 }
 
 //Events that will used with onLoadPage() to switch sections
 function onClicksFunctions() {
-    onLoadPage('register') //If unlogged, display register section, by default
-    let currentLoad = document.body.querySelector('section:not(.hidden)')
-    
+  if (document.getElementById('linkLogin')) {
     document.getElementById('linkLogin').onclick = function (e) {
-        onLoadPage('login', currentLoad.id)
-        currentLoad = document.body.querySelector('section:not(.hidden)')
+      onLoadPage('login', currentLoad.id)
+      currentLoad = document.body.querySelector('section:not(.hidden)')
+      onLoadPage('login', currentLoad.id)
+      currentLoad = document.body.querySelector('section:not(.hidden)')
     }
-
+  }
+  if (document.getElementById('linkRegister')) {
+  }
+  if (document.getElementById('linkRegister')) {
     document.getElementById('linkRegister').onclick = function (e) { 
-        onLoadPage('register', currentLoad.id)
-        currentLoad = document.body.querySelector('section:not(.hidden)')
+      onLoadPage('register', currentLoad.id)
+      currentLoad = document.body.querySelector('section:not(.hidden)')
     }
+  }
+  if (document.getElementById('homeButton')) {
+    document.getElementById('homeButton').onclick = function (e) { 
+      onLoadPage('index', currentLoad.id)
+      currentLoad = document.body.querySelector('section:not(.hidden)')
+    }
+  }
+  if (document.getElementById('newPostButton')) {
+    document.getElementById('newPostButton').onclick = function (e) { 
+      onLoadPage('newPost', currentLoad.id)
+      currentLoad = document.body.querySelector('section:not(.hidden)')
+    }
+  }
+  if (document.getElementById('postButton')) {
+    document.getElementById('postButton').onclick = function (e) { 
+      onLoadPage('post', currentLoad.id)
+      currentLoad = document.body.querySelector('section:not(.hidden)')
+    }
+  }
+  if (document.getElementById('logoutButton')) {
+    document.getElementById('logoutButton').onclick = function (e) {
+      window.location.replace("/logout")
+    }
+  }
+  if (document.getElementById('chatButton')) {
+    document.getElementById('chatButton').onclick = function (e) {
+      if (document.getElementById('chat').classList.contains('hidden')) {
+        onLoadPage('chat')
+      } else {
+        onLoadPage(undefined, 'chat')
+      }
+    }
+  }
 }
 
 //Switching classes on sections to hide/display what we want
 function onLoadPage(newSection, oldSection) {
+  if (newSection) {
     document.getElementById(newSection).classList.remove('hidden')
-    if (oldSection) {
-        document.getElementById(oldSection).classList.add('hidden')
-    }
+  }
+  if (oldSection) {
+    document.getElementById(oldSection).classList.add('hidden')
+  }
 }
+
 
 /*     // --- Logiques de changement d'affichage via les boutons tests ---
   
@@ -189,5 +185,4 @@ function onLoadPage(newSection, oldSection) {
         }
       });
     } */
-  
-  
+

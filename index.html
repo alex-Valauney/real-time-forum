@@ -12,7 +12,7 @@
     {{if not .LoggedIn}}
 
     <section id="register" class="register-container hidden">
-      <form id="registerForm" method="POST" name="form">
+      <form id="registerForm" method="POST" name="form" action="/register">
         <div class="register">
           <div class="register-item">
             <label>Username</label>
@@ -33,11 +33,14 @@
           <div class="register-item">
             <label>Gender</label>
             <div class="gender-options">
-              <label for="male">Homme
-                <input type="radio" name="gender" value="male">
+              <label>Homme
+                <input type="radio" name="gender" value="1">
               </label>
-              <label for="female">Femme
-                <input type="radio" name="gender" value="female">
+              <label>Femme
+                <input type="radio" name="gender" value="0">
+              </label>
+              <label>Autre
+                <input type="radio" name="gender" value="2">
               </label>
             </div>
           </div>
@@ -54,13 +57,9 @@
         </div>
       </form>
     </section>
-
-    <input type="text" id="testWS">
-    <button id="testbutWS">test WebSocket</button>
-    <div id="output">test output</div>
-
+    
     <section id="login" class="register-container hidden">
-        <form id="loginForm" method="POST" name="form">
+      <form id="loginForm" method="POST" name="form" action="/login">
           <div class="register">
             <div class="register-item">
               <label>Username or Email</label>
@@ -72,83 +71,117 @@
             </div>
             <div class="register-item">
               <label>Remember me</label>
-              <input type="radio" name="remember">
+              <input type="checkbox" name="remember" value="remember">
             </div>
             <button type="submit">Log In</button>
             <p>Not yet registered? <a id="linkRegister">Register</a></p>
-        </form>
+          </div>
+      </form>
     </section>
-
+        
     {{else}}
-
+    
     <header>
-        <h1>Mon Header</h1>
+      <h1>Mon Header</h1>
     </header>
-
+    
+        
     <nav>
-        <button class="nav-btn">Catégorie A</button>
-        <button class="nav-btn">Catégorie B</button>
-        <button class="nav-btn">Catégorie C</button>
-        <button class="nav-btn">Catégorie D</button>
-        <button class="nav-btn chat-btn">Chat</button>
-        <div class="test-buttons">
-            <button>Test Bouton 1 (Header)</button>
-            <button>Test Bouton 2 (Sidebar)</button>
-            <button>Test Bouton 3 (Sujets / Post-Comment)</button>
-            <button>Test Bouton 4 (Auth + Forum/Membres)</button>
-        </div>
+      <button id="homeButton" class="nav-btn">Home</button>
+      <button id="newPostButton" class="nav-btn">New Post</button>
+      <button id="logoutButton" class="nav-btn">Log Out</button>
+      <button id="chatButton" class="nav-btn chat-btn">Chat</button>
     </nav>
 
-    <aside class="sidebar">
-        <h2>Liste des membres</h2>
-        <ul>
-            <li>Marie Curie</li>
-            <li>Dmitri Mendeleïev</li>
-            <li>Linus Pauling</li>
-            <li>Rosalind Franklin</li>
-            <li>Antoine Lavoisier</li>
-        </ul>
-    </aside>
+    <main>
+      <aside class="sidebar">
+          <h2>Liste des membres</h2>
+          <ul>
+              <li>Marie Curie</li>
+              <li>Dmitri Mendeleïev</li>
+              <li>Linus Pauling</li>
+              <li>Rosalind Franklin</li>
+              <li>Antoine Lavoisier</li>
+          </ul>
+      </aside>
 
-    <section id="index" class="index hidden">
-        <main>
-            <button class="grid-item item-large">Sujet 1</button>
-            <button class="grid-item">Sujet 2</button>
-            <button class="grid-item">Sujet 3</button>
-            <button class="grid-item">Sujet 4</button>
-            <button class="grid-item">Sujet 5</button>
-            <button class="grid-item item-vertical">Sujet 6</button>
-            <button class="grid-item">Sujet 7</button>
-            <button class="grid-item">Sujet 8</button>
-            <button class="grid-item item-horizontal">Sujet 9</button>
-            <button class="grid-item">Sujet 10</button>
-        </main>
-    </section>
-    
+      <section id="chat" class="chat hidden">
+        <input type="text" id="testWS">
+        <button id="testbutWS">test WebSocket</button>
+        <div id="output">test output</div>
+      </section>
 
-    <section id="createPost" class="createPost hidden">
+      <section id="index" class="index hidden">
+        <table>
+          <thead>
+            <tr>
+              <th class="title-column">Topics</th>
+              <th class="stats-column">Stats</th>
+            </tr>
+          </thead>
+          <tbody id="indexTable">
+            
+          </tbody>
+        </table>
+      </section>
+      
 
-    </section>
-
-    <section id="post" class="post hidden">
-        <div class="post">
-            <p>Post</p>
-        </div>
-        <div class="createPost">
-            <textarea name="createPost" id="bite"></textarea>
-        </div>
-        <div class="commentList">
-            <div class="comment">
-                <p>Comment</p>
+      <section id="newPost" class="newPost-container hidden">
+        <form id="newPostForm" method="POST" name="form" action="/newPost">
+          <div class="newPost">
+            <div class="newPost-item">
+              <label>Title</label>
+              <input type="text" name="title" minlength="4" required>
+              <textarea name="content" placeholder="Write your post here..." required></textarea>
             </div>
-        </div>
-    </section>
+            <div class="newPost-item">
+              <label>Categories</label>
+              <div class="categories-options">
+                <label>
+                  <input type="checkbox" name="cat1" value="1">
+                </label>
+                <label>
+                  <input type="checkbox" name="cat2" value="2">
+                </label>
+                <label>
+                  <input type="checkbox" name="cat3" value="3">
+                </label>
+                <label>
+                  <input type="checkbox" name="cat4" value="4">
+                </label>
+              </div>
+            </div>
+            <button type="submit">Post it</button>
+          </div>
+        </form>
+      </section>
+
+      <section id="post" class="post hidden">
+          <div class="post">
+              <p>Post</p>
+          </div>
+          <form id="newComForm" method="POST" name="form" action="/newCom">
+            <div class="newCom">
+              <div class="newCom-item">
+                <textarea name="content" placeholder="Write your post here..." required></textarea>
+              </div>
+                <button type="submit">Comment it</button>
+            </div>
+          </form>
+          <div class="commentList">
+              <div class="comment">
+                  <p>Comment</p>
+              </div>
+          </div>
+      </section>
+    </main>  
 
     {{end}}
 
+    
     <script type="module">
-        import { init } from '/script/script.js'
-        init()
+      import { init } from '/script/main.js'
+      init()
     </script>
 </body>
 </html>

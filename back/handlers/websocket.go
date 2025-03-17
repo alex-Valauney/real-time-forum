@@ -1,10 +1,12 @@
-package main
+package handlers
 
 import (
 	"encoding/json"
 	"fmt"
 	"net/http"
 	"reflect"
+	"rtf/back/methods"
+	"rtf/back/utilitary"
 
 	"github.com/gorilla/websocket"
 )
@@ -27,7 +29,7 @@ func WebsocketHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer conn.Close()
 
-	BDDConn := &BDD{}
+	BDDConn := &methods.BDD{}
 
 	// Handle messages
 	for {
@@ -53,7 +55,7 @@ func WebsocketHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("invalid method")
 			continue
 		}
-		result := f.Call([]reflect.Value{reflect.ValueOf(obj)})[0].Interface().(Response)
+		result := f.Call([]reflect.Value{reflect.ValueOf(obj)})[0].Interface().(methods.Response)
 
 		BDDConn.CloseConn()
 
@@ -61,7 +63,7 @@ func WebsocketHandler(w http.ResponseWriter, r *http.Request) {
 			if obj["remember"] == nil {
 				obj["remember"] = false
 			}
-			SessionGen(w, result.Result.(User), obj["remember"].(bool))
+			utilitary.SessionGen(w, result.Result.(methods.User), obj["remember"].(bool))
 		}
 
 		err = conn.WriteJSON(result)

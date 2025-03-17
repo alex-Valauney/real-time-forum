@@ -1,31 +1,30 @@
-package main
+package utilitary
 
 import (
-	"fmt"
 	"log"
 	"net/http"
+	"rtf/back/methods"
 	"time"
 
 	"github.com/gofrs/uuid"
 )
 
-var sessions = make(map[string]string)
+var Sessions = make(map[string]string)
 
 func TokenGen() (string, error) { // generate a token (which is an UUID)
 	token, err := uuid.NewV4()
 	if err != nil {
 		return "", err
 	}
-	return token.String(), nil // nil = 0 banane
+	return token.String(), nil
 }
 
-func SessionGen(w http.ResponseWriter, user User, rememberMe bool) { // generate a cookie and a session
+func SessionGen(w http.ResponseWriter, user methods.User, rememberMe bool) { // generate a cookie and a session
 	sessionToken, err := TokenGen() // see previous function
 	if err != nil {
 		log.Fatal(err)
 	}
-	sessions[sessionToken] = user.uuid
-	fmt.Println(sessions)
+	Sessions[sessionToken] = user.Uuid
 	cookie := &http.Cookie{
 		Name:     "session_token",
 		Value:    sessionToken,
@@ -36,9 +35,20 @@ func SessionGen(w http.ResponseWriter, user User, rememberMe bool) { // generate
 	if rememberMe { // if remember option chosen give more time to the cookie
 		cookie.Expires = time.Now().Add(72 * time.Hour)
 	}
-	fmt.Println(cookie.Expires)
 	http.SetCookie(w, cookie)
-	fmt.Fprintln(w, "Cookie set!")
+}
+
+func UuidFromCookie(w http.ResponseWriter, r *http.Request) string {
+	cookie, err := r.Cookie("session_token") // get uuid of connected user
+	if err != nil {
+		if err == http.ErrNoCookie {
+			http.Redirect(w, r, "/login", http.StatusSeeOther)
+			return ""
+		}
+		http.Error(w, "gathering cookie error", http.StatusBadRequest)
+		return ""
+	}
+	return Sessions[cookie.Value]
 }
 
 func LoggedInVerif(r *http.Request) bool { // verify the existence of a cookie
@@ -54,12 +64,12 @@ func DuplicateLog(loggedIn bool, w http.ResponseWriter, r *http.Request) { // ve
 	if loggedIn {
 		countToken := 0
 		cookie, _ := r.Cookie("session_token")
-		for token := range sessions {
+		for token := range Sessions {
 			if token != cookie.Value {
 				countToken++
 			}
 		}
-		if countToken == len(sessions) { // delete the first cookie existing
+		if countToken == len(Sessions) { // delete the first cookie existing
 			cookie.MaxAge = -1
 			http.SetCookie(w, cookie)
 			http.Redirect(w, r, "/", http.StatusSeeOther)
