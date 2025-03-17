@@ -1,5 +1,5 @@
 import { connWebSocket } from "./websocket.js"
-import { scrollPosts, refreshPosts } from "./post.js"
+import { scrollPosts, refreshPosts, throttlePost, handleScrollPost } from "./post.js"
 
 let currentLoad
 
@@ -9,6 +9,7 @@ export function init() {
     if (isLoggedIn) {
       onLoadPage('index')
       currentLoad = document.body.querySelector('section:not(.hidden)')
+      window.addEventListener("scroll", throttlePost(handleScrollPost, 200));
       scrollPosts()
       setInterval(refreshPosts, 10000)
       connWebSocket()

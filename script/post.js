@@ -23,9 +23,11 @@ export async function scrollPosts() {
 export async function refreshPosts() {
     let allRow = Array.from(document.querySelectorAll('tr')).filter(tr => !tr.getAttribute("id"))
     try {
-        const response = await fetch(`/transferPost?id=${postIdFromTr(allRow[0])}`);
+        const response = await fetch(`/refreshPosts?id=${postIdFromTr(allRow[0])}`, {
+            method: "GET"
+        })
         if (!response.ok) {
-            throw new Error("Erreur lors de la récupération des posts");
+            throw new Error("Erreur lors de la récupération des posts")
         }
         const posts = await response.json()
         addNewPosts(posts)
@@ -74,4 +76,26 @@ export function createPostElem(tabPost) {
     postLine.appendChild(postCell1)
     postLine.appendChild(postCell2)
     postLine.appendChild(postCell3)
+}
+
+
+// basic throttle to avoid lodash import
+export function throttlePost(func, wait) {
+    let timeout;
+    return function (...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+}
+
+// function handling down scroll, and start new batch fetch of older posts
+export function handleScrollPost() {
+    const scrollPosition = window.innerHeight + window.scrollY;
+    const pageHeight = document.body.offsetHeight;
+    if (scrollPosition >= pageHeight - 100 && !isLoading) {
+        isLoading = true;
+        scrollPosts().finally(() => {
+            isLoading = false;
+        });
+    }
 }
