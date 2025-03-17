@@ -89,7 +89,7 @@ func GetNewPosts(w http.ResponseWriter, r *http.Request) {
 	BDDConn.CloseConn()
 	if err != nil {
 		fmt.Println(err)
-		json.NewEncoder(w).Encode(methods.Response{})
+		json.NewEncoder(w).Encode([]methods.Post{})
 		return
 	}
 
@@ -100,5 +100,5 @@ func GetNewPosts(w http.ResponseWriter, r *http.Request) {
 		tabResult = append(tabResult, post)
 	}
 
-	json.NewEncoder(w).Encode(methods.Response{Result: tabResult})
+	json.NewEncoder(w).Encode(tabResult)
 }
