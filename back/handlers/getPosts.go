@@ -39,7 +39,7 @@ func GetNextPostsHandler(w http.ResponseWriter, r *http.Request) {
 		result, err = BDDConn.Conn.Query(stmt, lastIdInt)
 		if err != nil {
 			fmt.Println(err)
-			json.NewEncoder(w).Encode(methods.Response{})
+			json.NewEncoder(w).Encode([]methods.Post{})
 			BDDConn.CloseConn()
 			return
 		}
@@ -47,7 +47,7 @@ func GetNextPostsHandler(w http.ResponseWriter, r *http.Request) {
 		result, err = BDDConn.Conn.Query(stmt)
 		if err != nil {
 			fmt.Println(err)
-			json.NewEncoder(w).Encode(methods.Response{})
+			json.NewEncoder(w).Encode([]methods.Post{})
 			BDDConn.CloseConn()
 			return
 		}
@@ -61,7 +61,7 @@ func GetNextPostsHandler(w http.ResponseWriter, r *http.Request) {
 		tabResult = append(tabResult, post)
 	}
 
-	json.NewEncoder(w).Encode(methods.Response{Result: tabResult})
+	json.NewEncoder(w).Encode(tabResult)
 
 }
 
