@@ -11,11 +11,13 @@ type Response struct {
 }
 
 type Post struct {
-	Id      int
-	Title   string
-	Content string
-	User_id int
-	Date    string
+	Id            int
+	Title         string
+	Content       string
+	User_id       int
+	User_nickname string
+	Date          string
+	Comment_count int
 }
 
 type User struct {
