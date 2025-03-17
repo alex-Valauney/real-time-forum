@@ -2,10 +2,10 @@ export async function scrollPosts() {
     let allRow = Array.from(document.querySelectorAll('tr')).filter(tr => !tr.getAttribute("id"))
     try {
         let response 
-        if (1) {
+        if (allRow.length === 0) {
             response = await fetch(`/nextPosts`)
         } else {
-            response = await fetch(`/nextPosts?id=${postIdFromTr(allRow[-1])}`, {
+            response = await fetch(`/nextPosts?id=${postIdFromTr(allRow.at(-1))}`, {
                 method: "GET"
             })
         }
@@ -56,7 +56,7 @@ function addScrollPosts(tabPost) {
     })
 }
 
-export function createPostElem(tabPost) {
+export function createPostElem(post) {
     const postLine = document.createElement("tr")
     const postCell1 = document.createElement("td")
     const postCell2 = document.createElement("td")
@@ -76,8 +76,10 @@ export function createPostElem(tabPost) {
     postLine.appendChild(postCell1)
     postLine.appendChild(postCell2)
     postLine.appendChild(postCell3)
+    return postLine
 }
 
+let isLoading = false
 
 // basic throttle to avoid lodash import
 export function throttlePost(func, wait) {
