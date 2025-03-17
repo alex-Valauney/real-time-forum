@@ -56,7 +56,7 @@ function addScrollPosts(tabPost) {
     })
 }
 
-export function createPostElem(post) {
+function createPostElem(post) {
     const postLine = document.createElement("tr")
     const postCell1 = document.createElement("td")
     const postCell2 = document.createElement("td")
@@ -65,11 +65,11 @@ export function createPostElem(post) {
     const postAuthor = document.createElement("p")
     const postNbCom = document.createElement("p")
     postCell1.setAttribute("id", `post-${post.Id}`)
-    postCell2.setAttribute("id", `postAuth-${post.Id}`)
-    postCell3.setAttribute("id", `postStats-${post.Id}`)
+    postCell2.setAttribute("id", `postAuth-${post.User_nickname}`)
+    postCell3.setAttribute("id", `postStats-${post.Comment_count}`)
     postTitle.innerText = `${post.Title}`
-    postAuthor.innerText = `${post.Author}` // Mettre le nom de l'auteur
-    postNbCom.textContent = `${post.Comment} Comments` //Mettre le nb de comment au lieu de l'id
+    postAuthor.innerText = `${post.Author}`
+    postNbCom.textContent = `${post.Comment} Comments`
     postCell1.appendChild(postTitle)
     postCell2.appendChild(postAuthor)
     postCell3.appendChild(postNbCom)
