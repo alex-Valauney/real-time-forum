@@ -29,7 +29,7 @@ func GetNextPostsHandler(w http.ResponseWriter, r *http.Request) {
 	if lastIdInt != 0 {
 		stmt += "WHERE id < ? "
 	}
-	stmt += "LIMIT 10 ORDER BY id DESC;"
+	stmt += "ORDER BY id DESC LIMIT 10;"
 
 	var result *sql.Rows
 	var err error
