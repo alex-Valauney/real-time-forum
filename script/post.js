@@ -46,6 +46,7 @@ function addNewPosts(tabPost) {
         let postLine = createPostElem(post)
         indexSection.prepend(postLine)
     })
+    attachPostClickEvents()
 }
 
 function addScrollPosts(tabPost) {
@@ -54,6 +55,7 @@ function addScrollPosts(tabPost) {
         let postLine = createPostElem(post)
         indexSection.appendChild(postLine)
     })
+    attachPostClickEvents()
 }
 
 function createPostElem(post) {
@@ -61,13 +63,15 @@ function createPostElem(post) {
     const postCell1 = document.createElement("td")
     const postCell2 = document.createElement("td")
     const postCell3 = document.createElement("td")
-    const postTitle = document.createElement("a")   
+    const postTitle = document.createElement("a")  
+    const postDate = document.createElement("p") 
     const postAuthor = document.createElement("p")
     const postNbCom = document.createElement("p")
     postCell1.setAttribute("id", `post-${post.Id}`)
     postCell2.setAttribute("id", `postAuth-${post.User_nickname}`)
     postCell3.setAttribute("id", `postStats-${post.Comment_count}`)
     postTitle.innerText = `${post.Title}`
+    postDate.innerText = `${post.Date}`
     postAuthor.innerText = `${post.Author}`
     postNbCom.textContent = `${post.Comment} Comments`
     postCell1.appendChild(postTitle)

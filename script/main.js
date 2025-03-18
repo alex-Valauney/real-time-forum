@@ -50,8 +50,6 @@ function onClicksFunctions() {
     }
   }
   if (document.getElementById('linkRegister')) {
-  }
-  if (document.getElementById('linkRegister')) {
     document.getElementById('linkRegister').onclick = function (e) { 
       onLoadPage('register', currentLoad.id)
       currentLoad = document.body.querySelector('section:not(.hidden)')
@@ -89,6 +87,17 @@ function onClicksFunctions() {
       }
     }
   }
+}
+export function attachPostClickEvents() {
+  document.querySelectorAll("#indexTable a").forEach(link => {
+      link.onclick = function(e) {
+          e.preventDefault()
+          const postId = this.dataset.postId
+          onLoadPage('post', currentLoad.id)
+          currentLoad = document.body.querySelector('section:not(.hidden)')
+          console.log("Post ID:", postId) // Récupération de l'ID du post
+      }
+  })
 }
 
 //Switching classes on sections to hide/display what we want
