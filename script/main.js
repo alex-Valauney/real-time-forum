@@ -89,7 +89,8 @@ function onClicksFunctions() {
   }
 }
 export function attachPostClickEvents() {
-  document.querySelectorAll("#indexTable a").forEach(link => {
+  const table = document.getElementById("indexTable")
+  Array.from(table.querySelectorAll("a")).forEach(link => {
       link.onclick = function(e) {
         e.preventDefault()
         const postId = this.dataset.postId

@@ -1,3 +1,6 @@
+import { attachPostClickEvents } from "./main.js";
+
+
 export async function scrollPosts() {
     let allRow = Array.from(document.querySelectorAll('tr')).filter(tr => !tr.getAttribute("id"))
     try {
