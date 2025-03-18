@@ -74,6 +74,7 @@ function createPostElem(post) {
     postCell2.setAttribute("id", `postAuth-${post.User_nickname}`)
     postCell3.setAttribute("id", `postStats-${post.Comment_count}`)
     postTitle.innerText = `${post.Title}`
+    postTitle.setAttribute("postId", `post-${post.Id}`)
     postDate.innerText = `${post.Date}`
     postAuthor.innerText = `${post.Author}`
     postNbCom.textContent = `${post.Comment} Comments`

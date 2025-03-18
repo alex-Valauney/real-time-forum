@@ -1,12 +1,22 @@
 import { connWebSocket } from "./websocket.js"
 import { scrollPosts, refreshPosts, throttlePost, handleScrollPost, buildPostPage } from "./post.js"
 
-let currentLoad
+let currentLoad = undefined
+let currentPost = undefined
 
 export function init() {
   window.onload = async function () {//Launched when window is loading
     let isLoggedIn = await checkSession();
     if (isLoggedIn) {
+      if (currentLoad === undefined) {
+        onLoadPage('index')
+        currentLoad = document.body.querySelector('section:not(.hidden)')
+        console.log(currentLoad, "from index")
+      } else {
+        onLoadPage(currentLoad.id, undefined, currentPost)
+        currentLoad = document.body.querySelector('section:not(.hidden)')
+        console.log(currentLoad, "from current")
+      }
       onLoadPage('index')
       currentLoad = document.body.querySelector('section:not(.hidden)')
       window.addEventListener("scroll", throttlePost(handleScrollPost, 200));
@@ -14,8 +24,13 @@ export function init() {
       setInterval(refreshPosts, 10000)
       connWebSocket()
     } else {
-      onLoadPage('login') //If unlogged, display login section, by default
-      currentLoad = document.body.querySelector('section:not(.hidden)')
+      if (currentLoad === undefined) {
+        onLoadPage('login') //If unlogged, display login section, by default
+        currentLoad = document.body.querySelector('section:not(.hidden)')
+      } else {
+        onLoadPage(currentLoad.id)
+        currentLoad = document.body.querySelector('section:not(.hidden)')
+      }
     }
   }
   onClicksFunctions()
@@ -56,21 +71,27 @@ function onClicksFunctions() {
     }
   }
   if (document.getElementById('homeButton')) {
-    document.getElementById('homeButton').onclick = function (e) { 
-      onLoadPage('index', currentLoad.id)
-      currentLoad = document.body.querySelector('section:not(.hidden)')
+    document.getElementById('homeButton').onclick = function (e) {
+      if (currentLoad.id !== 'index') {
+        onLoadPage('index', currentLoad.id)
+        currentLoad = document.body.querySelector('section:not(.hidden)')
+      }
     }
   }
   if (document.getElementById('newPostButton')) {
     document.getElementById('newPostButton').onclick = function (e) { 
-      onLoadPage('newPost', currentLoad.id)
-      currentLoad = document.body.querySelector('section:not(.hidden)')
+      if (currentLoad.id !== 'newPost') {
+        onLoadPage('newPost', currentLoad.id)
+        currentLoad = document.body.querySelector('section:not(.hidden)')
+      }
     }
   }
   if (document.getElementById('postButton')) {
-    document.getElementById('postButton').onclick = function (e) { 
-      onLoadPage('post', currentLoad.id)
-      currentLoad = document.body.querySelector('section:not(.hidden)')
+    document.getElementById('postButton').onclick = function (e) {
+      if (currentLoad.id !== 'post') {
+        onLoadPage('post', currentLoad.id)
+        currentLoad = document.body.querySelector('section:not(.hidden)')
+      }
     }
   }
   if (document.getElementById('logoutButton')) {
@@ -93,18 +114,22 @@ export function attachPostClickEvents() {
   Array.from(table.querySelectorAll("a")).forEach(link => {
       link.onclick = function(e) {
         e.preventDefault()
-        const postId = this.dataset.postId
+        const postId = parseInt(link.getAttribute("postId").split('-')[1])
         onLoadPage('post', currentLoad.id)
         currentLoad = document.body.querySelector('section:not(.hidden)')
+        currentPost = postId
         buildPostPage(postId)
       }
   })
 }
 
 //Switching classes on sections to hide/display what we want
-function onLoadPage(newSection, oldSection) {
+function onLoadPage(newSection, oldSection, postId = undefined) {
   if (newSection) {
     document.getElementById(newSection).classList.remove('hidden')
+    if (postId) {
+      buildPostPage(postId)
+    }
   }
   if (oldSection) {
     document.getElementById(oldSection).classList.add('hidden')
