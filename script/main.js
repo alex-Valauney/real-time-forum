@@ -14,7 +14,7 @@ export function init() {
       setInterval(refreshPosts, 10000)
       connWebSocket()
     } else {
-      onLoadPage('register') //If unlogged, display register section, by default
+      onLoadPage('login') //If unlogged, display login section, by default
       currentLoad = document.body.querySelector('section:not(.hidden)')
     }
   }
