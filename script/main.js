@@ -1,23 +1,22 @@
 import { connWebSocket } from "./websocket.js"
 import { scrollPosts, refreshPosts, throttlePost, handleScrollPost, buildPostPage } from "./post.js"
 
-let currentLoad = undefined
-let currentPost = undefined
+let currentLoadId = sessionStorage.getItem("currentLoadId") || undefined
+let currentPost = sessionStorage.getItem("currentPost") ? parseInt(sessionStorage.getItem("currentPost")) : undefined
+let currentLoad = currentLoadId ? document.getElementById(currentLoadId) : undefined
 
 export function init() {
-  
-  console.log(currentLoad, currentPost)
+
   window.onload = async function () {//Launched when window is loading
-    let isLoggedIn = await checkSession();
+    let isLoggedIn = await checkSession()
     if (isLoggedIn) {
-      if (currentLoad === undefined) {
+      if (!currentLoad || !document.getElementById(currentLoadId)) {
+        currentLoadId = "index";  
         onLoadPage('index')
         currentLoad = document.body.querySelector('section:not(.hidden)')
-        console.log(currentLoad, "from index")
       } else {
         onLoadPage(currentLoad.id, undefined, currentPost)
         currentLoad = document.body.querySelector('section:not(.hidden)')
-        console.log(currentLoad, "from current")
       }
       window.addEventListener("scroll", throttlePost(handleScrollPost, 200));
       scrollPosts()
@@ -32,6 +31,7 @@ export function init() {
         currentLoad = document.body.querySelector('section:not(.hidden)')
       }
     }
+    saveState()
   }
   onClicksFunctions()
 }
@@ -62,12 +62,14 @@ function onClicksFunctions() {
     document.getElementById('linkLogin').onclick = function (e) {
       onLoadPage('login', currentLoad.id)
       currentLoad = document.body.querySelector('section:not(.hidden)')
+      saveState()
     }
   }
   if (document.getElementById('linkRegister')) {
     document.getElementById('linkRegister').onclick = function (e) { 
       onLoadPage('register', currentLoad.id)
       currentLoad = document.body.querySelector('section:not(.hidden)')
+      saveState()
     }
   }
   if (document.getElementById('homeButton')) {
@@ -75,6 +77,7 @@ function onClicksFunctions() {
       if (currentLoad.id !== 'index') {
         onLoadPage('index', currentLoad.id)
         currentLoad = document.body.querySelector('section:not(.hidden)')
+        saveState()
       }
     }
   }
@@ -83,6 +86,7 @@ function onClicksFunctions() {
       if (currentLoad.id !== 'newPost') {
         onLoadPage('newPost', currentLoad.id)
         currentLoad = document.body.querySelector('section:not(.hidden)')
+        saveState()
       }
     }
   }
@@ -91,6 +95,7 @@ function onClicksFunctions() {
       if (currentLoad.id !== 'post') {
         onLoadPage('post', currentLoad.id)
         currentLoad = document.body.querySelector('section:not(.hidden)')
+        saveState()
       }
     }
   }
@@ -118,7 +123,7 @@ export function attachPostClickEvents() {
         onLoadPage('post', currentLoad.id)
         currentLoad = document.body.querySelector('section:not(.hidden)')
         currentPost = postId
-        console.log(currentLoad, currentPost)
+        saveState()
         buildPostPage(postId)
       }
   })
@@ -135,6 +140,11 @@ function onLoadPage(newSection, oldSection, postId = undefined) {
   if (oldSection) {
     document.getElementById(oldSection).classList.add('hidden')
   }
+}
+
+function saveState() {
+  sessionStorage.setItem("currentLoadId", currentLoad ? currentLoad.id : "");
+  sessionStorage.setItem("currentPost", currentPost !== undefined ? currentPost.toString() : "");
 }
 
 

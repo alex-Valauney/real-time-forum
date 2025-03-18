@@ -41,7 +41,7 @@ func NewComHandler(w http.ResponseWriter, r *http.Request) {
 	comMap["post_id"] = 1 //RECUPERER L'ID DU POST
 
 	BDDConn.OpenConn()
-	BDDConn.InsertPost(comMap)
+	BDDConn.InsertComment(comMap)
 	BDDConn.CloseConn()
 
 	http.Redirect(w, r, "/", http.StatusSeeOther)
