@@ -6,13 +6,12 @@
     <title>RTF</title>
     <link rel="stylesheet" href="static/style.css">
     <link rel="stylesheet" href="/static/index.css">
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.jade.min.css"> -->
 </head>
 <body>
     {{if not .LoggedIn}}
 
     <section id="register" class="register-container hidden">
-      <form id="registerForm" method="POST" name="form" action="/register">
+      <form id="registerForm" method="POST" action="/register">
         <div class="register">
           <div class="register-item">
             <label>Username</label>
@@ -33,15 +32,9 @@
           <div class="register-item">
             <label>Gender</label>
             <div class="gender-options">
-              <label>Homme
-                <input type="radio" name="gender" value="1">
-              </label>
-              <label>Femme
-                <input type="radio" name="gender" value="0">
-              </label>
-              <label>Autre
-                <input type="radio" name="gender" value="2">
-              </label>
+              <label>Homme <input type="radio" name="gender" value="1"></label>
+              <label>Femme <input type="radio" name="gender" value="0"></label>
+              <label>Autre <input type="radio" name="gender" value="2"></label>
             </div>
           </div>
           <div class="register-item">
@@ -50,20 +43,20 @@
           </div>
           <div class="register-item">
             <label>Password</label>
-            <input type="password" name="password" placeholder="At least 10 characters; use numbers, caps and special chars" required>
+            <input type="password" name="password" placeholder="At least 10 characters" required>
           </div>
           <button type="submit">Register</button>
-          <p>Already registered? Just <a id="linkLogin">Log In</a></p>
+          <p>Already registered? <a id="linkLogin">Log In</a></p>
         </div>
       </form>
     </section>
     
     <section id="login" class="register-container hidden">
-      <form id="loginForm" method="POST" name="form" action="/login">
+      <form id="loginForm" method="POST" action="/login">
           <div class="register">
             <div class="register-item">
               <label>Username or Email</label>
-              <input type="text" name="name" placeholder="Ex : Xorlor54 or Azerty@uipo.com" required>
+              <input type="text" name="name" placeholder="Ex : Xorlor54 or email" required>
             </div>
             <div class="register-item">
               <label>Password</label>
@@ -84,7 +77,6 @@
     <header>
       <h1>Mon Header</h1>
     </header>
-    
         
     <nav>
       <button id="homeButton" class="nav-btn">Home</button>
@@ -124,31 +116,13 @@
         </table>
       </section>
       
-
       <section id="newPost" class="newPost-container hidden">
-        <form id="newPostForm" method="POST" name="form" action="/newPost">
+        <form id="newPostForm" method="POST" action="/newPost">
           <div class="newPost">
             <div class="newPost-item">
               <label>Title</label>
               <input type="text" name="title" minlength="4" required>
               <textarea name="content" placeholder="Write your post here..." required></textarea>
-            </div>
-            <div class="newPost-item">
-              <label>Categories</label>
-              <div class="categories-options">
-                <label>
-                  <input type="checkbox" name="cat1" value="1">
-                </label>
-                <label>
-                  <input type="checkbox" name="cat2" value="2">
-                </label>
-                <label>
-                  <input type="checkbox" name="cat3" value="3">
-                </label>
-                <label>
-                  <input type="checkbox" name="cat4" value="4">
-                </label>
-              </div>
             </div>
             <button type="submit">Post it</button>
           </div>
@@ -156,32 +130,41 @@
       </section>
 
       <section id="post" class="post hidden">
-        <!--  DJIMI LE POST C'EST UN ARTICLE -->
-          <div class="post">
-              <p>Post</p>
-          </div>
-        <!-- ------------------------------- -->
-          <form id="newComForm" method="POST" name="form" action="/newCom">
+        <article class="post">
+            <header>
+                <h2>Post Title</h2>
+            </header>
+            <p>Post content goes here...</p>
+            <footer>
+                <p>Posted by <strong>Author</strong> | <time datetime="2024-03-18">March 18, 2024</time></p>
+            </footer>
+        </article>
+
+        <form id="newComForm" method="POST" action="/newCom">
             <div class="newCom">
-              <div class="newCom-item">
-                <textarea name="content" placeholder="Write your post here..." required></textarea>
-              </div>
+                <div class="newCom-item">
+                    <textarea name="content" placeholder="Write your comment here..." required></textarea>
+                </div>
                 <button type="submit">Comment it</button>
             </div>
-          </form>
-          <div id="commentList" class="commentList">
-              <!--  DJIMI LES COM C'EST UN ARTICLE -->
-              <div class="comment">
-                  <p>Comment</p>
-              </div>
-              <!-- ------------------------------- -->
-          </div>
+        </form>
+
+        <div id="commentList" class="commentList">
+            <article class="comment">
+                <header>
+                    <h3>Comment by User</h3>
+                </header>
+                <p>Comment content goes here...</p>
+                <footer>
+                    <time datetime="2024-03-18">March 18, 2024</time>
+                </footer>
+            </article>
+        </div>
       </section>
     </main>  
 
     {{end}}
 
-    
     <script type="module">
       import { init } from '/script/main.js'
       init()
