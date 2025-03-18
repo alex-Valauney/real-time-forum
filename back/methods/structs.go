@@ -32,11 +32,12 @@ type User struct {
 }
 
 type Comment struct {
-	Id      int
-	Content string
-	User_id int
-	Date    string
-	Post_id int
+	Id            int
+	Content       string
+	User_id       int
+	User_nickname string
+	Date          string
+	Post_id       int
 }
 
 type PrivateMessage struct {
