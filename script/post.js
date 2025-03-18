@@ -105,3 +105,8 @@ export function handleScrollPost() {
         });
     }
 }
+
+export function buildPostPage(postId) {
+    const postSection = document.getElementById("post")
+    //DJIMI ARTICLE
+}

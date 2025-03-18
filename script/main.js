@@ -1,5 +1,5 @@
 import { connWebSocket } from "./websocket.js"
-import { scrollPosts, refreshPosts, throttlePost, handleScrollPost } from "./post.js"
+import { scrollPosts, refreshPosts, throttlePost, handleScrollPost, buildPostPage } from "./post.js"
 
 let currentLoad
 
@@ -91,11 +91,11 @@ function onClicksFunctions() {
 export function attachPostClickEvents() {
   document.querySelectorAll("#indexTable a").forEach(link => {
       link.onclick = function(e) {
-          e.preventDefault()
-          const postId = this.dataset.postId
-          onLoadPage('post', currentLoad.id)
-          currentLoad = document.body.querySelector('section:not(.hidden)')
-          console.log("Post ID:", postId) // Récupération de l'ID du post
+        e.preventDefault()
+        const postId = this.dataset.postId
+        onLoadPage('post', currentLoad.id)
+        currentLoad = document.body.querySelector('section:not(.hidden)')
+        buildPostPage(postId)
       }
   })
 }
