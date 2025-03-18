@@ -5,6 +5,8 @@ let currentLoad = undefined
 let currentPost = undefined
 
 export function init() {
+  
+  console.log(currentLoad, currentPost)
   window.onload = async function () {//Launched when window is loading
     let isLoggedIn = await checkSession();
     if (isLoggedIn) {
@@ -17,8 +19,6 @@ export function init() {
         currentLoad = document.body.querySelector('section:not(.hidden)')
         console.log(currentLoad, "from current")
       }
-      onLoadPage('index')
-      currentLoad = document.body.querySelector('section:not(.hidden)')
       window.addEventListener("scroll", throttlePost(handleScrollPost, 200));
       scrollPosts()
       setInterval(refreshPosts, 10000)
@@ -118,6 +118,7 @@ export function attachPostClickEvents() {
         onLoadPage('post', currentLoad.id)
         currentLoad = document.body.querySelector('section:not(.hidden)')
         currentPost = postId
+        console.log(currentLoad, currentPost)
         buildPostPage(postId)
       }
   })
