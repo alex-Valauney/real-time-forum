@@ -52,23 +52,17 @@ func GetNextPostsHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
+	BDDConn.CloseConn()
 
 	tabResult := []methods.Post{}
 	for result.Next() {
 		post := methods.Post{}
 		result.Scan(&post.Id, &post.Title, &post.Content, &post.Date, &post.User_id)
 
-		stmt2 := "SELECT nickname FROM users WHERE id = ?;"
-		result2 := BDDConn.Conn.QueryRow(stmt2, post.User_id)
-		result2.Scan(&post.User_nickname)
-
-		stmt3 := "SELECT COUNT(*) FROM comments WHERE post_id = ?;"
-		result3 := BDDConn.Conn.QueryRow(stmt3, post.Id)
-		result3.Scan(&post.Comment_count)
+		post = CompletePost(post)
 
 		tabResult = append(tabResult, post)
 	}
-	BDDConn.CloseConn()
 
 	json.NewEncoder(w).Encode(tabResult)
 
@@ -100,23 +94,33 @@ func GetNewPosts(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode([]methods.Post{})
 		return
 	}
+	BDDConn.CloseConn()
 
 	tabResult := []methods.Post{}
 	for result.Next() {
 		post := methods.Post{}
 		result.Scan(&post.Id, &post.Title, &post.Content, &post.Date, &post.User_id)
 
-		stmt2 := "SELECT nickname FROM users WHERE id = ?;"
-		result2 := BDDConn.Conn.QueryRow(stmt2, post.User_id)
-		result2.Scan(&post.User_nickname)
-
-		stmt3 := "SELECT COUNT(*) FROM comments WHERE post_id = ?;"
-		result3 := BDDConn.Conn.QueryRow(stmt3, post.Id)
-		result3.Scan(&post.Comment_count)
+		post = CompletePost(post)
 
 		tabResult = append(tabResult, post)
 	}
-	BDDConn.CloseConn()
 
 	json.NewEncoder(w).Encode(tabResult)
+}
+
+func CompletePost(post methods.Post) methods.Post {
+	BDDConn := &methods.BDD{}
+
+	BDDConn.OpenConn()
+	stmt1 := "SELECT nickname FROM users WHERE id = ?;"
+	result1 := BDDConn.Conn.QueryRow(stmt1, post.User_id)
+	result1.Scan(&post.User_nickname)
+
+	stmt2 := "SELECT COUNT(*) FROM comments WHERE post_id = ?;"
+	result2 := BDDConn.Conn.QueryRow(stmt2, post.Id)
+	result2.Scan(&post.Comment_count)
+	BDDConn.CloseConn()
+
+	return post
 }
