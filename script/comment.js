@@ -1,9 +1,11 @@
 export async function getComs() {
     let allCom = Array.from(document.querySelectorAll('#commentList li'));
     try {
-        let response;
+        let response
         if (allCom.length === 0) {
-            response = await fetch(`/nextComs`);
+            response = await fetch(`/nextComs?idPost=${1}`, {
+                method: "GET"
+            })
         } else {
             response = await fetch(`/nextComs?idCom=${allCom.at(-1).id}&idPost=${1}`, {
                 method: "GET"

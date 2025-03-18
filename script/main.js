@@ -1,5 +1,5 @@
 import { connWebSocket } from "./websocket.js"
-import { scrollPosts, refreshPosts, throttlePost, handleScrollPost } from "./post.js"
+import { scrollPosts, refreshPosts, throttlePost, handleScrollPost, buildPostPage } from "./post.js"
 
 let currentLoad
 
@@ -14,7 +14,7 @@ export function init() {
       setInterval(refreshPosts, 10000)
       connWebSocket()
     } else {
-      onLoadPage('register') //If unlogged, display register section, by default
+      onLoadPage('login') //If unlogged, display login section, by default
       currentLoad = document.body.querySelector('section:not(.hidden)')
     }
   }
@@ -48,8 +48,6 @@ function onClicksFunctions() {
       onLoadPage('login', currentLoad.id)
       currentLoad = document.body.querySelector('section:not(.hidden)')
     }
-  }
-  if (document.getElementById('linkRegister')) {
   }
   if (document.getElementById('linkRegister')) {
     document.getElementById('linkRegister').onclick = function (e) { 
@@ -89,6 +87,17 @@ function onClicksFunctions() {
       }
     }
   }
+}
+export function attachPostClickEvents() {
+  document.querySelectorAll("#indexTable a").forEach(link => {
+      link.onclick = function(e) {
+        e.preventDefault()
+        const postId = this.dataset.postId
+        onLoadPage('post', currentLoad.id)
+        currentLoad = document.body.querySelector('section:not(.hidden)')
+        buildPostPage(postId)
+      }
+  })
 }
 
 //Switching classes on sections to hide/display what we want

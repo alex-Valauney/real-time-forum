@@ -30,13 +30,17 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 
 	utilitary.ErrDiffNil(err, w, r, http.StatusBadRequest, "Invalid credentials") // return to invalid credentials if error
 
-	for token := range utilitary.Sessions { // delete cookie if already connected
-		if utilitary.Sessions[token] == user.Result.(methods.User).Uuid {
-			delete(utilitary.Sessions, token)
-			break
+	emptyUser := methods.User{}
+	if user.Result != emptyUser {
+		for token := range utilitary.Sessions { // delete cookie if already connected
+			if utilitary.Sessions[token] == user.Result.(methods.User).Uuid {
+				delete(utilitary.Sessions, token)
+				break
+			}
 		}
-	}
-	utilitary.SessionGen(w, user.Result.(methods.User), rememberMe) // recreate cookie for the session
+		utilitary.SessionGen(w, user.Result.(methods.User), rememberMe) // recreate cookie for the session
 
+	}
 	http.Redirect(w, r, "/", http.StatusSeeOther)
+
 }
