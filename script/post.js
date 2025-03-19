@@ -1,4 +1,5 @@
-import { attachPostClickEvents } from "./main.js";
+import { getComs } from "./comment.js"
+import { attachPostClickEvents } from "./main.js"
 
 
 export async function scrollPosts() {
@@ -17,7 +18,6 @@ export async function scrollPosts() {
     }
     const posts = await response.json()
     addScrollPosts(posts)
-    
     } catch (error) {
         console.error("Erreur :", error);
     }
@@ -76,8 +76,8 @@ function createPostElem(post) {
     postTitle.innerText = `${post.Title}`
     postTitle.setAttribute("postId", `post-${post.Id}`)
     postDate.innerText = `${post.Date}`
-    postAuthor.innerText = `${post.Author}`
-    postNbCom.textContent = `${post.Comment} Comments`
+    postAuthor.innerText = `${post.User_nickname}`
+    postNbCom.textContent = `${post.Comment_count} Comments`
     postCell1.appendChild(postTitle)
     postCell2.appendChild(postAuthor)
     postCell3.appendChild(postNbCom)
@@ -112,7 +112,9 @@ export function handleScrollPost() {
 
 async function getOnePost(id) {
     try {
-        let response = await fetch(`/getPost?id=${id}`)
+        const response = await fetch(`/getPost?id=${id}`, {
+            method: "GET"
+        })
         if (!response.ok) {
             throw new Error("Erreur lors de la récupération des posts");
         }
@@ -123,8 +125,9 @@ async function getOnePost(id) {
     }
 }
 
-export function buildPostPage(postId) {
-    const data = getOnePost(postId)
+export async  function buildPostPage(postId) {
+    const data = await getOnePost(postId)
+    
     const postSection = document.getElementById("post")
 
     const article = document.createElement("article")
@@ -160,4 +163,5 @@ export function buildPostPage(postId) {
 
     const form = document.getElementById("newComForm")
     form.setAttribute("action", `/newCom?id=${postId}`)
+    getComs(postId)
 }
