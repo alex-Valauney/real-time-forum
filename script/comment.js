@@ -35,12 +35,26 @@ function createComElem(com) {
     li.setAttribute("id", `com-${com.Id}`);
 
     const article = document.createElement("article");
-    article.innerHTML = `
-        <h3>${com.author || "Auteur inconnu"}</h3>
-        <p>${com.content || "Contenu manquant"}</p>
-        <time datetime="${com.date || ''}">${com.date || ''}</time>
-    `;
+
+    // Créer et configurer l'élément h3 pour l'auteur
+    const h3 = document.createElement("h3");
+    h3.textContent = com.author || "Auteur inconnu";
+
+    // Créer et configurer l'élément p pour le contenu
+    const p = document.createElement("p");
+    p.textContent = com.content || "Contenu manquant";
+
+    // Créer et configurer l'élément time pour la date
+    const time = document.createElement("time");
+    time.setAttribute("datetime", com.date || '');
+    time.textContent = com.date || '';
+
+    // Assembler les éléments
+    article.appendChild(h3);
+    article.appendChild(p);
+    article.appendChild(time);
     li.appendChild(article);
 
     return li;
 }
+
