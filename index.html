@@ -130,16 +130,6 @@
       </section>
 
       <section id="post" class="post hidden">
-        <article class="post">
-            <header>
-                <h2>Post Title</h2>
-            </header>
-            <p>Post content goes here...</p>
-            <footer>
-                <p>Posted by <strong>Author</strong> | <time datetime="2024-03-18">March 18, 2024</time></p>
-            </footer>
-        </article>
-
         <form id="newComForm" method="POST" action="/newCom">
             <div class="newCom">
                 <div class="newCom-item">
@@ -149,16 +139,8 @@
             </div>
         </form>
 
-        <div id="commentList" class="commentList">
-            <article class="comment">
-                <header>
-                    <h3>Comment by User</h3>
-                </header>
-                <p>Comment content goes here...</p>
-                <footer>
-                    <time datetime="2024-03-18">March 18, 2024</time>
-                </footer>
-            </article>
+        <div class="commentList">
+          <ol id="commentList"></ol>
         </div>
       </section>
     </main>  
