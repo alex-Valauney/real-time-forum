@@ -11,19 +11,20 @@ export function init() {
     let isLoggedIn = await checkSession()
     if (isLoggedIn) {
       if (!currentLoad || !document.getElementById(currentLoadId)) {
-        currentLoadId = "index";  
+        currentLoadId = "index"
         onLoadPage('index')
         currentLoad = document.body.querySelector('section:not(.hidden)')
       } else {
         onLoadPage(currentLoad.id, undefined, currentPost)
         currentLoad = document.body.querySelector('section:not(.hidden)')
       }
-      window.addEventListener("scroll", throttlePost(handleScrollPost, 200));
+      window.addEventListener("scroll", throttlePost(handleScrollPost, 200))
       scrollPosts()
       setInterval(refreshPosts, 10000)
       connWebSocket()
     } else {
-      if (currentLoad === undefined) {
+      if (!currentLoad || !document.getElementById(currentLoadId)) {
+        currentLoad = "login"
         onLoadPage('login') //If unlogged, display login section, by default
         currentLoad = document.body.querySelector('section:not(.hidden)')
       } else {
@@ -139,6 +140,12 @@ function onLoadPage(newSection, oldSection, postId = undefined) {
   }
   if (oldSection) {
     document.getElementById(oldSection).classList.add('hidden')
+    if (oldSection === "post") {
+      const postArticle = document.getElementById("postArticle")
+      postArticle.remove()
+      const comList = document.getElementById("commentList")
+      comList.replaceChildren()
+    }
   }
 }
 

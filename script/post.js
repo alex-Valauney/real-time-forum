@@ -110,7 +110,54 @@ export function handleScrollPost() {
     }
 }
 
+async function getOnePost(id) {
+    try {
+        let response = await fetch(`/oui?id=${id}`)
+        if (!response.ok) {
+            throw new Error("Erreur lors de la récupération des posts");
+        }
+        const postData = await response.json()
+        return postData
+    } catch (error) {
+        console.error("Erreur :", error);
+    }
+}
+
 export function buildPostPage(postId) {
+    const data = getOnePost(postId)
     const postSection = document.getElementById("post")
-    //DJIMI ARTICLE
+
+    const article = document.createElement("article")
+    article.setAttribute("id", "postArticle")
+    article.classList.add("post")
+
+    const header = document.createElement("header")
+    const h2 = document.createElement("h2")
+    h2.textContent = data.Title || "Auteur inconnu"
+
+    const p1 = document.createElement("p")
+    p1.textContent = data.Content || "Contenu manquant"
+
+    const footer = document.createElement("footer")
+    const p2 = document.createElement("p")
+    const strong = document.createElement("strong")
+    const time = document.createElement("time")
+    strong.textContent = `${data.User_nickname}`
+    time.textContent = `${data.Date}`
+    time.setAttribute("datetime", `${data.Date}`)
+
+    article.appendChild(header)
+    header.appendChild(h2)
+    article.appendChild(p1)
+    article.appendChild(footer)
+    footer.appendChild(p2)
+    p2.appendChild(document.createTextNode("Posted by "))
+    p2.appendChild(strong)
+    p2.appendChild(document.createTextNode(" | "))
+    p2.appendChild(time)
+    
+    postSection.prepend(article)
+
+    const form = document.getElementById("newComForm")
+    form.setAttribute("action", `/newCom?id=${postId}`)
 }

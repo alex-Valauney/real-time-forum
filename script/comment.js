@@ -27,7 +27,7 @@ function addNewCom(tabCom) {
     tabCom.forEach(com => {
         let comItem = createComElem(com);
         comList.appendChild(comItem);
-    });
+    })
 }
 
 function createComElem(com) {
@@ -38,16 +38,16 @@ function createComElem(com) {
 
     // Créer et configurer l'élément h3 pour l'auteur
     const h3 = document.createElement("h3");
-    h3.textContent = com.author || "Auteur inconnu";
+    h3.textContent = com.User_nickname || "Auteur inconnu";
 
     // Créer et configurer l'élément p pour le contenu
     const p = document.createElement("p");
-    p.textContent = com.content || "Contenu manquant";
+    p.textContent = com.Content || "Contenu manquant";
 
     // Créer et configurer l'élément time pour la date
     const time = document.createElement("time");
-    time.setAttribute("datetime", com.date || '');
-    time.textContent = com.date || '';
+    time.setAttribute("datetime", com.Date || '');
+    time.textContent = com.Date || '';
 
     // Assembler les éléments
     article.appendChild(h3);
