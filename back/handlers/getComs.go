@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"rtf/back/methods"
 	"strconv"
+	"strings"
 )
 
 func GetNextComsHandler(w http.ResponseWriter, r *http.Request) {
@@ -25,7 +26,8 @@ func GetNextComsHandler(w http.ResponseWriter, r *http.Request) {
 	idLastCom := r.URL.Query().Get("idCom")
 	idLastComInt := 0
 	if idLastCom != "" {
-		idLastComInt, _ = strconv.Atoi(idLastCom)
+		temp := strings.Split(idLastCom, "-")
+		idLastComInt, _ = strconv.Atoi(temp[1])
 	}
 
 	BDDConn := &methods.BDD{}
