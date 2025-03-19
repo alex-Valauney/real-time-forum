@@ -17,6 +17,7 @@ func ServerCreate() {
 	mux.HandleFunc("/logout", handlers.LogoutHandler)
 	mux.HandleFunc("/checkSession", handlers.CheckSessionHandler)
 	mux.HandleFunc("/nextPosts", handlers.GetNextPostsHandler)
+	mux.HandleFunc("/getPost", handlers.GetPostByIdHandler)
 	mux.HandleFunc("/refreshPosts", handlers.GetNewPosts)
 	mux.HandleFunc("/newPost", handlers.NewPostHandler)
 	mux.HandleFunc("/newCom", handlers.NewComHandler)

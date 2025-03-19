@@ -109,6 +109,22 @@ func GetNewPosts(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(tabResult)
 }
 
+func GetPostByIdHandler(w http.ResponseWriter, r *http.Request) {
+	postId := r.URL.Query().Get("id")
+	if postId == "" {
+		fmt.Println("parent post id not found")
+		return
+	}
+	postIdInt, _ := strconv.Atoi(postId)
+
+	BDDConn := &methods.BDD{}
+	BDDConn.OpenConn()
+	result := BDDConn.SelectPostById(postIdInt)
+	BDDConn.CloseConn()
+
+	json.NewEncoder(w).Encode(result.Result)
+}
+
 func CompletePost(post methods.Post) methods.Post {
 	BDDConn := &methods.BDD{}
 

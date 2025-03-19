@@ -82,7 +82,7 @@ func (db *BDD) SelectAllPosts(obj map[string]any) Response {
 	return Response{tabResult}
 }
 
-func (db *BDD) SelectPostById(obj map[string]any) Response {
+func (db *BDD) SelectPostById(id int) Response {
 	/*
 		expected input (as json object) :
 
@@ -93,7 +93,7 @@ func (db *BDD) SelectPostById(obj map[string]any) Response {
 	*/
 
 	stmt := "SELECT * FROM posts WHERE id = ?;"
-	result := db.Conn.QueryRow(stmt, obj["id"])
+	result := db.Conn.QueryRow(stmt, id)
 
 	post := Post{}
 	err := result.Scan(&post.Id, &post.Title, &post.Content, &post.Date, &post.User_id)
