@@ -21,6 +21,7 @@ func ServerCreate() {
 	mux.HandleFunc("/refreshPosts", handlers.GetNewPosts)
 	mux.HandleFunc("/newPost", handlers.NewPostHandler)
 	mux.HandleFunc("/newCom", handlers.NewComHandler)
+	mux.HandleFunc("/nextComs", handlers.GetNextComsHandler)
 	mux.HandleFunc("/ws", handlers.WebsocketHandler)
 
 	server := &http.Server{
