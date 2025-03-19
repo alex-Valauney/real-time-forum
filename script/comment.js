@@ -23,7 +23,6 @@ export async function getComs(idPost) {
 
 function addNewCom(tabCom) {
     let comList = document.getElementById("commentList");
-    console.log(tabCom)
     tabCom.forEach(com => {
         let comItem = createComElem(com);
         comList.appendChild(comItem);
