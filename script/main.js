@@ -150,7 +150,7 @@ function onLoadPage(newSection, oldSection, postId = undefined) {
 }
 
 function saveState() {
-  sessionStorage.setItem("currentLoadId", currentLoad ? currentLoad.id : "");$
+  sessionStorage.setItem("currentLoadId", currentLoad ? currentLoad.id : "");
   sessionStorage.setItem("currentPost", currentPost !== undefined ? currentPost.toString() : "")
 }
 

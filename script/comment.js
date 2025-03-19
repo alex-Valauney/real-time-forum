@@ -1,13 +1,13 @@
-export async function getComs() {
-    let allCom = Array.from(document.querySelectorAll('#commentList li'));
+export async function getComs(idPost) {
+    let allCom = Array.from(document.querySelectorAll('li'))
     try {
         let response
         if (allCom.length === 0) {
-            response = await fetch(`/nextComs?idPost=${1}`, {
+            response = await fetch(`/nextComs?idPost=${idPost}`, {
                 method: "GET"
             })
         } else {
-            response = await fetch(`/nextComs?idCom=${allCom.at(-1).id}&idPost=${1}`, {
+            response = await fetch(`/nextComs?idCom=${allCom.at(-1).id}&idPost=${idPost}`, {
                 method: "GET"
             });
         }
@@ -23,7 +23,7 @@ export async function getComs() {
 
 function addNewCom(tabCom) {
     let comList = document.getElementById("commentList");
-
+    console.log(tabCom)
     tabCom.forEach(com => {
         let comItem = createComElem(com);
         comList.appendChild(comItem);
