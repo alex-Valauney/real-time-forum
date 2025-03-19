@@ -112,7 +112,7 @@ export function handleScrollPost() {
 
 async function getOnePost(id) {
     try {
-        let response = await fetch(`/oui?id=${id}`)
+        let response = await fetch(`/getPost?id=${id}`)
         if (!response.ok) {
             throw new Error("Erreur lors de la récupération des posts");
         }
