@@ -32,7 +32,7 @@ func GetNextComsHandler(w http.ResponseWriter, r *http.Request) {
 
 	BDDConn := &methods.BDD{}
 
-	stmt := "SELECT * FROM comments WHERE id_post = ? "
+	stmt := "SELECT * FROM comments WHERE post_id = ? "
 	if idLastComInt != 0 {
 		stmt += "AND id < ?"
 	}
