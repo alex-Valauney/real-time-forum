@@ -1,9 +1,11 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"rtf/back/methods"
 	"rtf/back/utilitary"
+	"strconv"
 	"time"
 )
 
@@ -12,6 +14,13 @@ func NewComHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Method not allowes", http.StatusMethodNotAllowed)
 		return
 	}
+
+	postId := r.URL.Query().Get("id")
+	if postId == "" {
+		fmt.Println("parent post not found when creating comment")
+		return
+	}
+	postIdInt, _ := strconv.Atoi(postId)
 
 	BDDConn := &methods.BDD{}
 
@@ -38,7 +47,7 @@ func NewComHandler(w http.ResponseWriter, r *http.Request) {
 
 	comMap["date"] = time.Now()
 
-	comMap["post_id"] = 1 //RECUPERER L'ID DU POST
+	comMap["post_id"] = postIdInt
 
 	BDDConn.OpenConn()
 	BDDConn.InsertComment(comMap)
