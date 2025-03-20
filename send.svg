@@ -8,17 +8,10 @@
                 <rect x="70" y="70" rx="30" ry="30" width="360" height="260" fill="black"/>
             </mask>
         </defs>
-        <g id="all" fill="white" stroke="white" stroke-width="10">
-            <g id="square">
-                <rect x="50" y="50" rx="50" ry="50" width="400" height="300" stroke-width="30" mask="url(#maskSquare)"/>
-            </g>
+        <g id="all" fill="white" stroke="white" stroke-width="1">
             <g id="triangle">
-                <path d="M200 350 l50 100 l50 -100"/>
-            </g>
-            <g id="points">
-                <circle cx="250" cy="200" r="30" fill="white"/>
-                <circle cx="150" cy="200" r="30" fill="white"/>
-                <circle cx="350" cy="200" r="30" fill="white"/>
-            </g>
+                <path d="M50 100 l400 150 l-400 150 l100 -150"/>
+<!--                 <path d="M130 80 l320 170 l-320 170 l30 -170 "/>
+ -->            </g>
         </g>
 </svg>
