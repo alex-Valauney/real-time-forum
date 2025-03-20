@@ -23,8 +23,18 @@ func (h *Hub) run() {
 	for {
 		select {
 		case client := <-h.Connection:
+			h.Clients[client] = true
+			//broadcast a tout les clien new connection
+
 		case client := <-h.Deconnection:
+			if h.Clients[client] {
+				delete(h.Clients, client)
+				//fermer conn clien
+			}
+
 		case message := <-h.Buffer:
+
+			strMessage := string(message)
 		}
 	}
 }
