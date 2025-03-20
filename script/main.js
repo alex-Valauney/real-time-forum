@@ -1,5 +1,6 @@
 import { connWebSocket } from "./websocket.js"
 import { scrollPosts, refreshPosts, throttlePost, handleScrollPost, buildPostPage } from "./post.js"
+import { openChatBox } from "./users.js"
 
 let currentLoadId = sessionStorage.getItem("currentLoadId") || undefined
 let currentPost = sessionStorage.getItem("currentPost") ? parseInt(sessionStorage.getItem("currentPost")) : undefined
@@ -109,6 +110,7 @@ function onClicksFunctions() {
     document.getElementById('chatButton').onclick = function (e) {
       if (document.getElementById('chat').classList.contains('hidden')) {
         onLoadPage('chat')
+        openChatBox()
       } else {
         onLoadPage(undefined, 'chat')
       }

@@ -1,4 +1,4 @@
- function sortUser(allUsers, onlineUsers, pmClient, currentClient) {
+export function sortUser(allUsers, onlineUsers, pmClient, currentClient) {
     let offlineUsers = allUsers.filter(user => !onlineUsers.includes(user))
     onlineUsers = onlineUsers.filter(user => user.Id !== currentClient)
     onlineUsers.sort((a, b) => sortByPm(a, b, pmClient))
@@ -51,7 +51,6 @@ function createUserElem(user, online, pmClient) {
     const usernameDiv = document.createElement("div")
     const usernameText = document.createElement("span")
     usernameText.textContent = user.User_nickname
-    usernameDiv.appendChild(usernameLabel)
     usernameDiv.appendChild(usernameText)
 
     const lastMessageDiv = document.createElement("div")
@@ -70,9 +69,48 @@ function createUserElem(user, online, pmClient) {
         const imgButton = document.createElement("img")
         imgButton.setAttribute("src", "./logo.svg")
         chatButton.appendChild(imgButton)
-        chatButton.onclick = () => openChatBox(user.User_nickname)
+        chatButton.onclick = () => openChatBox(user)
         userDiv.appendChild(chatButton)
     }   
 
     return userDiv
+}
+
+export function openChatBox(userTo) {
+    let modal = document.createElement("div")
+    //modal.id = `chat-${userTo.Id}`
+
+    let closeBtn = document.createElement("button")
+    closeBtn.textContent = "X"
+    closeBtn.addEventListener("click", function() {
+        modal.remove()
+    })
+
+    let chatContent = document.createElement("div")
+    chatContent.id = "chatContent"
+
+    let input = document.createElement("input")
+    input.type = "text"
+    input.id = "chatInput"
+    input.placeholder = "Écrire un message..."
+
+    let sendBtn = document.createElement("button")
+    sendBtn.textContent = "Envoyer"
+    sendBtn.addEventListener("click", function() {
+        let message = input.value.trim()
+        if (message) {
+            let msgDiv = document.createElement("div")
+            msgDiv.textContent = message
+            chatContent.appendChild(msgDiv)
+            input.value = ""
+            console.log("Message envoyé :", message)
+        }
+    })
+
+    modal.appendChild(closeBtn)
+    modal.appendChild(chatContent)
+    modal.appendChild(input)
+    modal.appendChild(sendBtn)
+
+    document.body.appendChild(modal)
 }
