@@ -1,19 +1,17 @@
 package websocket
 
-import "container/list"
-
 type Hub struct {
-	Clients []*Client
+	Clients map[*Client]bool
 }
 
 func NewHub() *Hub {
 	return &Hub{
-		Clients: []*Client{},
+		Clients: map[*Client]bool{},
 	}
 }
 
 func (h *Hub) run() {
 	for {
-		select
+		select {}
 	}
 }
