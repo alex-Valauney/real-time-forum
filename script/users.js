@@ -67,7 +67,7 @@ function createUserElem(user, online, pmClient) {
     if (online) {
         const chatButton = document.createElement("button")
         const imgButton = document.createElement("img")
-        imgButton.setAttribute("src", "./logo.svg")
+        imgButton.setAttribute("src", "./pics/logo.svg")
         chatButton.appendChild(imgButton)
         chatButton.onclick = () => openChatBox(user)
         userDiv.appendChild(chatButton)
@@ -95,7 +95,8 @@ export function openChatBox(userTo) {
     input.placeholder = "Écrire un message..."
 
     let sendBtn = document.createElement("button")
-    sendBtn.textContent = "Envoyer"
+    let imgSendBtn = document.createElement("img")
+    imgSendBtn.src = "./pics/sned.svg"
     sendBtn.addEventListener("click", function() {
         let message = input.value.trim()
         if (message) {
