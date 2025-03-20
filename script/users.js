@@ -68,6 +68,7 @@ function createUserElem(user, online, pmClient) {
         const chatButton = document.createElement("button")
         const imgButton = document.createElement("img")
         imgButton.setAttribute("src", "./pics/logo.svg")
+        imgButton.setAttribute("src", "./pics/logo.svg")
         chatButton.appendChild(imgButton)
         chatButton.onclick = () => openChatBox(user)
         userDiv.appendChild(chatButton)
