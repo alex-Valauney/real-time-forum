@@ -11,6 +11,7 @@ func ServerCreate() {
 	mux := http.NewServeMux() // Mux for multiple handlers
 	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
 	mux.Handle("/script/", http.StripPrefix("/script/", http.FileServer(http.Dir("./script"))))
+	mux.Handle("/pics/", http.StripPrefix("/pics/", http.FileServer(http.Dir("./pics"))))
 	mux.HandleFunc("/", handlers.IndexHandler)
 	mux.HandleFunc("/register", handlers.RegisterHandler)
 	mux.HandleFunc("/login", handlers.LoginHandler)

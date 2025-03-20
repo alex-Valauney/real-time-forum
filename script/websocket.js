@@ -5,6 +5,7 @@ export function connWebSocket() {
         conn = new WebSocket("ws://" + document.location.host + "/ws")
         let output = document.querySelector("#output")
         conn.onopen = function (e) {
+            conn.send("New client")
             console.log("WS working")
             output.textContent = "connection successful"
         }
