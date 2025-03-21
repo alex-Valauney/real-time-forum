@@ -1,5 +1,10 @@
 package websocket
 
+import (
+	"encoding/json"
+	"rtf/back/methods"
+)
+
 type Hub struct {
 	Clients map[*Client]bool
 
@@ -34,7 +39,21 @@ func (h *Hub) run() {
 
 		case message := <-h.Buffer:
 
-			strMessage := string(message)
+			var obj map[string]any
+
+			json.Unmarshal(message, &obj)
+
+			BDDConn := &methods.BDD{}
+
+			BDDConn.OpenConn()
+
+			result := BDDConn.InsertPrivateMessage(obj)
+
+			BDDConn.CloseConn()
+
+			if result ==  {
+				
+			}
 		}
 	}
 }
