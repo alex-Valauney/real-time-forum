@@ -51,9 +51,11 @@ func (h *Hub) run() {
 
 			BDDConn.CloseConn()
 
-			if result ==  {
-				
+			if result.Result == 0 {
+				continue
 			}
+
+			// envoier message
 		}
 	}
 }
