@@ -50,6 +50,25 @@ func (db *BDD) InsertUser(obj map[string]any) Response {
 	return db.SelectUserById(map[string]any{"id": newUserId})
 }
 
+func (db *BDD) SelectAllUsers() Response {
+	tabResult := []User{}
+
+	stmt := "SELECT id, uuid, nickname, age, gender, first_name, last_name, email FROM users;"
+	result, err := db.Conn.Query(stmt)
+	if err != nil {
+		fmt.Println(err)
+		return Response{[]Post{}}
+	}
+
+	for result.Next() {
+		user := User{}
+		result.Scan(&user.Id, &user.Uuid, &user.Nickname, &user.Age, &user.Gender, &user.First_name, &user.Last_name, &user.Email)
+		tabResult = append(tabResult, user)
+	}
+
+	return Response{tabResult}
+}
+
 func (db *BDD) SelectUserByUuid(obj map[string]any) Response {
 	/*
 	   expected input (as json object) :
