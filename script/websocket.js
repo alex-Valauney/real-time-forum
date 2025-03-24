@@ -1,4 +1,6 @@
-export function connWebSocket() {
+import { sortUser } from "./users"
+
+export function connWebSocket(user) {
     let conn
     //Creating the front websocket connection 
     if (window["WebSocket"]) {
@@ -17,6 +19,11 @@ export function connWebSocket() {
         }
         conn.onmessage = function (e) { //Will be splitted in further cases depending on the nature of the message
             output.textContent = "received : " + e.data
+            let parsedData = JSON.parse(e.data)
+            redirect = {
+                getPMList: getPMList
+            }
+            redirect[parsedData[method]](parsedData, conn)
         }
     } else {
         console.log("Your browser does not support WebSockets")
@@ -27,4 +34,22 @@ export function connWebSocket() {
         console.log(textinputdata)
         conn.send(textinputdata)
     }
+}
+
+async function getPMList(userLists, conn, user) {
+    try {
+        let response = await fetch(`/pm?id=${user}`, {
+            method: "GET"
+        })
+
+        if (!response.ok) {
+            throw new Error("Erreur lors de la récupération des posts");
+        }
+    } catch (error) {
+        console.error("Erreur :", error);
+    }
+    const mp = await response.json()
+    console.log(userLists[allUsers], userLists[onlineUsers], mp, user, conn)
+    sortUser(userLists[allUsers], userLists[onlineUsers], mp, user, conn)
+
 }
