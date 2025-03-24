@@ -6,13 +6,10 @@ import (
 )
 
 type Hub struct {
-	Clients map[*Client]bool
-
-	Connection chan *Client
-
+	Clients      map[*Client]bool
+	Connection   chan *Client
 	Deconnection chan *Client
-
-	Buffer chan []byte
+	Buffer       chan []byte
 }
 
 func NewHub() *Hub {
@@ -29,12 +26,28 @@ func (h *Hub) run() {
 		select {
 		case client := <-h.Connection:
 			h.Clients[client] = true
-			//broadcast a tout les clien new connection
+
+			BDDConn := &methods.BDD{}
+
+			type UserList struct {
+				AllUser          []methods.User
+				AllUserConnected []methods.User
+			}
+
+			BDDConn.OpenConn()
+
+			AllUserList := UserList{}
+			AllUserList.AllUser = BDDConn.SelectAllUsers().Result.([]methods.User)
+			for _, c := range h.Clients {
+				AllUserList.AllUserConnected = append(AllUserList.AllUserConnected, c.User)
+
+			}
+			BDDConn.CloseConn()
 
 		case client := <-h.Deconnection:
 			if h.Clients[client] {
 				delete(h.Clients, client)
-				//fermer conn clien
+				client.Conn.Close()
 			}
 
 		case message := <-h.Buffer:
