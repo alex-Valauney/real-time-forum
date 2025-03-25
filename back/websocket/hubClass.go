@@ -61,7 +61,9 @@ func (h *Hub) Run() {
 			}
 
 		case message := <-h.Buffer:
-
+			/*
+				'{"user_to":1,"user_from":2,"content":"messagem mdr","date":"2022-02-03"}'
+			*/
 			var obj map[string]any
 
 			json.Unmarshal(message, &obj)
@@ -69,16 +71,19 @@ func (h *Hub) Run() {
 			BDDConn := &methods.BDD{}
 
 			BDDConn.OpenConn()
-
 			result := BDDConn.InsertPrivateMessage(obj)
-
 			BDDConn.CloseConn()
 
 			if result.Result == 0 {
 				continue
 			}
 
-			// envoier message
+			for c := range h.Clients {
+				if c.User.Id == obj["user_to"] {
+					c.Buffer <- message
+					break
+				}
+			}
 		}
 	}
 }
