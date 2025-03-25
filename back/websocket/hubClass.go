@@ -2,6 +2,7 @@ package websocket
 
 import (
 	"encoding/json"
+	"fmt"
 	"rtf/back/methods"
 )
 
@@ -34,15 +35,24 @@ func (h *Hub) Run() {
 				AllUserConnected []methods.User
 			}
 
-			BDDConn.OpenConn()
-
 			AllUserList := UserList{}
+			BDDConn.OpenConn()
 			AllUserList.AllUser = BDDConn.SelectAllUsers().Result.([]methods.User)
-			// for _, c := range h.Clients {
-			// 	AllUserList.AllUserConnected = append(AllUserList.AllUserConnected, c.User)
-
-			// }
 			BDDConn.CloseConn()
+
+			for c := range h.Clients {
+				AllUserList.AllUserConnected = append(AllUserList.AllUserConnected, *c.User)
+
+			}
+			data, err := json.Marshal(AllUserList)
+			if err != nil {
+				fmt.Println(err)
+				continue
+			}
+
+			for c := range h.Clients {
+				c.Buffer <- data
+			}
 
 		case client := <-h.Deconnection:
 			if h.Clients[client] {
