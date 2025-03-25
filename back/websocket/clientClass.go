@@ -2,6 +2,7 @@ package websocket
 
 import (
 	"fmt"
+	"rtf/back/methods"
 
 	"github.com/gorilla/websocket"
 )
@@ -10,6 +11,7 @@ type Client struct {
 	Hub    *Hub
 	Conn   *websocket.Conn
 	Buffer chan []byte
+	User   *methods.User
 }
 
 func (c *Client) FrontToBack() {
@@ -25,7 +27,6 @@ func (c *Client) FrontToBack() {
 }
 
 func (c *Client) BackToFront() {
-
 	for {
 		data := <-c.Buffer
 

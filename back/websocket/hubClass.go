@@ -21,7 +21,7 @@ func NewHub() *Hub {
 	}
 }
 
-func (h *Hub) run() {
+func (h *Hub) Run() {
 	for {
 		select {
 		case client := <-h.Connection:
@@ -38,10 +38,10 @@ func (h *Hub) run() {
 
 			AllUserList := UserList{}
 			AllUserList.AllUser = BDDConn.SelectAllUsers().Result.([]methods.User)
-			for _, c := range h.Clients {
-				AllUserList.AllUserConnected = append(AllUserList.AllUserConnected, c.User)
+			// for _, c := range h.Clients {
+			// 	AllUserList.AllUserConnected = append(AllUserList.AllUserConnected, c.User)
 
-			}
+			// }
 			BDDConn.CloseConn()
 
 		case client := <-h.Deconnection:

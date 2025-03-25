@@ -8,6 +8,7 @@ import (
 )
 
 func ServerCreate() {
+	go handlers.Hub.Run()
 	mux := http.NewServeMux() // Mux for multiple handlers
 	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
 	mux.Handle("/script/", http.StripPrefix("/script/", http.FileServer(http.Dir("./script"))))
