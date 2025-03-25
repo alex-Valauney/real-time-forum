@@ -4,9 +4,11 @@ import (
 	"database/sql"
 	"log"
 	"rtf/back/config"
+	"rtf/back/websocket"
 )
 
 var DB_PATH string
+var Hub *websocket.Hub
 
 func main() {
 
@@ -22,6 +24,8 @@ func main() {
 		log.Fatalf("pragma")
 	}
 	db.Close()
+
+	Hub = websocket.NewHub()
 
 	config.ServerCreate()
 }
