@@ -9,6 +9,9 @@ export function openChatBox(userTo, conn, userClient) {
         modal.remove()
     })
 
+    // FOUTRE getSpePM par ici et afficher les divs DJIMI
+    //PAS OUBLIER LE SCROLL
+
     let chatContent = document.createElement("div")
     chatContent.id = "chatContent"
 
@@ -30,6 +33,7 @@ export function openChatBox(userTo, conn, userClient) {
                 content : message,
                 date : new Date.now()
             }
+            // RECREER UNE DIV POUR LE MESSAGE DJIMI
             conn.send(JSON.stringify(fullMessage))
             input.value = ""
         }
@@ -44,5 +48,7 @@ export function openChatBox(userTo, conn, userClient) {
 }
 
 export function receiveMessage(message) {
-
+    // DJIMI
 }
+
+//LE CSS DJIMI
