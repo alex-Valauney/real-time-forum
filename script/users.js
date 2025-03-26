@@ -24,11 +24,11 @@ function sortByPm(userA, userB, pmClient) {
     return userA.User_nickname.localeCompare(userB.User_nickname)
 }
 
-export function addUserElem(tabUser, online, pmClient, conn) {
+export function addUserElem(tabUser, online, pmClient, conn, userClient) {
     const userListOn = document.getElementById("onlineUser")
     const userListOff = document.getElementById("offlineUser")
     tabUser.forEach(user => {
-        let userDiv = createUserElem(user, online, pmClient, conn)
+        let userDiv = createUserElem(user, online, pmClient, conn, userClient)
         if (online) {
             userListOn.appendChild(userDiv)
         } else {
@@ -37,8 +37,8 @@ export function addUserElem(tabUser, online, pmClient, conn) {
     })
 }
 
-function createUserElem(user, online, pmClient, conn) {
-    let pmIndexUser = pmClient.filter(pm => user.Id === pm.User_from || user.Id === pm.User_to)
+function createUserElem(userTo, online, pmClient, conn, userClient) {
+    let pmIndexUser = pmClient.filter(pm => userTo.Id === pm.User_from || userTo.Id === pm.User_to)
     let lastDate
     if (pmIndexUser) {
         lastDate = pmIndexUser[0].Date
@@ -67,7 +67,7 @@ function createUserElem(user, online, pmClient, conn) {
         const imgButton = document.createElement("img")
         imgButton.setAttribute("src", "./pics/logo.svg")
         chatButton.appendChild(imgButton)
-        chatButton.onclick = () => openChatBox(user, conn)
+        chatButton.onclick = () => openChatBox(userTo, conn, userClient)
         userDiv.appendChild(chatButton)
     }   
 

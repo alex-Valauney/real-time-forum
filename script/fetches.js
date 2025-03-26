@@ -30,6 +30,21 @@ export async function getLastPMList(user) { //get all user's last mps and then s
     return await response.json()
 }
 
+export async function getSpePM(userClient) { //get all user's last mps and then sort them for the list 
+    try {
+        let response = await fetch(`/spepm?idclient=${userClient}&idto=${userTo}`, {
+            method: "GET"
+        })
+
+        if (!response.ok) {
+            throw new Error("Erreur lors de la récupération des posts");
+        }
+    } catch (error) {
+        console.error("Erreur :", error);
+    }
+    return await response.json()
+}
+
 // Partie index
 
 export async function scrollPosts() {

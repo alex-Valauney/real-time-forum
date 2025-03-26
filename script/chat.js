@@ -1,4 +1,4 @@
-export function openChatBox(user, userTo, conn) {
+export function openChatBox(userTo, conn, userClient) {
     conn.send(user, userTo)
     let modal = document.createElement("div")
     //modal.id = `chat-${userTo.Id}`
@@ -24,9 +24,14 @@ export function openChatBox(user, userTo, conn) {
     sendBtn.addEventListener("click", function() {
         let message = input.value.trim()
         if (message) {
-            conn.send(message)
+            const fullMessage = {
+                user_to : userTo,
+                user_from : userClient,
+                content : message,
+                date : new Date.now()
+            }
+            conn.send(JSON.stringify(fullMessage))
             input.value = ""
-            console.log("Message envoyé :", message)
         }
     })
 

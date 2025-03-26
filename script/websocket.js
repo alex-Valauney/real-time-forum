@@ -43,6 +43,6 @@ function userListProcess(userLists, conn, userClient) {
     console.log(userLists[allUsers], userLists[onlineUsers], listPM, userClient, conn)
     let onlineUsers, offlineUsers = sortUser(userLists[allUsers], userLists[onlineUsers], listPM, userClient)
 
-    addUserElem(onlineUsers, true, pmClient, conn)
-    addUserElem(offlineUsers, false, pmClient, conn)
+    addUserElem(onlineUsers, true, pmClient, conn, userClient)
+    addUserElem(offlineUsers, false, pmClient, conn, userClient)
 }
