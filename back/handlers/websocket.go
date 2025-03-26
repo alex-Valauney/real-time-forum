@@ -46,7 +46,6 @@ func WebsocketHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("erreur1 :", err)
 		return
 	}
-	defer conn.Close()
 
 	newClient := &ws.Client{
 		Hub:    Hub,

@@ -68,7 +68,7 @@ func (h *Hub) Run() {
 
 			json.Unmarshal(message, &obj)
 
-			BDDConn := &methods.BDD{}
+			/* BDDConn := &methods.BDD{}
 
 			BDDConn.OpenConn()
 			result := BDDConn.InsertPrivateMessage(obj)
@@ -83,7 +83,7 @@ func (h *Hub) Run() {
 					c.Buffer <- message
 					break
 				}
-			}
+			} */
 		}
 	}
 }
