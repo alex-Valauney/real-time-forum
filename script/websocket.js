@@ -1,6 +1,7 @@
-import { sortUser } from "./users"
+import { getLastPMList } from "./fetches.js"
+import { addUserElem, sortUser } from "./users.js"
 
-export function connWebSocket(user) {
+export function connWebSocket(userClient) {
     let conn
     //Creating the front websocket connection 
     if (window["WebSocket"]) {
@@ -21,9 +22,9 @@ export function connWebSocket(user) {
             output.textContent = "received : " + e.data
             let parsedData = JSON.parse(e.data)
             redirect = {
-                getPMList: getPMList
+                userListProcess: userListProcess
             }
-            redirect[parsedData[method]](parsedData, conn)
+            redirect[parsedData[method]](parsedData, conn, userClient)
         }
     } else {
         console.log("Your browser does not support WebSockets")
@@ -36,20 +37,12 @@ export function connWebSocket(user) {
     }
 }
 
-async function getPMList(userLists, conn, user) {
-    try {
-        let response = await fetch(`/pm?id=${user}`, {
-            method: "GET"
-        })
+function userListProcess(userLists, conn, userClient) {
+    const listPM = getLastPMList()
 
-        if (!response.ok) {
-            throw new Error("Erreur lors de la récupération des posts");
-        }
-    } catch (error) {
-        console.error("Erreur :", error);
-    }
-    const mp = await response.json()
-    console.log(userLists[allUsers], userLists[onlineUsers], mp, user, conn)
-    sortUser(userLists[allUsers], userLists[onlineUsers], mp, user, conn)
+    console.log(userLists[allUsers], userLists[onlineUsers], listPM, userClient, conn)
+    let onlineUsers, offlineUsers = sortUser(userLists[allUsers], userLists[onlineUsers], listPM, userClient)
 
+    addUserElem(onlineUsers, true, pmClient, conn)
+    addUserElem(offlineUsers, false, pmClient, conn)
 }

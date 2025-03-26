@@ -1,4 +1,5 @@
-export function openChatBox(userTo, conn) {
+export function openChatBox(user, userTo, conn) {
+    conn.send(user, userTo)
     let modal = document.createElement("div")
     //modal.id = `chat-${userTo.Id}`
 

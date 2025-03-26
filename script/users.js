@@ -1,27 +1,10 @@
-import { openChatBox } from "./chat"
-
-export async function getUser() {
-    try {
-        let response = await fetch('/user', {
-            method: "GET"
-        })
-        if (!response.ok) {
-            throw new Error("Erreur lors de la récupération de l'utilisateur")
-        }
-        return await response.json()
-    } catch (error) {
-        console.error("Erreur :", error)
-    }
-}
-
-export function sortUser(allUsers, onlineUsers, pmClient, currentClient, conn) {
+export function sortUser(allUsers, onlineUsers, pmClient, currentClient) {
     let offlineUsers = allUsers.filter(user => !onlineUsers.includes(user))
     onlineUsers = onlineUsers.filter(user => user.Id !== currentClient)
     onlineUsers.sort((a, b) => sortByPm(a, b, pmClient))
     offlineUsers.sort((a, b) => sortByPm(a, b, pmClient))
 
-    addUserElem(onlineUsers, true, pmClient, conn)
-    addUserElem(offlineUsers, false, pmClient, conn)
+    return onlineUsers, offlineUsers
 }
 
 function sortByPm(userA, userB, pmClient) {
@@ -41,7 +24,7 @@ function sortByPm(userA, userB, pmClient) {
     return userA.User_nickname.localeCompare(userB.User_nickname)
 }
 
-function addUserElem(tabUser, online, pmClient, conn) {
+export function addUserElem(tabUser, online, pmClient, conn) {
     const userListOn = document.getElementById("onlineUser")
     const userListOff = document.getElementById("offlineUser")
     tabUser.forEach(user => {
