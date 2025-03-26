@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"rtf/back/methods"
+	"rtf/back/utilitary"
 	ws "rtf/back/websocket"
 
 	"github.com/gorilla/websocket"
@@ -22,8 +23,22 @@ var Hub *ws.Hub = ws.NewHub()
 
 // To merge with indexHandler
 func WebsocketHandler(w http.ResponseWriter, r *http.Request) {
-	// get id from url
-	// userID := r.URL.Query().Get("id")
+	cookie, err := r.Cookie("session_token") // get uuid of connected user
+	if err != nil {
+		if err == http.ErrNoCookie {
+			http.Redirect(w, r, "/login", http.StatusSeeOther)
+			return
+		}
+		http.Error(w, "gathering cookie error", http.StatusBadRequest)
+		return
+	}
+
+	//fmt.Println(utilitary.Sessions[cookie.Value])
+	BDDConn := &methods.BDD{}
+
+	BDDConn.OpenConn()
+	conUser := BDDConn.SelectUserByUuid(utilitary.Sessions[cookie.Value]).Result.(methods.User)
+	BDDConn.CloseConn()
 
 	// Upgrade http connection to ws connection
 	conn, err := upgrader.Upgrade(w, r, nil)
@@ -37,7 +52,7 @@ func WebsocketHandler(w http.ResponseWriter, r *http.Request) {
 		Hub:    Hub,
 		Conn:   conn,
 		Buffer: make(chan []byte),
-		User:   &methods.User{},
+		User:   &conUser,
 	}
 
 	Hub.Connection <- newClient

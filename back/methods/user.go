@@ -69,17 +69,9 @@ func (db *BDD) SelectAllUsers() Response {
 	return Response{tabResult}
 }
 
-func (db *BDD) SelectUserByUuid(obj map[string]any) Response {
-	/*
-	   expected input (as json object) :
-	   {
-	       uuid : string,
-	       method : SelectUserById
-	   }
-	*/
-
+func (db *BDD) SelectUserByUuid(uuid string) Response {
 	stmt := "SELECT id, uuid, nickname, age, gender, first_name, last_name, email FROM users WHERE uuid = ?;"
-	result := db.Conn.QueryRow(stmt, obj["uuid"])
+	result := db.Conn.QueryRow(stmt, uuid)
 
 	user := User{}
 	err := result.Scan(&user.Id, &user.Uuid, &user.Nickname, &user.Age, &user.Gender, &user.First_name, &user.Last_name, &user.Email)

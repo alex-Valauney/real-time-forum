@@ -22,7 +22,7 @@ func NewComHandler(w http.ResponseWriter, r *http.Request) {
 
 	userUuid := utilitary.UuidFromCookie(w, r)
 	BDDConn.OpenConn()
-	user := BDDConn.SelectUserByUuid(map[string]any{"uuid": userUuid})
+	user := BDDConn.SelectUserByUuid(userUuid)
 	BDDConn.CloseConn()
 	comMap["user_id"] = user.Result.(methods.User).Id
 
