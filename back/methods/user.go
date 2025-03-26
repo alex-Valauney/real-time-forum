@@ -50,7 +50,7 @@ func (db *BDD) InsertUser(obj map[string]any) Response {
 	return db.SelectUserById(map[string]any{"id": newUserId})
 }
 
-func (db *BDD) SelectUserByUuid(obj map[string]any) Response {
+func (db *BDD) SelectUserByUuid(uuid string) Response {
 	/*
 	   expected input (as json object) :
 	   {
@@ -60,7 +60,7 @@ func (db *BDD) SelectUserByUuid(obj map[string]any) Response {
 	*/
 
 	stmt := "SELECT id, uuid, nickname, age, gender, first_name, last_name, email FROM users WHERE uuid = ?;"
-	result := db.Conn.QueryRow(stmt, obj["uuid"])
+	result := db.Conn.QueryRow(stmt, uuid)
 
 	user := User{}
 	err := result.Scan(&user.Id, &user.Uuid, &user.Nickname, &user.Age, &user.Gender, &user.First_name, &user.Last_name, &user.Email)
