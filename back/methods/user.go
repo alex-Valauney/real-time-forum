@@ -72,7 +72,6 @@ func (db *BDD) SelectAllUsers() Response {
 func (db *BDD) SelectUserByUuid(uuid string) Response {
 	stmt := "SELECT id, uuid, nickname, age, gender, first_name, last_name, email FROM users WHERE uuid = ?;"
 	result := db.Conn.QueryRow(stmt, uuid)
-	result := db.Conn.QueryRow(stmt, uuid)
 
 	user := User{}
 	err := result.Scan(&user.Id, &user.Uuid, &user.Nickname, &user.Age, &user.Gender, &user.First_name, &user.Last_name, &user.Email)
