@@ -31,17 +31,18 @@ func (h *Hub) Run() {
 			BDDConn := &methods.BDD{}
 
 			type UserList struct {
-				AllUser          []methods.User
-				AllUserConnected []methods.User
+				AllUsers    []methods.User
+				OnlineUsers []methods.User
+				Method      string
 			}
 
-			AllUserList := UserList{}
+			AllUserList := UserList{Method: "userListProcess"}
 			BDDConn.OpenConn()
-			AllUserList.AllUser = BDDConn.SelectAllUsers().Result.([]methods.User)
+			AllUserList.AllUsers = BDDConn.SelectAllUsers().Result.([]methods.User)
 			BDDConn.CloseConn()
 
 			for c := range h.Clients {
-				AllUserList.AllUserConnected = append(AllUserList.AllUserConnected, *c.User)
+				AllUserList.OnlineUsers = append(AllUserList.OnlineUsers, *c.User)
 
 			}
 			data, err := json.Marshal(AllUserList)

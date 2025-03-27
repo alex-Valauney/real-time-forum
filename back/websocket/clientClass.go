@@ -19,7 +19,9 @@ func (c *Client) FrontToBack() {
 		_, data, err := c.Conn.ReadMessage()
 		if err != nil {
 			fmt.Println("erreurA :", err)
-			continue
+			c.Hub.Deconnection <- c
+			c.Conn.Close()
+			return
 		}
 
 		c.Hub.Buffer <- data
@@ -34,6 +36,9 @@ func (c *Client) BackToFront() {
 
 		if err != nil {
 			fmt.Println("erreurB :", err)
+			c.Hub.Deconnection <- c
+			c.Conn.Close()
+			return
 		}
 	}
 }
