@@ -24,7 +24,7 @@ export function init() {
       scrollPosts()
       setInterval(refreshPosts, 10000)
 
-      let userClient = getUser()
+      let userClient = await getUser()
       connWebSocket(userClient)
     } else {
       if (!currentLoad || !document.getElementById(currentLoadId)) {
