@@ -1,20 +1,21 @@
 export function openChatBox(userTo, conn, userClient) {
     conn.send(user, userTo)
     let modal = document.createElement("div")
-    //modal.id = `chat-${userTo.Id}`
+    modal.id = `chat-${userTo.Id}`
 
     let closeBtn = document.createElement("button")
     closeBtn.textContent = "X"
     closeBtn.addEventListener("click", function() {
         modal.remove()
     })
-
+    
+    let chatContent = document.createElement("div")
+    chatContent.id = "chatContent"
+    
     // FOUTRE getSpePM par ici et afficher les divs DJIMI
     //PAS OUBLIER LE SCROLL
 
-    let chatContent = document.createElement("div")
-    chatContent.id = "chatContent"
-
+    
     let input = document.createElement("input")
     input.type = "text"
     input.id = "chatInput"
