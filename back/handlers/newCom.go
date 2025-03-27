@@ -10,13 +10,10 @@ import (
 )
 
 func NewComHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		http.Error(w, "Method not allowes", http.StatusMethodNotAllowed)
-		return
-	}
 
 	postId := r.URL.Query().Get("id")
 	if postId == "" {
+		fmt.Println(r.URL)
 		fmt.Println("parent post not found when creating comment")
 		return
 	}
