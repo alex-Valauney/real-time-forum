@@ -1,4 +1,5 @@
 import { attachPostClickEvents } from "./main.js"
+import { getOnePost, scrollPosts, getComs } from "./fetches.js"
 
 export function addNewPosts(tabPost) {
     const indexSection = document.getElementById("indexTable")
@@ -104,6 +105,7 @@ export async function buildPostPage(postId) {
     postSection.prepend(article)
 
     const form = document.getElementById("newComForm")
+    console.log("post id :", postId)
     form.setAttribute("action", `/newCom?id=${postId}`)
     getComs(postId)
 }

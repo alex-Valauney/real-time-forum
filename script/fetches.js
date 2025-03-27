@@ -1,5 +1,5 @@
-import { addNewPosts, addScrollPosts } from './post'
-import { addNewCom } from '/comment.js'
+import { addNewPosts, addScrollPosts } from './post.js'
+import { addNewCom } from './comment.js'
 
 export async function getUser() { //get all user details from id
     try {

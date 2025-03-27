@@ -1,12 +1,8 @@
 package handlers
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
-	"rtf/back/methods"
-	"rtf/back/utilitary"
 
 	"github.com/gorilla/websocket"
 )
@@ -29,10 +25,10 @@ func WebsocketHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer conn.Close()
 
-	BDDConn := &methods.BDD{}
+	// BDDConn := &methods.BDD{}
 
 	// Handle messages
-	for {
+	/*for {
 		_, data, err := conn.ReadMessage()
 		if err != nil {
 			fmt.Println("erreur2 :", err)
@@ -71,5 +67,5 @@ func WebsocketHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("erreur3 :", err)
 			continue
 		}
-	}
+	}*/
 }
