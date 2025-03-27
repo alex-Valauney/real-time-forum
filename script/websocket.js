@@ -37,12 +37,12 @@ export function connWebSocket(userClient) {
     }
 }
 
-function userListProcess(userLists, conn, userClient) {
-    const listPM = getLastPMList()
+async function userListProcess(userLists, conn, userClient) {
+    const pmClient = await getLastPMList()
 
-    console.log(userLists["AllUsers"], userLists["OnlineUsers"], listPM, userClient, conn)
-    let onlineUsers, offlineUsers = sortUser(userLists["AllUsers"], userLists["OnlineUsers"], listPM, userClient)
+    console.log(userLists["AllUsers"], userLists["OnlineUsers"], pmClient, userClient, conn)
+    let obj= sortUser(userLists["AllUsers"], userLists["OnlineUsers"], pmClient, userClient)
 
-    addUserElem(onlineUsers, true, pmClient, conn, userClient)
-    addUserElem(offlineUsers, false, pmClient, conn, userClient)
+    addUserElem(obj.online, true, pmClient, conn, userClient)
+    addUserElem(obj.offline, false, pmClient, conn, userClient)
 }

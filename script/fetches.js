@@ -16,8 +16,9 @@ export async function getUser() { //get all user details from id
 }
 
 export async function getLastPMList(user) { //get all user's last mps and then sort them for the list 
+    let response
     try {
-        let response = await fetch(`/pm?id=${user}`, {
+        response = await fetch(`/pm?id=${user}`, {
             method: "GET"
         })
 
