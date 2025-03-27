@@ -21,10 +21,10 @@ export function connWebSocket(userClient) {
         conn.onmessage = function (e) { //Will be splitted in further cases depending on the nature of the message
             output.textContent = "received : " + e.data
             let parsedData = JSON.parse(e.data)
-            redirect = {
+            const redirect = {
                 userListProcess: userListProcess
             }
-            redirect[parsedData[method]](parsedData, conn, userClient)
+            redirect[parsedData["Method"]](parsedData, conn, userClient)
         }
     } else {
         console.log("Your browser does not support WebSockets")
@@ -40,8 +40,8 @@ export function connWebSocket(userClient) {
 function userListProcess(userLists, conn, userClient) {
     const listPM = getLastPMList()
 
-    console.log(userLists[allUsers], userLists[onlineUsers], listPM, userClient, conn)
-    let onlineUsers, offlineUsers = sortUser(userLists[allUsers], userLists[onlineUsers], listPM, userClient)
+    console.log(userLists["AllUsers"], userLists["OnlineUsers"], listPM, userClient, conn)
+    let onlineUsers, offlineUsers = sortUser(userLists["AllUsers"], userLists["OnlineUsers"], listPM, userClient)
 
     addUserElem(onlineUsers, true, pmClient, conn, userClient)
     addUserElem(offlineUsers, false, pmClient, conn, userClient)
