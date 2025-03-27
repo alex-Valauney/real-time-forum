@@ -21,14 +21,9 @@ export function connWebSocket(userClient) {
         conn.onmessage = function (e) { //Will be splitted in further cases depending on the nature of the message
             output.textContent = "received : " + e.data
             let parsedData = JSON.parse(e.data)
-<<<<<<< HEAD
             redirect = {
                 userListProcess: userListProcess,
                 newPM : newPM,
-=======
-            const redirect = {
-                userListProcess: userListProcess
->>>>>>> refs/remotes/origin/master
             }
             redirect[parsedData["Method"]](parsedData, conn, userClient)
         }
@@ -47,18 +42,12 @@ async function userListProcess(userLists, conn, userClient) {
     const pmClient = await getLastPMList()
 
     console.log(userLists["AllUsers"], userLists["OnlineUsers"], pmClient, userClient, conn)
-    let obj= sortUser(userLists["AllUsers"], userLists["OnlineUsers"], pmClient, userClient)
+    let obj = sortUser(userLists["AllUsers"], userLists["OnlineUsers"], pmClient, userClient)
 
-<<<<<<< HEAD
-    addUserElem(onlineUsers, true, pmClient, conn, userClient)
-    addUserElem(offlineUsers, false, pmClient, conn, userClient)
-}
-
-/* function newPM(packageMessage, conn, userCLient) {
-    if (packageMessage[user_To])
-} */
-=======
     addUserElem(obj.online, true, pmClient, conn, userClient)
     addUserElem(obj.offline, false, pmClient, conn, userClient)
 }
->>>>>>> refs/remotes/origin/master
+
+/* function newPM(packageMessage, conn, userCLient) {
+    if (packageMessage[User_to])
+} */
