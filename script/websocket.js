@@ -22,7 +22,8 @@ export function connWebSocket(userClient) {
             output.textContent = "received : " + e.data
             let parsedData = JSON.parse(e.data)
             redirect = {
-                userListProcess: userListProcess
+                userListProcess: userListProcess,
+                newPM : newPM,
             }
             redirect[parsedData[method]](parsedData, conn, userClient)
         }
@@ -46,3 +47,7 @@ function userListProcess(userLists, conn, userClient) {
     addUserElem(onlineUsers, true, pmClient, conn, userClient)
     addUserElem(offlineUsers, false, pmClient, conn, userClient)
 }
+
+/* function newPM(packageMessage, conn, userCLient) {
+    if (packageMessage[user_To])
+} */
