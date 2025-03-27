@@ -1,6 +1,7 @@
 import { connWebSocket } from "./websocket.js"
-import { scrollPosts, refreshPosts, throttlePost, handleScrollPost, buildPostPage } from "./post.js"
-import { openChatBox } from "./users.js"
+import { throttlePost, handleScrollPost, buildPostPage } from "./post.js"
+import { openChatBox } from "./chat.js"
+import { getUser, refreshPosts, scrollPosts } from "./fetches.js"
 
 let currentLoadId = sessionStorage.getItem("currentLoadId") || undefined
 let currentPost = sessionStorage.getItem("currentPost") ? parseInt(sessionStorage.getItem("currentPost")) : undefined
@@ -22,7 +23,9 @@ export function init() {
       window.addEventListener("scroll", throttlePost(handleScrollPost, 200))
       scrollPosts()
       setInterval(refreshPosts, 10000)
-      connWebSocket()
+
+      let userClient = getUser()
+      connWebSocket(userClient)
     } else {
       if (!currentLoad || !document.getElementById(currentLoadId)) {
         currentLoad = "login"

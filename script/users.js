@@ -4,8 +4,7 @@ export function sortUser(allUsers, onlineUsers, pmClient, currentClient) {
     onlineUsers.sort((a, b) => sortByPm(a, b, pmClient))
     offlineUsers.sort((a, b) => sortByPm(a, b, pmClient))
 
-    addUserElem(onlineUsers, true, pmClient)
-    addUserElem(offlineUsers, false, pmClient)
+    return onlineUsers, offlineUsers
 }
 
 function sortByPm(userA, userB, pmClient) {
@@ -25,22 +24,21 @@ function sortByPm(userA, userB, pmClient) {
     return userA.User_nickname.localeCompare(userB.User_nickname)
 }
 
-function addUserElem(tabUser, online, pmClient) {
+export function addUserElem(tabUser, online, pmClient, conn, userClient) {
     const userListOn = document.getElementById("onlineUser")
     const userListOff = document.getElementById("offlineUser")
     tabUser.forEach(user => {
-        let userDiv = createUserElem(user, online, pmClient)
+        let userDiv = createUserElem(user, online, pmClient, conn, userClient)
         if (online) {
             userListOn.appendChild(userDiv)
         } else {
             userListOff.appendChild(userDiv)
         }
     })
-    attachPostClickEvents()
 }
 
-function createUserElem(user, online, pmClient) {
-    let pmIndexUser = pmClient.filter(pm => user.Id === pm.User_from || user.Id === pm.User_to)
+function createUserElem(userTo, online, pmClient, conn, userClient) {
+    let pmIndexUser = pmClient.filter(pm => userTo.Id === pm.User_from || userTo.Id === pm.User_to)
     let lastDate
     if (pmIndexUser) {
         lastDate = pmIndexUser[0].Date
@@ -69,48 +67,9 @@ function createUserElem(user, online, pmClient) {
         const imgButton = document.createElement("img")
         imgButton.setAttribute("src", "./pics/logo.svg")
         chatButton.appendChild(imgButton)
-        chatButton.onclick = () => openChatBox(user)
+        chatButton.onclick = () => openChatBox(userTo, conn, userClient)
         userDiv.appendChild(chatButton)
     }   
 
     return userDiv
-}
-
-export function openChatBox(userTo) {
-    let modal = document.createElement("div")
-    //modal.id = `chat-${userTo.Id}`
-
-    let closeBtn = document.createElement("button")
-    closeBtn.textContent = "X"
-    closeBtn.addEventListener("click", function() {
-        modal.remove()
-    })
-
-    let chatContent = document.createElement("div")
-    chatContent.id = "chatContent"
-
-    let input = document.createElement("input")
-    input.type = "text"
-    input.id = "chatInput"
-    input.placeholder = "Écrire un message..."
-
-    let sendBtn = document.createElement("button")
-    let imgSendBtn = document.createElement("img")
-    imgSendBtn.src = "./pics/send.svg"
-    sendBtn.appendChild(imgSendBtn)
-    sendBtn.addEventListener("click", function() {
-        let message = input.value.trim()
-        if (message) {
-            // conn.send(message) Putain de merde
-            input.value = ""
-            console.log("Message envoyé :", message)
-        }
-    })
-
-    modal.appendChild(closeBtn)
-    modal.appendChild(chatContent)
-    modal.appendChild(input)
-    modal.appendChild(sendBtn)
-
-    document.body.appendChild(modal)
 }
