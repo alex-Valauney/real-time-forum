@@ -1,6 +1,6 @@
 import { connWebSocket } from "./websocket.js"
 import { throttlePost, handleScrollPost, buildPostPage } from "./post.js"
-import { openChatBox } from "./users.js"
+import { openChatBox } from "./chat.js"
 import { getUser, refreshPosts, scrollPosts } from "./fetches.js"
 
 let currentLoadId = sessionStorage.getItem("currentLoadId") || undefined
