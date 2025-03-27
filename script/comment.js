@@ -1,27 +1,4 @@
-export async function getComs(idPost) {
-    let allCom = Array.from(document.querySelectorAll('li'))
-    try {
-        let response
-        if (allCom.length === 0) {
-            response = await fetch(`/nextComs?idPost=${idPost}`, {
-                method: "GET"
-            })
-        } else {
-            response = await fetch(`/nextComs?idCom=${allCom.at(-1).id}&idPost=${idPost}`, {
-                method: "GET"
-            });
-        }
-        if (!response.ok) {
-            throw new Error("Erreur lors de la récupération des posts");
-        }
-        const comments = await response.json();
-        addNewCom(comments);
-    } catch (error) {
-        console.error("Erreur :", error);
-    }
-}
-
-function addNewCom(tabCom) {
+export function addNewCom(tabCom) {
     let comList = document.getElementById("commentList");
     tabCom.forEach(com => {
         let comItem = createComElem(com);

@@ -1,49 +1,7 @@
-import { getComs } from "./comment.js"
 import { attachPostClickEvents } from "./main.js"
+import { getOnePost, scrollPosts, getComs } from "./fetches.js"
 
-
-export async function scrollPosts() {
-    let allRow = Array.from(document.querySelectorAll('tr')).filter(tr => !tr.getAttribute("id"))
-    try {
-        let response 
-        if (allRow.length === 0) {
-            response = await fetch(`/nextPosts`)
-        } else {
-            response = await fetch(`/nextPosts?id=${postIdFromTr(allRow.at(-1))}`, {
-                method: "GET"
-            })
-        }
-    if (!response.ok) {
-        throw new Error("Erreur lors de la récupération des posts");
-    }
-    const posts = await response.json()
-    addScrollPosts(posts)
-    } catch (error) {
-        console.error("Erreur :", error);
-    }
-}
-
-export async function refreshPosts() {
-    let allRow = Array.from(document.querySelectorAll('tr')).filter(tr => !tr.getAttribute("id"))
-    try {
-        const response = await fetch(`/refreshPosts?id=${postIdFromTr(allRow[0])}`, {
-            method: "GET"
-        })
-        if (!response.ok) {
-            throw new Error("Erreur lors de la récupération des posts")
-        }
-        const posts = await response.json()
-        addNewPosts(posts)
-    } catch (error) {
-        console.error("Erreur :", error);
-    }
-}
-
-function postIdFromTr(tr) {
-    return Array.from(tr.children)[0].id
-}
-
-function addNewPosts(tabPost) {
+export function addNewPosts(tabPost) {
     const indexSection = document.getElementById("indexTable")
     tabPost.forEach(post => {
         let postLine = createPostElem(post)
@@ -52,7 +10,7 @@ function addNewPosts(tabPost) {
     attachPostClickEvents()
 }
 
-function addScrollPosts(tabPost) {
+export function addScrollPosts(tabPost) {
     const indexSection = document.getElementById("indexTable")
     tabPost.forEach(post => {
         let postLine = createPostElem(post)
@@ -110,22 +68,7 @@ export function handleScrollPost() {
     }
 }
 
-async function getOnePost(id) {
-    try {
-        const response = await fetch(`/getPost?id=${id}`, {
-            method: "GET"
-        })
-        if (!response.ok) {
-            throw new Error("Erreur lors de la récupération des posts");
-        }
-        const postData = await response.json()
-        return postData
-    } catch (error) {
-        console.error("Erreur :", error);
-    }
-}
-
-export async  function buildPostPage(postId) {
+export async function buildPostPage(postId) {
     const data = await getOnePost(postId)
     
     const postSection = document.getElementById("post")
@@ -162,6 +105,7 @@ export async  function buildPostPage(postId) {
     postSection.prepend(article)
 
     const form = document.getElementById("newComForm")
+    console.log("post id :", postId)
     form.setAttribute("action", `/newCom?id=${postId}`)
     getComs(postId)
 }

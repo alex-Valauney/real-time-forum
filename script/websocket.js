@@ -1,4 +1,7 @@
-export function connWebSocket() {
+import { getLastPMList } from "./fetches.js"
+import { addUserElem, sortUser } from "./users.js"
+
+export function connWebSocket(userClient) {
     let conn
     //Creating the front websocket connection 
     if (window["WebSocket"]) {
@@ -17,6 +20,11 @@ export function connWebSocket() {
         }
         conn.onmessage = function (e) { //Will be splitted in further cases depending on the nature of the message
             output.textContent = "received : " + e.data
+            let parsedData = JSON.parse(e.data)
+            redirect = {
+                userListProcess: userListProcess
+            }
+            redirect[parsedData[method]](parsedData, conn, userClient)
         }
     } else {
         console.log("Your browser does not support WebSockets")
@@ -27,4 +35,14 @@ export function connWebSocket() {
         console.log(textinputdata)
         conn.send(textinputdata)
     }
+}
+
+function userListProcess(userLists, conn, userClient) {
+    const listPM = getLastPMList()
+
+    console.log(userLists[allUsers], userLists[onlineUsers], listPM, userClient, conn)
+    let onlineUsers, offlineUsers = sortUser(userLists[allUsers], userLists[onlineUsers], listPM, userClient)
+
+    addUserElem(onlineUsers, true, pmClient, conn, userClient)
+    addUserElem(offlineUsers, false, pmClient, conn, userClient)
 }

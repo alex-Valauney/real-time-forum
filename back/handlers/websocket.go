@@ -59,6 +59,7 @@ func WebsocketHandler(w http.ResponseWriter, r *http.Request) {
 	go newClient.FrontToBack()
 
 	// BDDConn := &methods.BDD{}
+	// BDDConn := &methods.BDD{}
 
 	// // Handle messages
 	// for {
