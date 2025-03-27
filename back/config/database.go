@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"rtf/back/methods"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -74,6 +75,7 @@ func DefineTables(db *sql.DB) { // define and create all tables
 	CreateTable(db, categoriesTable, "categories")
 	CreateTable(db, catPostRelTable, "cat_post_rel")
 	CreateTable(db, privateMessageTable, "private_messages")
+	InsertCategori()
 }
 
 func CreateTable(db *sql.DB, createTableSQL string, tableName string) { //create one table already defined
@@ -82,4 +84,42 @@ func CreateTable(db *sql.DB, createTableSQL string, tableName string) { //create
 		log.Fatalf("Creation table Failed %s : %v", tableName, err)
 	}
 	fmt.Printf("Table %s already exist.\n", tableName)
+}
+
+func InsertCategori() {
+
+	db := &methods.BDD{}
+
+	cat1 := "INSERT INTO categories(id, name) VALUES (1, 'cat1');"
+	cat2 := "INSERT INTO categories(id, name) VALUES (2, 'cat2');"
+	cat3 := "INSERT INTO categories(id, name) VALUES (3, 'cat3');"
+	cat4 := "INSERT INTO categories(id, name) VALUES (4, 'cat4');"
+
+	db.OpenConn()
+
+	_, err := db.Conn.Exec(cat1)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+	_, err = db.Conn.Exec(cat2)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	_, err = db.Conn.Exec(cat3)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	_, err = db.Conn.Exec(cat4)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	db.CloseConn()
+
 }
