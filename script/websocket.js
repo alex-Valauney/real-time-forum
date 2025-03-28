@@ -57,4 +57,18 @@ async function userListProcess(userLists, conn, userClient) {
 
 function newPM(packageMessage, conn, userCLient) {
     //if (packageMessage[User_to])
+    const chatContent = document.getElementById("chatContent")
+
+    const divMessage = document.createElement('div')
+    let messageContent = document.createElement("span")
+    messageContent.textContent = `${fullMessage.content}`
+    let messageTime = document.createElement("span")
+    messageTime.textContent = `${fullMessage.date}`
+    let messageAuth = document.createElement("span")
+    messageAuth.textContent = `${fullMessage.user_from.Nickname}`
+
+    divMessage.appendChild(messageContent)
+    divMessage.appendChild(messageAuth)
+    divMessage.appendChild(messageTime)
+    chatContent.appendChild(divMessage)
 }

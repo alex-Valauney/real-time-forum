@@ -29,8 +29,8 @@ export async function openChatBox(userTo, conn, userClient) {
         let message = input.value.trim()
         if (message) {
             const fullMessage = {
-                user_to : userTo,
-                user_from : userClient,
+                user_to : userTo.Id,
+                user_from : userClient.Id,
                 content : message,
                 date : Date.now()
             }
@@ -48,7 +48,7 @@ export async function openChatBox(userTo, conn, userClient) {
             divMessage.appendChild(messageContent)
             divMessage.appendChild(messageAuth)
             divMessage.appendChild(messageTime)
-            chatContent.prepend(divMessage)
+            chatContent.appendChild(divMessage)
         }
     })
 
@@ -100,8 +100,4 @@ function handleScrollPM() {
             isLoading = false;
         });
     }
-}
-
-export function receiveMessage(message) {
-    // DJIMI
 }
