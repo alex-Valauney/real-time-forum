@@ -1,5 +1,6 @@
-export function openChatBox(userTo, conn, userClient) {
-    conn.send(user, userTo)
+import { getSpePM } from "./fetches.js"
+
+export async function openChatBox(userTo, conn, userClient) {
     let modal = document.createElement("div")
     modal.id = `chat-${userTo.Id}`
 
@@ -12,9 +13,8 @@ export function openChatBox(userTo, conn, userClient) {
     let chatContent = document.createElement("div")
     chatContent.id = "chatContent"
     
-    // FOUTRE getSpePM par ici et afficher les divs DJIMI
-    //PAS OUBLIER LE SCROLL
-
+    scrollPM(userClient, userTo, chatContent)
+    chatContent.addEventListener("scroll", throttlePM(handleScrollPM, 200))
     
     let input = document.createElement("input")
     input.type = "text"
@@ -48,8 +48,48 @@ export function openChatBox(userTo, conn, userClient) {
     document.body.appendChild(modal)
 }
 
+async function scrollPM(userClient, userTo, chatContent) {
+
+    const listPM = await getSpePM(userClient, userTo, chatContent)
+    listPM.forEach(pm => {
+        const divMessage = document.createElement('div')
+        divMessage.classList.add(`pm-${pm.Id}`)
+        let messageContent = document.createElement("span")
+        messageContent.textContent = `${pm.Content}`
+        let messageTime = document.createElement("span")
+        messageTime.textContent = `${pm.Date}`
+        let messageAuth = document.createElement("span")
+        messageAuth.textContent = (userTo.Id === pm.user_From) ? `${userTo.Nickname}` : `${userClient.Nickname}`
+
+        divMessage.appendChild(messageContent)
+        divMessage.appendChild(messageAuth)
+        divMessage.appendChild(messageTime)
+
+        chatContent.prepend(divMessage)
+    })
+}
+
+let isLoading
+// basic throttle to avoid lodash import
+function throttlePM(func, wait, args) {
+    let timeout;
+    return function (...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+}
+// function handling down scroll, and start new batch fetch of older pm
+function handleScrollPM() {
+    const scrollPosition = window.innerHeight + window.scrollY;
+    const pageHeight = document.body.offsetHeight;
+    if (scrollPosition >= pageHeight - 100 && !isLoading) {
+        isLoading = true;
+        scrollPM().finally(() => {
+            isLoading = false;
+        });
+    }
+}
+
 export function receiveMessage(message) {
     // DJIMI
 }
-
-//LE CSS DJIMI

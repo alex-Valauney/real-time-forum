@@ -21,7 +21,7 @@ export function connWebSocket(userClient) {
         conn.onmessage = function (e) { //Will be splitted in further cases depending on the nature of the message
             output.textContent = "received : " + e.data
             let parsedData = JSON.parse(e.data)
-            redirect = {
+            const redirect = {
                 userListProcess: userListProcess,
                 newPM : newPM,
             }
@@ -41,13 +41,19 @@ export function connWebSocket(userClient) {
 async function userListProcess(userLists, conn, userClient) {
     const pmClient = await getLastPMList()
 
-    console.log(userLists["AllUsers"], userLists["OnlineUsers"], pmClient, userClient, conn)
     let obj = sortUser(userLists["AllUsers"], userLists["OnlineUsers"], pmClient, userClient)
+
+    const userListOn = document.getElementById("onlineUser")
+    const userListOff = document.getElementById("offlineUser")
+    userListOn.replaceChildren()
+    userListOn.textContent = "Online : "
+    userListOff.replaceChildren()
+    userListOff.textContent = "Offline : "
 
     addUserElem(obj.online, true, pmClient, conn, userClient)
     addUserElem(obj.offline, false, pmClient, conn, userClient)
 }
 
-/* function newPM(packageMessage, conn, userCLient) {
-    if (packageMessage[User_to])
-} */
+function newPM(packageMessage, conn, userCLient) {
+    //if (packageMessage[User_to])
+}
