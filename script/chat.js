@@ -32,11 +32,23 @@ export async function openChatBox(userTo, conn, userClient) {
                 user_to : userTo,
                 user_from : userClient,
                 content : message,
-                date : new Date.now()
+                date : Date.now()
             }
-            // RECREER UNE DIV POUR LE MESSAGE DJIMI
             conn.send(JSON.stringify(fullMessage))
             input.value = ""
+
+            const divMessage = document.createElement('div')
+            let messageContent = document.createElement("span")
+            messageContent.textContent = `${fullMessage.content}`
+            let messageTime = document.createElement("span")
+            messageTime.textContent = `${fullMessage.date}`
+            let messageAuth = document.createElement("span")
+            messageAuth.textContent = `${fullMessage.user_from.Nickname}`
+
+            divMessage.appendChild(messageContent)
+            divMessage.appendChild(messageAuth)
+            divMessage.appendChild(messageTime)
+            chatContent.prepend(divMessage)
         }
     })
 
