@@ -41,6 +41,7 @@ func (h *Hub) Run() {
 				'{"user_to":1,"user_from":2,"content":"messagem mdr","date":"2022-02-03"}'
 			*/
 			var obj map[string]any
+			obj["method"] = "newPM"
 
 			json.Unmarshal(message, &obj)
 			fmt.Println(obj)
@@ -60,7 +61,8 @@ func (h *Hub) Run() {
 				fmt.Println(*c.User)
 				fmt.Printf("%T, %T\n", c.User.Id, obj["user_to"])
 				if c.User.Id == int(obj["user_to"].(float64)) {
-					c.Buffer <- message
+					data, _ := json.Marshal(obj)
+					c.Buffer <- data
 					found = true
 					break
 				}
