@@ -27,39 +27,14 @@ func (h *Hub) Run() {
 		select {
 		case client := <-h.Connection:
 			h.Clients[client] = true
-
-			BDDConn := &methods.BDD{}
-
-			type UserList struct {
-				AllUsers    []methods.User
-				OnlineUsers []methods.User
-				Method      string
-			}
-
-			AllUserList := UserList{Method: "userListProcess"}
-			BDDConn.OpenConn()
-			AllUserList.AllUsers = BDDConn.SelectAllUsers().Result.([]methods.User)
-			BDDConn.CloseConn()
-
-			for c := range h.Clients {
-				AllUserList.OnlineUsers = append(AllUserList.OnlineUsers, *c.User)
-
-			}
-			data, err := json.Marshal(AllUserList)
-			if err != nil {
-				fmt.Println(err)
-				continue
-			}
-
-			for c := range h.Clients {
-				c.Buffer <- data
-			}
+			h.BroadcastUserList()
 
 		case client := <-h.Deconnection:
 			if h.Clients[client] {
 				delete(h.Clients, client)
 				client.Conn.Close()
 			}
+			h.BroadcastUserList()
 
 		case message := <-h.Buffer:
 			/*
@@ -96,5 +71,34 @@ func (h *Hub) Run() {
 				fmt.Println("User not found")
 			}
 		}
+	}
+}
+
+func (h *Hub) BroadcastUserList() {
+	BDDConn := &methods.BDD{}
+
+	type UserList struct {
+		AllUsers    []methods.User
+		OnlineUsers []methods.User
+		Method      string
+	}
+
+	AllUserList := UserList{Method: "userListProcess"}
+	BDDConn.OpenConn()
+	AllUserList.AllUsers = BDDConn.SelectAllUsers().Result.([]methods.User)
+	BDDConn.CloseConn()
+
+	for c := range h.Clients {
+		AllUserList.OnlineUsers = append(AllUserList.OnlineUsers, *c.User)
+
+	}
+	data, err := json.Marshal(AllUserList)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	for c := range h.Clients {
+		c.Buffer <- data
 	}
 }
