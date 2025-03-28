@@ -1,7 +1,9 @@
 package handlers
 
 import (
+	"database/sql"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"rtf/back/methods"
 	"slices"
@@ -11,6 +13,7 @@ import (
 func SpepmHandler(w http.ResponseWriter, r *http.Request) {
 	idFrom := r.URL.Query().Get("idclient")
 	idTo := r.URL.Query().Get("idto")
+	idPm := r.URL.Query().Get("idpm")
 	encoder := json.NewEncoder(w)
 
 	if idFrom == "" || idTo == "" {
@@ -18,12 +21,49 @@ func SpepmHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	stmt := "SELECT * FROM privatemessages WHERE ((user_from = ? AND user_to = ?) OR (user_from = ? AND user_to = ?))"
+	if idPm != "" {
+		stmt += " AND id < ?"
+	}
+	stmt += " ORDER BY id DESC;"
+
+	var result *sql.Rows
+	var err error
+
 	BDDConn := &methods.BDD{}
 	BDDConn.OpenConn()
-	result := BDDConn.SelectPMByFromTo(map[string]any{"user_from": idFrom, "user_to": idTo})
+	// result := BDDConn.SelectPMByFromTo(map[string]any{"user_from": idFrom, "user_to": idTo})
+
+	if idPm == "" {
+		result, err = BDDConn.Conn.Query(stmt, idFrom, idTo, idTo, idFrom)
+		if err != nil {
+			fmt.Println(err)
+			encoder.Encode([]methods.Comment{})
+			BDDConn.CloseConn()
+			return
+		}
+	} else {
+		result, err = BDDConn.Conn.Query(stmt, idFrom, idTo, idTo, idFrom, idPm)
+		if err != nil {
+			fmt.Println(err)
+			encoder.Encode([]methods.Comment{})
+			BDDConn.CloseConn()
+			return
+		}
+	}
 	BDDConn.CloseConn()
 
-	encoder.Encode(result.Result)
+	tabPm := []methods.PrivateMessage{}
+
+	for result.Next() {
+		for result.Next() {
+			privateMessage := methods.PrivateMessage{}
+			result.Scan(&privateMessage.Id, &privateMessage.User_from, &privateMessage.User_to, &privateMessage.Content, &privateMessage.Date)
+			tabPm = append(tabPm, privateMessage)
+		}
+	}
+
+	encoder.Encode(tabPm)
 }
 
 func PmHandler(w http.ResponseWriter, r *http.Request) {
