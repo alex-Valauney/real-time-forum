@@ -68,8 +68,9 @@ func (h *Hub) Run() {
 			var obj map[string]any
 
 			json.Unmarshal(message, &obj)
+			fmt.Println(obj)
 
-			/* BDDConn := &methods.BDD{}
+			BDDConn := &methods.BDD{}
 
 			BDDConn.OpenConn()
 			result := BDDConn.InsertPrivateMessage(obj)
@@ -79,12 +80,21 @@ func (h *Hub) Run() {
 				continue
 			}
 
+			found := false
 			for c := range h.Clients {
-				if c.User.Id == obj["user_to"] {
+				fmt.Println(*c.User)
+				fmt.Printf("%T, %T\n", c.User.Id, obj["user_to"])
+				if c.User.Id == int(obj["user_to"].(float64)) {
 					c.Buffer <- message
+					found = true
 					break
 				}
-			} */
+			}
+			if found {
+				fmt.Println("Message sent")
+			} else {
+				fmt.Println("User not found")
+			}
 		}
 	}
 }

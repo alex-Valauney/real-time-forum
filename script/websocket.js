@@ -27,14 +27,15 @@ export function connWebSocket(userClient) {
             }
             redirect[parsedData["Method"]](parsedData, conn, userClient)
         }
+        // Gestion du bouton de test WebSocket
+        // Gestion du bouton de test WebSocket
+        document.getElementById("testbutWS").onclick = function (e) {
+            let textinputdata = document.querySelector("#testWS").value
+            let obj = {user_from: userClient.Id, user_to: 2, content: textinputdata, date: "aujourd'hui"}
+            conn.send(JSON.stringify(obj))
+        }
     } else {
         console.log("Your browser does not support WebSockets")
-    }
-    // Gestion du bouton de test WebSocket
-    document.getElementById("testbutWS").onclick = function (e) {
-        let textinputdata = document.querySelector("#testWS").value
-        console.log(textinputdata)
-        conn.send(textinputdata)
     }
 }
 
