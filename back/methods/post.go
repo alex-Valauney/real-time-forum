@@ -45,11 +45,15 @@ func (db *BDD) InsertPost(obj map[string]any) Response {
 		fmt.Println(err)
 		return Response{0}
 	}
+
 	stmt = "INSERT INTO catpostrel(cat_id, post_id) VALUES (?, ?);"
+
 	for i := 0; i < len(obj["categories"].([]int)); i++ {
-		_, err = db.Conn.Exec(stmt, obj["categories"].([]int)[i], id)
-		if err != nil {
-			fmt.Println(err)
+		if obj["categories"].([]int)[i] != 0 {
+			_, err = db.Conn.Exec(stmt, obj["categories"].([]int)[i], id)
+			if err != nil {
+				fmt.Println(err)
+			}
 		}
 	}
 
