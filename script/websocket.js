@@ -53,11 +53,36 @@ async function userListProcess(userLists, conn, userClient) {
     addUserElem(obj.offline, false, pmClient, conn, userClient)
 }
 
+let count = 0
+
 function newPM(packageMessage, conn, userClient) {
+    console.log(packageMessage)
+    count += 1
     const chatContent = document.getElementById("chatContent")
+    
+    const userId = packageMessage.User_from
+
     if (chatContent) {
         createMessage(packageMessage, chatContent)
-    } else {
+        count = 0
 
+        const existingNotif = document.getElementById(`notifDot-${userId}`)
+        if (existingNotif) {
+            existingNotif.remove()
+        }
+    } else {
+        const userDiv = document.getElementById(`user-${userId}`)
+        let notifDot = document.getElementById(`notifDot-${userId}`)
+
+        if (!notifDot && userDiv) {
+            notifDot = document.createElement("div")
+            notifDot.id = `notifDot-${userId}`
+            notifDot.classList.add("notification-dot")
+            userDiv.appendChild(notifDot)
+        }
+
+        if (notifDot) {
+            notifDot.textContent = count
+        }
     }
 }

@@ -69,6 +69,10 @@ export function handleScrollPost() {
 }
 
 export async function buildPostPage(postId) {
+    document.querySelectorAll('#postArticle').forEach(article => {
+        article.remove()
+    })
+
     const data = await getOnePost(postId)
     
     const postSection = document.getElementById("post")

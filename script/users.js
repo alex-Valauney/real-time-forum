@@ -48,6 +48,7 @@ function createUserElem(userTo, online, pmClient, conn, userClient) {
     }
 
     const userDiv = document.createElement("div")
+    userDiv.id = `user-${userTo.Id}`
 
     const usernameDiv = document.createElement("div")
     const usernameText = document.createElement("span")
@@ -65,7 +66,7 @@ function createUserElem(userTo, online, pmClient, conn, userClient) {
         userDiv.appendChild(lastMessageDiv)
     }
    
-    userDiv.appendChild(usernameDiv)
+    userDiv.prepend(usernameDiv)
 
     if (online) {
         const chatButton = document.createElement("button")
@@ -73,7 +74,14 @@ function createUserElem(userTo, online, pmClient, conn, userClient) {
         imgButton.classList.add("picMessage")
         imgButton.setAttribute("src", "./pics/logo.svg")
         chatButton.appendChild(imgButton)
-        chatButton.onclick = () => openChatBox(userTo, conn, userClient)
+        chatButton.onclick = () => {
+            const existingChatBox = document.getElementById(`chat-${userTo.Id}`)
+            if (existingChatBox) {
+                existingChatBox.remove() 
+            } else {
+                openChatBox(userTo, conn, userClient)
+            }
+        }
         userDiv.appendChild(chatButton)
     }   
 
