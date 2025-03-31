@@ -40,11 +40,10 @@ func (h *Hub) Run() {
 			/*
 				'{"user_to":1,"user_from":2,"content":"messagem mdr","date":"2022-02-03"}'
 			*/
-			var obj map[string]any
-			obj["method"] = "newPM"
+			var obj = make(map[string]any)
+			obj["Method"] = "newPM"
 
 			json.Unmarshal(message, &obj)
-			fmt.Println(obj)
 
 			BDDConn := &methods.BDD{}
 

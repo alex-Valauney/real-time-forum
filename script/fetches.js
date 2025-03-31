@@ -38,11 +38,11 @@ export async function getSpePM(userClient, userTo, chatContent) { //get all user
     try {
         if (lastAddedPM) {
             let pmId = lastAddedPM.className.match(/pm-(\d+)/)?.[1]
-            response = await fetch(`/spepm?idclient=${userClient}&idto=${userTo}&idpm=${pmId}`, {
+            response = await fetch(`/spepm?idclient=${userClient.Id}&idto=${userTo.Id}&idpm=${pmId}`, {
                 method: "GET"
             })
         } else {
-            response = await fetch(`/spepm?idclient=${userClient}&idto=${userTo}`, {
+            response = await fetch(`/spepm?idclient=${userClient.Id}&idto=${userTo.Id}`, {
                 method: "GET"
             })
         }

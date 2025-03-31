@@ -1,3 +1,4 @@
+import { createMessage } from "./chat.js"
 import { getLastPMList } from "./fetches.js"
 import { addUserElem, sortUser } from "./users.js"
 
@@ -8,9 +9,7 @@ export function connWebSocket(userClient) {
         conn = new WebSocket("ws://" + document.location.host + "/ws")
         let output = document.querySelector("#output")
         conn.onopen = function (e) {
-            conn.send("New client")
             console.log("WS working")
-            output.textContent = "connection successful"
         }
         conn.onclose = function (e) { //Display that the user was disconnected of the ws 
             console.log("Closed WS")
@@ -27,7 +26,6 @@ export function connWebSocket(userClient) {
             }
             redirect[parsedData["Method"]](parsedData, conn, userClient)
         }
-        // Gestion du bouton de test WebSocket
         // Gestion du bouton de test WebSocket
         document.getElementById("testbutWS").onclick = function (e) {
             let textinputdata = document.querySelector("#testWS").value
@@ -55,20 +53,11 @@ async function userListProcess(userLists, conn, userClient) {
     addUserElem(obj.offline, false, pmClient, conn, userClient)
 }
 
-function newPM(packageMessage, conn, userCLient) {
-    //if (packageMessage[User_to])
+function newPM(packageMessage, conn, userClient) {
     const chatContent = document.getElementById("chatContent")
+    if (chatContent) {
+        createMessage(packageMessage, chatContent)
+    } else {
 
-    const divMessage = document.createElement('div')
-    let messageContent = document.createElement("span")
-    messageContent.textContent = `${fullMessage.content}`
-    let messageTime = document.createElement("span")
-    messageTime.textContent = `${fullMessage.date}`
-    let messageAuth = document.createElement("span")
-    messageAuth.textContent = `${fullMessage.user_from.Nickname}`
-
-    divMessage.appendChild(messageContent)
-    divMessage.appendChild(messageAuth)
-    divMessage.appendChild(messageTime)
-    chatContent.appendChild(divMessage)
+    }
 }

@@ -31,24 +31,14 @@ export async function openChatBox(userTo, conn, userClient) {
             const fullMessage = {
                 user_to : userTo.Id,
                 user_from : userClient.Id,
+                auth : userClient.Nickname,
                 content : message,
                 date : Date.now()
             }
             conn.send(JSON.stringify(fullMessage))
             input.value = ""
 
-            const divMessage = document.createElement('div')
-            let messageContent = document.createElement("span")
-            messageContent.textContent = `${fullMessage.content}`
-            let messageTime = document.createElement("span")
-            messageTime.textContent = `${fullMessage.date}`
-            let messageAuth = document.createElement("span")
-            messageAuth.textContent = `${fullMessage.user_from.Nickname}`
-
-            divMessage.appendChild(messageContent)
-            divMessage.appendChild(messageAuth)
-            divMessage.appendChild(messageTime)
-            chatContent.appendChild(divMessage)
+           createMessage(fullMessage, chatContent)
         }
     })
 
@@ -58,6 +48,21 @@ export async function openChatBox(userTo, conn, userClient) {
     modal.appendChild(sendBtn)
 
     document.body.appendChild(modal)
+}
+
+export function createMessage(objPM, source) {
+    const divMessage = document.createElement('div')
+    let messageContent = document.createElement("span")
+    messageContent.textContent = `${objPM.content}`
+    let messageTime = document.createElement("span")
+    messageTime.textContent = `${objPM.date}`
+    let messageAuth = document.createElement("span")
+    messageAuth.textContent = `${objPM.auth}`
+
+    divMessage.appendChild(messageContent)
+    divMessage.appendChild(messageAuth)
+    divMessage.appendChild(messageTime)
+    source.appendChild(divMessage)
 }
 
 async function scrollPM(userClient, userTo, chatContent) {

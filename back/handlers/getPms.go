@@ -11,6 +11,7 @@ import (
 )
 
 func SpepmHandler(w http.ResponseWriter, r *http.Request) {
+
 	idFrom := r.URL.Query().Get("idclient")
 	idTo := r.URL.Query().Get("idto")
 	idPm := r.URL.Query().Get("idpm")
@@ -54,13 +55,10 @@ func SpepmHandler(w http.ResponseWriter, r *http.Request) {
 	BDDConn.CloseConn()
 
 	tabPm := []methods.PrivateMessage{}
-
 	for result.Next() {
-		for result.Next() {
-			privateMessage := methods.PrivateMessage{}
-			result.Scan(&privateMessage.Id, &privateMessage.User_from, &privateMessage.User_to, &privateMessage.Content, &privateMessage.Date)
-			tabPm = append(tabPm, privateMessage)
-		}
+		privateMessage := methods.PrivateMessage{}
+		result.Scan(&privateMessage.Id, &privateMessage.User_from, &privateMessage.User_to, &privateMessage.Content, &privateMessage.Date)
+		tabPm = append(tabPm, privateMessage)
 	}
 
 	encoder.Encode(tabPm)

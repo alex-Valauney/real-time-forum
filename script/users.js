@@ -1,7 +1,6 @@
 import { openChatBox } from "./chat.js"
 
 export function sortUser(allUsers, onlineUsers, pmClient, currentClient) {
-    console.log("currentclient :", currentClient )
     let offlineUsers = allUsers.filter(user => !onlineUsers.some(onlineUser => onlineUser.Id === user.Id))
     onlineUsers = onlineUsers.filter(user => user.Id !== currentClient.Id)
     onlineUsers.sort((a, b) => sortByPm(a, b, pmClient))
