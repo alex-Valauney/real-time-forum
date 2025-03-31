@@ -38,7 +38,7 @@ export function connWebSocket(userClient) {
 }
 
 async function userListProcess(userLists, conn, userClient) {
-    const pmClient = await getLastPMList()
+    const pmClient = await getLastPMList(userClient.Id)
 
     let obj = sortUser(userLists["AllUsers"], userLists["OnlineUsers"], pmClient, userClient)
 

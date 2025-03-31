@@ -41,6 +41,7 @@ export function addUserElem(tabUser, online, pmClient, conn, userClient) {
 
 function createUserElem(userTo, online, pmClient, conn, userClient) {
     let pmIndexUser = pmClient.filter(pm => userTo.Id === pm.User_from || userTo.Id === pm.User_to)
+    
     let lastDate = undefined
     if (pmIndexUser.length != 0) {
         lastDate = pmIndexUser[0].Date
