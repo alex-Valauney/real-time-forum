@@ -38,21 +38,25 @@ func (h *Hub) Run() {
 
 		case message := <-h.Buffer:
 			/*
-				'{"user_to":1,"user_from":2,"content":"messagem mdr","date":"2022-02-03"}'
+				'{"user_to":1,"user_from":2,"content":"messagem mdr","date":"2022-02-03","typing":false}'
 			*/
 			var obj = make(map[string]any)
-			obj["Method"] = "newPM"
 
 			json.Unmarshal(message, &obj)
 
-			BDDConn := &methods.BDD{}
+			if !obj["typing"].(bool) {
+				obj["Method"] = "newPM"
+				BDDConn := &methods.BDD{}
 
-			BDDConn.OpenConn()
-			result := BDDConn.InsertPrivateMessage(obj)
-			BDDConn.CloseConn()
+				BDDConn.OpenConn()
+				result := BDDConn.InsertPrivateMessage(obj)
+				BDDConn.CloseConn()
 
-			if result.Result == 0 {
-				continue
+				if result.Result == 0 {
+					continue
+				}
+			} else {
+				obj["Method"] = "TypingDiv"
 			}
 
 			found := false
