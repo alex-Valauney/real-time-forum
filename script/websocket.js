@@ -23,6 +23,7 @@ export function connWebSocket(userClient) {
             const redirect = {
                 userListProcess: userListProcess,
                 newPM : newPM,
+                typingDiv, typingDiv,
             }
             redirect[parsedData["Method"]](parsedData, conn, userClient)
         }
@@ -54,8 +55,7 @@ async function userListProcess(userLists, conn, userClient) {
 }
 
 let count = 0
-
-function newPM(packageMessage, conn, userClient) {
+function newPM(packageMessage) {
     console.log(packageMessage)
     count += 1
     const chatContent = document.getElementById("chatContent")
@@ -85,4 +85,36 @@ function newPM(packageMessage, conn, userClient) {
             notifDot.textContent = count
         }
     }
+}
+
+
+const typingTimers = {}
+
+function typingDiv(packageMessage) { 
+    const chatContent = document.getElementById("chatContent")
+
+    if (chatContent) {
+        const userId = packageMessage.user_from
+        const notifId = `typing-${userId}`
+        if (!document.getElementById(notifId)) {
+            
+            const animDiv = document.createElement('div')
+            animDiv.setAttribute('id', notifId)
+            let messageAuth = document.createElement("span")
+            messageAuth.textContent = `${packageMessage.auth}`
+        
+            const animSVG = document.createElement('img')
+            animSVG.src = "./pics/anim.svg"
+            animDiv.prepend(animSVG)
+            animDiv.appendChild(messageAuth)
+            
+            chatContent.appendChild(animDiv)
+        }
+    }
+    
+    clearTimeout(typingTimers[userId])
+    typingTimers[userId] = setTimeout(() => {
+        const elem = document.getElementById(notifId)
+        if (elem) elem.remove()
+    }, 5000)
 }
