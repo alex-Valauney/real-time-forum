@@ -75,7 +75,7 @@ func DefineTables(db *sql.DB) { // define and create all tables
 	CreateTable(db, categoriesTable, "categories")
 	CreateTable(db, catPostRelTable, "cat_post_rel")
 	CreateTable(db, privateMessageTable, "private_messages")
-	InsertCategori()
+	InsertCategories()
 }
 
 func CreateTable(db *sql.DB, createTableSQL string, tableName string) { //create one table already defined
@@ -86,7 +86,7 @@ func CreateTable(db *sql.DB, createTableSQL string, tableName string) { //create
 	fmt.Printf("Table %s already exist.\n", tableName)
 }
 
-func InsertCategori() {
+func InsertCategories() {
 
 	db := &methods.BDD{}
 
