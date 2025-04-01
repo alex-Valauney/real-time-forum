@@ -56,7 +56,7 @@ func (h *Hub) Run() {
 					continue
 				}
 			} else {
-				obj["Method"] = "TypingDiv"
+				obj["Method"] = "typingDiv"
 			}
 
 			found := false
