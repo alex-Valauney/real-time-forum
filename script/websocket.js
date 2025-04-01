@@ -92,10 +92,9 @@ const typingTimers = {}
 
 function typingDiv(packageMessage) { 
     const chatContent = document.getElementById("chatContent")
-
+    const userId = packageMessage.user_from
+    const notifId = `typing-${userId}`
     if (chatContent) {
-        const userId = packageMessage.user_from
-        const notifId = `typing-${userId}`
         if (!document.getElementById(notifId)) {
             
             const animDiv = document.createElement('div')
