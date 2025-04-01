@@ -16,13 +16,26 @@ export async function openChatBox(userTo, conn, userClient) {
     scrollPM(userClient, userTo, chatContent)
     chatContent.addEventListener("scroll", throttlePM(handleScrollPM, 200))
     
-    let input = document.createElement("input")
+    const input = document.createElement("input")
     input.type = "text"
     input.id = "chatInput"
     input.placeholder = "Écrire un message..."
 
-    let sendBtn = document.createElement("button")
-    let imgSendBtn = document.createElement("img")
+    let lastSentTime = 0
+    input.addEventListener("input", () => {
+        const now = Date.now()
+        if (now - lastSentTime < 1000) return
+
+        conn.send(JSON.stringify({
+            user_to : userTo.Id,
+            user_from : userClient.Id,
+            auth : userClient.Nickname,
+            typing: true,
+        }))
+      })
+
+    const sendBtn = document.createElement("button")
+    const imgSendBtn = document.createElement("img")
     imgSendBtn.src = "./pics/send.svg"
     sendBtn.appendChild(imgSendBtn)
     sendBtn.addEventListener("click", function() {
@@ -33,7 +46,8 @@ export async function openChatBox(userTo, conn, userClient) {
                 user_from : userClient.Id,
                 auth : userClient.Nickname,
                 content : message,
-                date : Date.now()
+                date : Date.now(),
+                typing : false,
             }
             conn.send(JSON.stringify(fullMessage))
             input.value = ""
@@ -53,9 +67,9 @@ export async function openChatBox(userTo, conn, userClient) {
 export function createMessage(objPM, source) {
     const divMessage = document.createElement('div')
     let messageContent = document.createElement("span")
-    messageContent.textContent = `${objPM.content}`
+    messageContent.textContent = `${objPM.content}` || ''
     let messageTime = document.createElement("span")
-    messageTime.textContent = `${objPM.date}`
+    messageTime.textContent = `${objPM.date}` || ''
     let messageAuth = document.createElement("span")
     messageAuth.textContent = `${objPM.auth}`
 
