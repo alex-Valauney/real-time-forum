@@ -1,3 +1,4 @@
+import { createMessage } from "./chat.js"
 import { getLastPMList } from "./fetches.js"
 import { addUserElem, sortUser } from "./users.js"
 
@@ -8,9 +9,7 @@ export function connWebSocket(userClient) {
         conn = new WebSocket("ws://" + document.location.host + "/ws")
         let output = document.querySelector("#output")
         conn.onopen = function (e) {
-            conn.send("New client")
             console.log("WS working")
-            output.textContent = "connection successful"
         }
         conn.onclose = function (e) { //Display that the user was disconnected of the ws 
             console.log("Closed WS")
@@ -21,28 +20,69 @@ export function connWebSocket(userClient) {
         conn.onmessage = function (e) { //Will be splitted in further cases depending on the nature of the message
             output.textContent = "received : " + e.data
             let parsedData = JSON.parse(e.data)
-            redirect = {
-                userListProcess: userListProcess
+            const redirect = {
+                userListProcess: userListProcess,
+                newPM : newPM,
             }
-            redirect[parsedData[method]](parsedData, conn, userClient)
+            redirect[parsedData["Method"]](parsedData, conn, userClient)
+        }
+        // Gestion du bouton de test WebSocket
+        document.getElementById("testbutWS").onclick = function (e) {
+            let textinputdata = document.querySelector("#testWS").value
+            let obj = {user_from: userClient.Id, user_to: 2, content: textinputdata, date: "aujourd'hui"}
+            conn.send(JSON.stringify(obj))
         }
     } else {
         console.log("Your browser does not support WebSockets")
     }
-    // Gestion du bouton de test WebSocket
-    document.getElementById("testbutWS").onclick = function (e) {
-        let textinputdata = document.querySelector("#testWS").value
-        console.log(textinputdata)
-        conn.send(textinputdata)
-    }
 }
 
-function userListProcess(userLists, conn, userClient) {
-    const listPM = getLastPMList()
+async function userListProcess(userLists, conn, userClient) {
+    const pmClient = await getLastPMList(userClient.Id)
 
-    console.log(userLists[allUsers], userLists[onlineUsers], listPM, userClient, conn)
-    let onlineUsers, offlineUsers = sortUser(userLists[allUsers], userLists[onlineUsers], listPM, userClient)
+    let obj = sortUser(userLists["AllUsers"], userLists["OnlineUsers"], pmClient, userClient)
 
-    addUserElem(onlineUsers, true, pmClient, conn, userClient)
-    addUserElem(offlineUsers, false, pmClient, conn, userClient)
+    const userListOn = document.getElementById("onlineUser")
+    const userListOff = document.getElementById("offlineUser")
+    userListOn.replaceChildren()
+    userListOn.textContent = "Online : "
+    userListOff.replaceChildren()
+    userListOff.textContent = "Offline : "
+
+    addUserElem(obj.online, true, pmClient, conn, userClient)
+    addUserElem(obj.offline, false, pmClient, conn, userClient)
+}
+
+let count = 0
+
+function newPM(packageMessage, conn, userClient) {
+    console.log(packageMessage)
+    count += 1
+    const chatContent = document.getElementById("chatContent")
+    
+    const userId = packageMessage.User_from
+
+    if (chatContent) {
+        createMessage(packageMessage, chatContent)
+        count = 0
+
+        const existingNotif = document.getElementById(`notifDot-${userId}`)
+        if (existingNotif) {
+            existingNotif.remove()
+        }
+    } else {
+        const userDiv = document.getElementById(`user-${userId}`)
+        let notifDot = document.getElementById(`notifDot-${userId}`)
+
+        if (!notifDot && userDiv) {
+            notifDot = document.createElement("div")
+            notifDot.id = `notifDot-${userId}`
+            notifDot.classList.add("notification-dot")
+            userDiv.appendChild(notifDot)
+        }
+
+        if (notifDot) {
+            notifDot.textContent = count
+        }
+    }
 }

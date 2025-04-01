@@ -28,7 +28,5 @@ func GetUserHandler(w http.ResponseWriter, r *http.Request) {
 	user := BDDConn.SelectUserByUuid(userUUID)
 	BDDConn.CloseConn()
 
-	userJson, _ := json.Marshal(user.Result)
-
-	encoder.Encode(userJson)
+	encoder.Encode(user.Result)
 }

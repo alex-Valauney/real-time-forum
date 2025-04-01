@@ -1,10 +1,12 @@
+import { openChatBox } from "./chat.js"
+
 export function sortUser(allUsers, onlineUsers, pmClient, currentClient) {
-    let offlineUsers = allUsers.filter(user => !onlineUsers.includes(user))
-    onlineUsers = onlineUsers.filter(user => user.Id !== currentClient)
+    let offlineUsers = allUsers.filter(user => !onlineUsers.some(onlineUser => onlineUser.Id === user.Id))
+    onlineUsers = onlineUsers.filter(user => user.Id !== currentClient.Id)
     onlineUsers.sort((a, b) => sortByPm(a, b, pmClient))
     offlineUsers.sort((a, b) => sortByPm(a, b, pmClient))
 
-    return onlineUsers, offlineUsers
+    return {online: onlineUsers, offline: offlineUsers}
 }
 
 function sortByPm(userA, userB, pmClient) {
@@ -21,7 +23,7 @@ function sortByPm(userA, userB, pmClient) {
         return pmClient.indexOf(userA.Id) - pmClient.indexOf(userB.Id)
     }
 
-    return userA.User_nickname.localeCompare(userB.User_nickname)
+    return userA.Nickname.localeCompare(userB.Nickname)
 }
 
 export function addUserElem(tabUser, online, pmClient, conn, userClient) {
@@ -39,35 +41,47 @@ export function addUserElem(tabUser, online, pmClient, conn, userClient) {
 
 function createUserElem(userTo, online, pmClient, conn, userClient) {
     let pmIndexUser = pmClient.filter(pm => userTo.Id === pm.User_from || userTo.Id === pm.User_to)
-    let lastDate
-    if (pmIndexUser) {
+    
+    let lastDate = undefined
+    if (pmIndexUser.length != 0) {
         lastDate = pmIndexUser[0].Date
     }
 
     const userDiv = document.createElement("div")
+    userDiv.id = `user-${userTo.Id}`
 
     const usernameDiv = document.createElement("div")
     const usernameText = document.createElement("span")
-    usernameText.textContent = user.User_nickname
+    usernameText.textContent = userTo.Nickname
     usernameDiv.appendChild(usernameText)
 
-    const lastMessageDiv = document.createElement("div")
-    const lastMessageLabel = document.createElement("span")
-    lastMessageLabel.textContent = "Last contact: "
-    const lastMessageText = document.createElement("span")
-    lastMessageText.textContent = lastDate ? lastDate : ""
-    lastMessageDiv.appendChild(lastMessageLabel)
-    lastMessageDiv.appendChild(lastMessageText)
+    if (lastDate) {
+        const lastMessageDiv = document.createElement("div")
+        const lastMessageLabel = document.createElement("span")
+        lastMessageLabel.textContent = "Last contact: "
+        const lastMessageText = document.createElement("span")
+        lastMessageText.textContent = lastDate ? lastDate : ""
+        lastMessageDiv.appendChild(lastMessageLabel)
+        lastMessageDiv.appendChild(lastMessageText)
+        userDiv.appendChild(lastMessageDiv)
+    }
    
-    userDiv.appendChild(usernameDiv)
-    userDiv.appendChild(lastMessageDiv)
+    userDiv.prepend(usernameDiv)
 
     if (online) {
         const chatButton = document.createElement("button")
         const imgButton = document.createElement("img")
+        imgButton.classList.add("picMessage")
         imgButton.setAttribute("src", "./pics/logo.svg")
         chatButton.appendChild(imgButton)
-        chatButton.onclick = () => openChatBox(userTo, conn, userClient)
+        chatButton.onclick = () => {
+            const existingChatBox = document.getElementById(`chat-${userTo.Id}`)
+            if (existingChatBox) {
+                existingChatBox.remove() 
+            } else {
+                openChatBox(userTo, conn, userClient)
+            }
+        }
         userDiv.appendChild(chatButton)
     }   
 

@@ -27,63 +27,83 @@ func (h *Hub) Run() {
 		select {
 		case client := <-h.Connection:
 			h.Clients[client] = true
-
-			BDDConn := &methods.BDD{}
-
-			type UserList struct {
-				AllUser          []methods.User
-				AllUserConnected []methods.User
-			}
-
-			AllUserList := UserList{}
-			BDDConn.OpenConn()
-			AllUserList.AllUser = BDDConn.SelectAllUsers().Result.([]methods.User)
-			BDDConn.CloseConn()
-
-			for c := range h.Clients {
-				AllUserList.AllUserConnected = append(AllUserList.AllUserConnected, *c.User)
-
-			}
-			data, err := json.Marshal(AllUserList)
-			if err != nil {
-				fmt.Println(err)
-				continue
-			}
-
-			for c := range h.Clients {
-				c.Buffer <- data
-			}
+			h.BroadcastUserList()
 
 		case client := <-h.Deconnection:
 			if h.Clients[client] {
 				delete(h.Clients, client)
 				client.Conn.Close()
 			}
+			h.BroadcastUserList()
 
 		case message := <-h.Buffer:
 			/*
-				'{"user_to":1,"user_from":2,"content":"messagem mdr","date":"2022-02-03"}'
+				'{"user_to":1,"user_from":2,"content":"messagem mdr","date":"2022-02-03","typing":false}'
 			*/
-			var obj map[string]any
+			var obj = make(map[string]any)
 
 			json.Unmarshal(message, &obj)
 
-			/* BDDConn := &methods.BDD{}
+			if !obj["typing"].(bool) {
+				obj["Method"] = "newPM"
+				BDDConn := &methods.BDD{}
 
-			BDDConn.OpenConn()
-			result := BDDConn.InsertPrivateMessage(obj)
-			BDDConn.CloseConn()
+				BDDConn.OpenConn()
+				result := BDDConn.InsertPrivateMessage(obj)
+				BDDConn.CloseConn()
 
-			if result.Result == 0 {
-				continue
+				if result.Result == 0 {
+					continue
+				}
+			} else {
+				obj["Method"] = "TypingDiv"
 			}
 
+			found := false
 			for c := range h.Clients {
-				if c.User.Id == obj["user_to"] {
-					c.Buffer <- message
+				fmt.Println(*c.User)
+				fmt.Printf("%T, %T\n", c.User.Id, obj["user_to"])
+				if c.User.Id == int(obj["user_to"].(float64)) {
+					data, _ := json.Marshal(obj)
+					c.Buffer <- data
+					found = true
 					break
 				}
-			} */
+			}
+			if found {
+				fmt.Println("Message sent")
+			} else {
+				fmt.Println("User not found")
+			}
 		}
+	}
+}
+
+func (h *Hub) BroadcastUserList() {
+	BDDConn := &methods.BDD{}
+
+	type UserList struct {
+		AllUsers    []methods.User
+		OnlineUsers []methods.User
+		Method      string
+	}
+
+	AllUserList := UserList{Method: "userListProcess"}
+	BDDConn.OpenConn()
+	AllUserList.AllUsers = BDDConn.SelectAllUsers().Result.([]methods.User)
+	BDDConn.CloseConn()
+
+	for c := range h.Clients {
+		AllUserList.OnlineUsers = append(AllUserList.OnlineUsers, *c.User)
+
+	}
+	data, err := json.Marshal(AllUserList)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	for c := range h.Clients {
+		c.Buffer <- data
 	}
 }

@@ -2,22 +2,24 @@ import { addNewPosts, addScrollPosts } from './post.js'
 import { addNewCom } from './comment.js'
 
 export async function getUser() { //get all user details from id
+    let response
     try {
-        let response = await fetch('/user', {
+        response = await fetch('/user', {
             method: "GET"
         })
         if (!response.ok) {
             throw new Error("Erreur lors de la récupération de l'utilisateur")
         }
-        return await response.json()
     } catch (error) {
         console.error("Erreur :", error)
     }
+    return await response.json()
 }
 
 export async function getLastPMList(user) { //get all user's last mps and then sort them for the list 
+    let response
     try {
-        let response = await fetch(`/pm?id=${user}`, {
+        response = await fetch(`/pm?id=${user}`, {
             method: "GET"
         })
 
@@ -30,11 +32,20 @@ export async function getLastPMList(user) { //get all user's last mps and then s
     return await response.json()
 }
 
-export async function getSpePM(userClient) { //get all user's last mps and then sort them for the list 
+export async function getSpePM(userClient, userTo, chatContent) { //get all user's last mps and then sort them for the list 
+    let lastAddedPM = chatContent.firstElementChild
+    let response
     try {
-        let response = await fetch(`/spepm?idclient=${userClient}&idto=${userTo}`, {
-            method: "GET"
-        })
+        if (lastAddedPM) {
+            let pmId = lastAddedPM.className.match(/pm-(\d+)/)?.[1]
+            response = await fetch(`/spepm?idclient=${userClient.Id}&idto=${userTo.Id}&idpm=${pmId}`, {
+                method: "GET"
+            })
+        } else {
+            response = await fetch(`/spepm?idclient=${userClient.Id}&idto=${userTo.Id}`, {
+                method: "GET"
+            })
+        }
 
         if (!response.ok) {
             throw new Error("Erreur lors de la récupération des posts");
@@ -49,8 +60,8 @@ export async function getSpePM(userClient) { //get all user's last mps and then 
 
 export async function scrollPosts() {
     let allRow = Array.from(document.querySelectorAll('tr')).filter(tr => !tr.getAttribute("id"))
+    let response 
     try {
-        let response 
         if (allRow.length === 0) {
             response = await fetch(`/nextPosts`)
         } else {
