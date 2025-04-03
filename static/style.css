@@ -394,7 +394,6 @@ body {
   /* Contenu post bien placé à droite */
   #post {
   grid-column: 2;
-  display: flex;
   flex-direction: column;
   align-items: center;
   padding: 30px 20px;
