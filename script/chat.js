@@ -36,9 +36,12 @@ export async function openChatBox(userTo, conn, userClient) {
 
     const sendBtn = document.createElement("button")
     const imgSendBtn = document.createElement("img")
+
     imgSendBtn.src = "./pics/send.svg"
     imgSendBtn.classList.add("BtnSend")
+    
     sendBtn.appendChild(imgSendBtn)
+
     sendBtn.addEventListener("click", function() {
         let message = input.value.trim()
         if (message) {
