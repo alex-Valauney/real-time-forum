@@ -41,8 +41,8 @@ func NewComHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-
-	comMap["date"] = time.Now()
+	itsTime := time.Now
+	comMap["date"] = FormatDate(itsTime())
 
 	comMap["post_id"] = postIdInt
 
@@ -51,4 +51,8 @@ func NewComHandler(w http.ResponseWriter, r *http.Request) {
 	BDDConn.CloseConn()
 
 	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
+func FormatDate(t time.Time) string {
+	return t.Format("02-01-2006 15:04:05")
 }

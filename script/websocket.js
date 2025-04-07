@@ -99,6 +99,9 @@ function typingDiv(packageMessage) {
             
             const animDiv = document.createElement('div')
             animDiv.setAttribute('id', notifId)
+
+            const troisPoints = document.getElementById('troisPoints')
+
             let messageAuth = document.createElement("span")
             messageAuth.textContent = `${packageMessage.auth}`
         
@@ -115,5 +118,5 @@ function typingDiv(packageMessage) {
     typingTimers[userId] = setTimeout(() => {
         const elem = document.getElementById(notifId)
         if (elem) elem.remove()
-    }, 5000000)
+    }, 5000)
 }

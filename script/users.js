@@ -1,5 +1,19 @@
 import { openChatBox } from "./chat.js"
 
+function dateConvertor(timestamp) {
+    const date = new Date(timestamp);
+    
+    const pad = (num) => (num < 10 ? '0' + num : num);
+    const day = pad(date.getDate());
+    const month = pad(date.getMonth() + 1); // Les mois commencent à 0
+    const year = date.getFullYear();
+    const hours = pad(date.getHours());
+    const minutes = pad(date.getMinutes());
+    const seconds = pad(date.getSeconds());
+
+    return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+}
+
 export function sortUser(allUsers, onlineUsers, pmClient, currentClient) {
     let offlineUsers = allUsers.filter(user => !onlineUsers.some(onlineUser => onlineUser.Id === user.Id))
     onlineUsers = onlineUsers.filter(user => user.Id !== currentClient.Id)
@@ -43,7 +57,7 @@ function createUserElem(userTo, online, pmClient, conn, userClient) {
     let pmIndexUser = pmClient.filter(pm => userTo.Id === pm.User_from || userTo.Id === pm.User_to)
     
     let lastDate = undefined
-    if (pmIndexUser.length != 0) {
+    if (pmIndexUser.length !== 0) {
         lastDate = pmIndexUser[0].Date
     }
 
@@ -60,7 +74,9 @@ function createUserElem(userTo, online, pmClient, conn, userClient) {
         const lastMessageLabel = document.createElement("span")
         lastMessageLabel.textContent = "Last contact: "
         const lastMessageText = document.createElement("span")
-        lastMessageText.textContent = lastDate ? lastDate : ""
+        
+        // Formate la date avec dateConvertor
+        lastMessageText.textContent = dateConvertor(lastDate) || ""
         lastMessageDiv.appendChild(lastMessageLabel)
         lastMessageDiv.appendChild(lastMessageText)
         userDiv.appendChild(lastMessageDiv)

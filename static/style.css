@@ -538,11 +538,11 @@ body {
   height: 20px;
   background-color: #9734d3;
 }
-#typing-2 {
+.troisPoints {
   display: flex;
   flex-direction: column;
 }
-#typing-2 img{
+.troisPoints img{
   height: 20px;
   background-color:gray;
   border-radius: 10px;
