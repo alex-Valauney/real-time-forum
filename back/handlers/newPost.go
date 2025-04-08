@@ -36,8 +36,8 @@ func NewPostHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-
-	postMap["date"] = time.Now()
+	itsTime := time.Now()
+	postMap["date"] = FormatDate(itsTime)
 
 	postCat := [4]string{"cat1", "cat2", "cat3", "cat4"}
 	var categories []int

@@ -22,8 +22,8 @@ export async function openChatBox(userTo, conn, userClient) {
     input.placeholder = "Écrire un message..."
 
     let lastSentTime = 0
-    input.addEventListener("input", () => {
-        const now = Date.now()
+    input.addEventListener("input", () => {typing
+        const now = dateConvertor(Date.now())
         if (now - lastSentTime < 1000) return
 
         conn.send(JSON.stringify({
@@ -36,9 +36,12 @@ export async function openChatBox(userTo, conn, userClient) {
 
     const sendBtn = document.createElement("button")
     const imgSendBtn = document.createElement("img")
+
     imgSendBtn.src = "./pics/send.svg"
     imgSendBtn.classList.add("BtnSend")
+    
     sendBtn.appendChild(imgSendBtn)
+
     sendBtn.addEventListener("click", function() {
         let message = input.value.trim()
         if (message) {
@@ -47,7 +50,7 @@ export async function openChatBox(userTo, conn, userClient) {
                 user_from : userClient.Id,
                 auth : userClient.Nickname,
                 content : message,
-                date : Date.now(),
+                date : dateConvertor(Date.now()),
                 typing : false,
             }
             conn.send(JSON.stringify(fullMessage))
@@ -120,4 +123,18 @@ function handleScrollPM() {
             isLoading = false;
         });
     }
+}
+
+export function dateConvertor(time) {
+    const date = new Date(time);
+    
+    const pad = (num) => (num < 10 ? '0' + num : num);
+    const day = pad(date.getDate());
+    const month = pad(date.getMonth() + 1); // Les mois commencent à 0
+    const year = date.getFullYear();
+    const hours = pad(date.getHours());
+    const minutes = pad(date.getMinutes());
+    const seconds = pad(date.getSeconds());
+
+    return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
 }

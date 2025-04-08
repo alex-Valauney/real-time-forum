@@ -99,6 +99,9 @@ function typingDiv(packageMessage) {
             
             const animDiv = document.createElement('div')
             animDiv.setAttribute('id', notifId)
+
+            const troisPoints = document.getElementById('troisPoints')
+
             let messageAuth = document.createElement("span")
             messageAuth.textContent = `${packageMessage.auth}`
         
