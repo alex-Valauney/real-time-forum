@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-     width="500px" height="500px" viewBox="0 0 500 500" enable-background="new 0 0 500 500" xml:space="preserve">
+     width="500px" height="100px" viewBox="0 0 500 100" enable-background="new 0 0 500 100" xml:space="preserve">
         <defs>
             <mask id="maskSquare">
-                <rect x="0" y="0" width="500" height="500" fill="white"/>
+                <rect x="0" y="0" width="500" height="100" fill="white"/>
             </mask>
         </defs>
         <g id="all" fill="white" stroke="white" stroke-width="10">
             <g id="points">
-                <circle cx="250" cy="250" r="30" fill="white"/>
-                <circle cx="120" cy="250" r="30" fill="white"/>
-                <circle cx="380" cy="250" r="30" fill="white"/>
-                <circle cx="510" cy="250" r="30" fill="white"/>
+                <circle cx="250" cy="50" r="30" fill="white"/>
+                <circle cx="120" cy="50" r="30" fill="white"/>
+                <circle cx="380" cy="50" r="30" fill="white"/>
+                <circle cx="510" cy="50" r="30" fill="white"/>
                 <animateMotion dur="1s" path="M 0 0 h-130 0" repeatCount="indefinite"/>
             </g>
         </g>
