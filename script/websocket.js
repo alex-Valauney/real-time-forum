@@ -95,18 +95,21 @@ function typingDiv(packageMessage) {
     const userId = packageMessage.user_from
     const notifId = `typing-${userId}`
     if (chatContent) {
+
+        
         if (!document.getElementById(notifId)) {
             
             const animDiv = document.createElement('div')
             animDiv.setAttribute('id', notifId)
-
-            const troisPoints = document.getElementById('troisPoints')
-
+            
             let messageAuth = document.createElement("span")
             messageAuth.textContent = `${packageMessage.auth}`
-        
+
+            console.log('fromage')
+            
             const animSVG = document.createElement('img')
             animSVG.src = "./pics/anim.svg"
+            animSVG.classList.add('troisPoints')
             animDiv.prepend(animSVG)
             animDiv.appendChild(messageAuth)
             
@@ -118,5 +121,5 @@ function typingDiv(packageMessage) {
     typingTimers[userId] = setTimeout(() => {
         const elem = document.getElementById(notifId)
         if (elem) elem.remove()
-    }, 5000)
+    }, 500000000)
 }

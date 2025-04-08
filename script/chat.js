@@ -22,7 +22,7 @@ export async function openChatBox(userTo, conn, userClient) {
     input.placeholder = "Écrire un message..."
 
     let lastSentTime = 0
-    input.addEventListener("input", () => {typing
+    input.addEventListener("input", () => {
         const now = dateConvertor(Date.now())
         if (now - lastSentTime < 1000) return
 
