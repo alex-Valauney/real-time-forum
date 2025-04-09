@@ -119,5 +119,5 @@ function typingDiv(packageMessage) {
     typingTimers[userId] = setTimeout(() => {
         const elem = document.getElementById(notifId)
         if (elem) elem.remove()
-    }, 500000000)
+    }, 5000)
 }

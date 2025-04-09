@@ -88,6 +88,7 @@ async function scrollPM(userClient, userTo, chatContent) {
     const listPM = await getSpePM(userClient, userTo, chatContent)
     listPM.forEach(pm => {
         const divMessage = document.createElement('div')
+
         divMessage.classList.add(`pm-${pm.Id}`)
         
         
@@ -96,7 +97,7 @@ async function scrollPM(userClient, userTo, chatContent) {
         let messageTime = document.createElement("span")
         messageTime.textContent = `${pm.Date}`
         let messageAuth = document.createElement("span")
-        messageAuth.textContent = (userClient.Id === pm.user_from) ? `${userClient.Nickname}` : `${userTo.Nickname}`
+        messageAuth.textContent = (userClient.Id === pm.User_from) ? `${userClient.Nickname}` : `${userTo.Nickname}`
 
         if (messageAuth.textContent === userClient.Nickname) {
             divMessage.classList.add('msgEnvoi')
