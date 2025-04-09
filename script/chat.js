@@ -85,7 +85,7 @@ export function createMessage(objPM, source) {
 
 async function scrollPM(userClient, userTo, chatContent) {
 
-    const listPM = await getSpePM(userClient, userTo, chatContent)
+    const listPM = await getSpePM(userClient, userTo)
     listPM.forEach(pm => {
         const divMessage = document.createElement('div')
         divMessage.classList.add(`pm-${pm.Id}`)
