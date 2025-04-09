@@ -531,7 +531,7 @@ body {
   font-family: sans-serif;
   }
 
-/* === image de merde .svg === on te déteste */
+/* === bouton envoie .svg === */
 
 .BtnSend {
   width: 20px;
@@ -542,11 +542,10 @@ body {
 /* === trois petit point de chargement === */
 
 img.troisPoints {
-  background-color: #70d334;
-  display: flex;
-  height: auto;
+  height: 50px;
   width: auto;
 }
+
   /* === Bouton de fermeture "X" === */
   [id^="chat-"] > button:first-child {
     background-color: #9734d3;
@@ -569,20 +568,30 @@ img.troisPoints {
   gap: 10px;
   scroll-behavior: smooth;
   }
-  /* === Chaque bulle de message === ça marche*/
+  
+  /* === Chaque bulle de message === */
   #chatContent > div {
-  max-width: 80%;
-  padding: 10px 14px;
-  border-radius: 16px;
-  background-color: #eeeeee;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  font-size: 14px;
-  color: #333;
-  align-self: flex-start;
-  position: relative;
+    max-width: 80%;
+    padding: 10px 14px;
+    border-radius: 16px;
+    background-color: #eeeeee;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    color: #333;
+    align-self: flex-start;
+    position: relative;
   }
 
-  /* === Infos auteur + date === ça marche*/
+  /* === message envoier === */
+.msgEnvoi {
+  background-color: cyan;
+}
+
+.msgReçu {
+  background-color: magenta;
+}
+
+  /* === Infos auteur + date === */
   #chatContent > div span {
   display: block;
   font-size: 11px;

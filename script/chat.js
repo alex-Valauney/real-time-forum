@@ -89,12 +89,22 @@ async function scrollPM(userClient, userTo, chatContent) {
     listPM.forEach(pm => {
         const divMessage = document.createElement('div')
         divMessage.classList.add(`pm-${pm.Id}`)
+        
+        
         let messageContent = document.createElement("span")
         messageContent.textContent = `${pm.Content}`
         let messageTime = document.createElement("span")
         messageTime.textContent = `${pm.Date}`
         let messageAuth = document.createElement("span")
         messageAuth.textContent = (userTo.Id === pm.user_From) ? `${userTo.Nickname}` : `${userClient.Nickname}`
+
+        if (messageAuth.textContent === userClient.Nickname) {
+            divMessage.classList.add('msgEnvoi')
+        }
+    
+        if (messageAuth.textContent === userTo.Nickname) {
+            divMessage.classList.add('msgReçu')
+        }
 
         divMessage.appendChild(messageContent)
         divMessage.appendChild(messageAuth)

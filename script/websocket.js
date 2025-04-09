@@ -104,8 +104,6 @@ function typingDiv(packageMessage) {
             
             let messageAuth = document.createElement("span")
             messageAuth.textContent = `${packageMessage.auth}`
-
-            console.log('fromage')
             
             const animSVG = document.createElement('img')
             animSVG.src = "./pics/anim.svg"
