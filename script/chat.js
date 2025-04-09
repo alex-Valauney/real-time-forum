@@ -96,7 +96,7 @@ async function scrollPM(userClient, userTo, chatContent) {
         let messageTime = document.createElement("span")
         messageTime.textContent = `${pm.Date}`
         let messageAuth = document.createElement("span")
-        messageAuth.textContent = (userTo.Id === pm.user_From) ? `${userTo.Nickname}` : `${userClient.Nickname}`
+        messageAuth.textContent = (userClient.Id === pm.user_from) ? `${userClient.Nickname}` : `${userTo.Nickname}`
 
         if (messageAuth.textContent === userClient.Nickname) {
             divMessage.classList.add('msgEnvoi')
