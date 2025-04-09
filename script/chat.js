@@ -13,35 +13,46 @@ export async function openChatBox(userTo, conn, userClient) {
     let chatContent = document.createElement("div")
     chatContent.id = "chatContent"
     
-    scrollPM(userClient, userTo, chatContent)
-    chatContent.addEventListener("scroll", throttlePM(() => handleScrollPM(userClient, userTo, chatContent), 200))
+    await scrollPM(userClient, userTo, chatContent)
+    
+
+    let lastScrollTop = 0;
+
+    chatContent.addEventListener("scroll", throttlePM(() => {
+        const currentScrollTop = chatContent.scrollTop;
+        if (currentScrollTop < lastScrollTop && currentScrollTop < 100) {
+            handleScrollPM(userClient, userTo, chatContent);
+        }
+        
+        lastScrollTop = currentScrollTop; 
+    }, 200));
     
     const input = document.createElement("input")
     input.type = "text"
     input.id = "chatInput"
     input.placeholder = "Écrire un message..."
-
+    
     let lastSentTime = 0
     input.addEventListener("input", () => {
         const now = dateConvertor(Date.now())
         if (now - lastSentTime < 1000) return
-
+        
         conn.send(JSON.stringify({
             user_to : userTo.Id,
             user_from : userClient.Id,
             auth : userClient.Nickname,
             typing: true,
         }))
-      })
-
+    })
+    
     const sendBtn = document.createElement("button")
     const imgSendBtn = document.createElement("img")
-
+    
     imgSendBtn.src = "./pics/send.svg"
     imgSendBtn.classList.add("BtnSend")
     
     sendBtn.appendChild(imgSendBtn)
-
+    
     sendBtn.addEventListener("click", function() {
         let message = input.value.trim()
         if (message) {
@@ -55,17 +66,18 @@ export async function openChatBox(userTo, conn, userClient) {
             }
             conn.send(JSON.stringify(fullMessage))
             input.value = ""
-
-           createMessage(fullMessage, chatContent)
+            
+            createMessage(fullMessage, chatContent)
         }
     })
-
+    
     modal.appendChild(closeBtn)
     modal.appendChild(chatContent)
     modal.appendChild(input)
     modal.appendChild(sendBtn)
-
+    
     document.body.appendChild(modal)
+    chatContent.scrollTo(0, chatContent.scrollHeight)
 }
 
 export function createMessage(objPM, source) {
