@@ -26,7 +26,7 @@ func SpepmHandler(w http.ResponseWriter, r *http.Request) {
 	if idPm != "" {
 		stmt += " AND id < ?"
 	}
-	stmt += " ORDER BY id DESC;"
+	stmt += " ORDER BY id DESC LIMIT 10;"
 
 	var result *sql.Rows
 	var err error
