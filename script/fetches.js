@@ -32,8 +32,7 @@ export async function getLastPMList(user) { //get all user's last mps and then s
     return await response.json()
 }
 
-export async function getSpePM(userClient, userTo) { //get all user's last mps and then sort them for the list
-    const chatContent = document.getElementById("chatContent")
+export async function getSpePM(userClient, userTo, chatContent) { //get all user's last mps and then sort them for the list
     let lastAddedPM = chatContent.firstElementChild
     let response
     try {

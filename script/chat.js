@@ -14,7 +14,7 @@ export async function openChatBox(userTo, conn, userClient) {
     chatContent.id = "chatContent"
     
     scrollPM(userClient, userTo, chatContent)
-    chatContent.addEventListener("scroll", throttlePM(handleScrollPM(userClient, userTo, chatContent), 200))
+    chatContent.addEventListener("scroll", throttlePM(() => handleScrollPM(userClient, userTo, chatContent), 200))
     
     const input = document.createElement("input")
     input.type = "text"
@@ -85,7 +85,7 @@ export function createMessage(objPM, source) {
 
 async function scrollPM(userClient, userTo, chatContent) {
 
-    const listPM = await getSpePM(userClient, userTo)
+    const listPM = await getSpePM(userClient, userTo, chatContent)
     listPM.forEach(pm => {
         const divMessage = document.createElement('div')
 
@@ -117,18 +117,29 @@ async function scrollPM(userClient, userTo, chatContent) {
 
 let isLoading
 // basic throttle to avoid lodash import
-function throttlePM(func, wait, args) {
-    let timeout;
-    return function (...args) {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func.apply(this, args), wait);
-    };
+function throttlePM(func, limit) {
+    let lastFunc;
+    let lastRan;
+    return function() {
+        const context = this;
+        const args = arguments;
+        if (!lastRan) {
+            func.apply(context, args);
+            lastRan = Date.now();
+        } else {
+            clearTimeout(lastFunc);
+            lastFunc = setTimeout(function() {
+                if ((Date.now() - lastRan) >= limit) {
+                    func.apply(context, args);
+                    lastRan = Date.now();
+                }
+            }, limit - (Date.now() - lastRan));
+        }
+    }
 }
 // function handling down scroll, and start new batch fetch of older pm
 function handleScrollPM(userClient, userTo, chatContent) {
-    const scrollPosition = window.innerHeight + window.scrollY;
-    const pageHeight = document.body.offsetHeight;
-    if (scrollPosition >= pageHeight - 100 && !isLoading) {
+    if (chatContent.scrollTop < 100 && !isLoading) {
         isLoading = true;
         scrollPM(userClient, userTo, chatContent).finally(() => {
             isLoading = false;
