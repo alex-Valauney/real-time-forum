@@ -63,7 +63,7 @@ function newPM(packageMessage) {
     const userId = packageMessage.User_from
 
     if (chatContent) {
-        createMessage(packageMessage, chatContent)
+        createMessage(packageMessage, chatContent, {Id : userId})
         count = 0
 
         const existingNotif = document.getElementById(`notifDot-${userId}`)
@@ -102,6 +102,8 @@ function typingDiv(packageMessage) {
             const animDiv = document.createElement('div')
             animDiv.setAttribute('id', notifId)
             
+            animDiv.classList.add('msgReçu')
+
             let messageAuth = document.createElement("span")
             messageAuth.textContent = `${packageMessage.auth}`
             

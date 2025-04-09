@@ -574,21 +574,29 @@ img.troisPoints {
     max-width: 80%;
     padding: 10px 14px;
     border-radius: 16px;
-    background-color: #eeeeee;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     font-size: 14px;
-    color: #333;
+    /* color: #333; */
     align-self: flex-start;
     position: relative;
+    word-wrap: break-word;
   }
 
   /* === message envoier === */
 .msgEnvoi {
-  background-color: cyan;
+  background-color: #70d334;
+  align-items: self-end;
+  align-self: flex-end;
+  color: #fff;
+  justify-self: end;
 }
 
+  /* === message reçu === */
+
 .msgReçu {
-  background-color: magenta;
+  background-color: #eeeeee;
+  justify-items: start;
+  justify-self: start;
 }
 
   /* === Infos auteur + date === */

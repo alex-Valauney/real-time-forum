@@ -67,7 +67,7 @@ export async function openChatBox(userTo, conn, userClient) {
             conn.send(JSON.stringify(fullMessage))
             input.value = ""
             
-            createMessage(fullMessage, chatContent)
+            createMessage(fullMessage, chatContent, userClient)
         }
     })
     
@@ -80,7 +80,7 @@ export async function openChatBox(userTo, conn, userClient) {
     chatContent.scrollTo(0, chatContent.scrollHeight)
 }
 
-export function createMessage(objPM, source) {
+export function createMessage(objPM, source, userClient) {
     const divMessage = document.createElement('div')
     let messageContent = document.createElement("span")
     messageContent.textContent = `${objPM.content}` || ''
@@ -88,6 +88,12 @@ export function createMessage(objPM, source) {
     messageTime.textContent = `${objPM.date}` || ''
     let messageAuth = document.createElement("span")
     messageAuth.textContent = `${objPM.auth}`
+    
+    if (objPM.user_from === userClient.Id) {
+        divMessage.classList.add('msgEnvoi')
+    } else {
+        divMessage.classList.add('msgReçu')
+    }
 
     divMessage.appendChild(messageContent)
     divMessage.appendChild(messageAuth)
@@ -110,6 +116,7 @@ async function scrollPM(userClient, userTo, chatContent) {
         messageTime.textContent = `${pm.Date}`
         let messageAuth = document.createElement("span")
         messageAuth.textContent = (userClient.Id === pm.User_from) ? `${userClient.Nickname}` : `${userTo.Nickname}`
+
 
         if (messageAuth.textContent === userClient.Nickname) {
             divMessage.classList.add('msgEnvoi')
