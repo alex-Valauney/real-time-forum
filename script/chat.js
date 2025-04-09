@@ -14,7 +14,7 @@ export async function openChatBox(userTo, conn, userClient) {
     chatContent.id = "chatContent"
     
     scrollPM(userClient, userTo, chatContent)
-    chatContent.addEventListener("scroll", throttlePM(handleScrollPM, 200))
+    chatContent.addEventListener("scroll", throttlePM(handleScrollPM(userClient, userTo, chatContent), 200))
     
     const input = document.createElement("input")
     input.type = "text"
@@ -124,12 +124,12 @@ function throttlePM(func, wait, args) {
     };
 }
 // function handling down scroll, and start new batch fetch of older pm
-function handleScrollPM() {
+function handleScrollPM(userClient, userTo, chatContent) {
     const scrollPosition = window.innerHeight + window.scrollY;
     const pageHeight = document.body.offsetHeight;
     if (scrollPosition >= pageHeight - 100 && !isLoading) {
         isLoading = true;
-        scrollPM().finally(() => {
+        scrollPM(userClient, userTo, chatContent).finally(() => {
             isLoading = false;
         });
     }
