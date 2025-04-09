@@ -580,6 +580,7 @@ img.troisPoints {
     align-self: flex-start;
     position: relative;
     word-wrap: break-word;
+    word-break: break-all;
   }
 
   /* === message envoier === */
@@ -589,6 +590,7 @@ img.troisPoints {
   align-self: flex-end;
   color: #fff;
   justify-self: end;
+  text-align: right;
 }
 
   /* === message reçu === */
@@ -597,15 +599,15 @@ img.troisPoints {
   background-color: #eeeeee;
   justify-items: start;
   justify-self: start;
+  text-align: left;
+  color: #888;
 }
 
   /* === Infos auteur + date === */
   #chatContent > div span {
   display: block;
   font-size: 11px;
-  color: #888; /* couleur des mot du chat */
   margin-top: 4px;
-  text-align: right;
   }
   /* === Zone input + bouton send === */
   .chat-send-zone {
