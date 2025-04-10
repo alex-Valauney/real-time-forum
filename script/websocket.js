@@ -55,21 +55,20 @@ async function userListProcess(userLists, conn, userClient) {
 }
 
 let count = 0
+
 function newPM(packageMessage) {
-    console.log(packageMessage)
+    console.log(packageMessage) //à retirer
     count += 1
     const chatContent = document.getElementById("chatContent")
     
-    const userId = packageMessage.User_from
+    const userId = packageMessage.user_from
+
+    console.log(userId)
 
     if (chatContent) {
         createMessage(packageMessage, chatContent, {Id : userId})
         count = 0
 
-        const existingNotif = document.getElementById(`notifDot-${userId}`)
-        if (existingNotif) {
-            existingNotif.remove()
-        }
     } else {
         const userDiv = document.getElementById(`user-${userId}`)
         let notifDot = document.getElementById(`notifDot-${userId}`)

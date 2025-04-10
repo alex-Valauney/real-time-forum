@@ -1,6 +1,13 @@
 import { getSpePM } from "./fetches.js"
 
 export async function openChatBox(userTo, conn, userClient) {
+
+    const existingNotif = document.getElementById(`notifDot-${userTo.Id}`)
+    if (existingNotif) {
+        existingNotif.remove()
+    }
+
+
     let modal = document.createElement("div")
     modal.id = `chat-${userTo.Id}`
 
