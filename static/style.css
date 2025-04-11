@@ -6,7 +6,7 @@ body {
   }
   /* Header */
   header {
-  background-color: #9734d3;
+  background-color:#9734d3;
   padding: 20px;
   text-align: center;
   color: #fff;
@@ -650,4 +650,12 @@ img.troisPoints {
   object-fit: contain;
   margin-left: 8px;
   cursor: pointer;
+  }
+
+  /* ===  === */
+
+  .trucMoche {
+    border-style: solid;
+    border-color: black;
+    border-radius: 1%;
   }

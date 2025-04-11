@@ -63,6 +63,7 @@ function createUserElem(userTo, online, pmClient, conn, userClient) {
 
     const userDiv = document.createElement("div")
     userDiv.id = `user-${userTo.Id}`
+    userDiv.classList.add('trucMoche')
 
     const usernameDiv = document.createElement("div")
     const usernameText = document.createElement("span")

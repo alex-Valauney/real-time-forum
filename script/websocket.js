@@ -81,7 +81,7 @@ function newPM(packageMessage) {
         }
 
         if (notifDot) {
-            notifDot.textContent = count
+            notifDot.textContent = 'Message non lu : ' + count
         }
     }
 }
