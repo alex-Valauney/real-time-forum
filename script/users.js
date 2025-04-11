@@ -69,15 +69,17 @@ function createUserElem(userTo, online, pmClient, conn, userClient) {
     const usernameText = document.createElement("span")
     usernameText.textContent = userTo.Nickname
     usernameDiv.appendChild(usernameText)
-
+    
     if (lastDate) {
+
         const lastMessageDiv = document.createElement("div")
         const lastMessageLabel = document.createElement("span")
         lastMessageLabel.textContent = "Last contact: "
         const lastMessageText = document.createElement("span")
         
-        // Formate la date avec dateConvertor
-        lastMessageText.textContent = dateConvertor(lastDate) || ""
+        
+        lastMessageText.textContent = ecartTemps(dateConvertor(lastDate)) || ""
+
         lastMessageDiv.appendChild(lastMessageLabel)
         lastMessageDiv.appendChild(lastMessageText)
         userDiv.appendChild(lastMessageDiv)
@@ -103,4 +105,36 @@ function createUserElem(userTo, online, pmClient, conn, userClient) {
     }   
 
     return userDiv
+}
+function ecartTemps(dateStosk) {
+    const maintenan = new Date(Date.now())
+    const avant = new Date(dateStosk)
+
+    var diff = {}							// Initialisation du retour
+    var tmp = maintenan - avant;
+
+    tmp = Math.floor(tmp/1000);             // Nombre de secondes entre les 2 dates
+    diff.sec = tmp % 60;					// Extraction du nombre de secondes
+
+    tmp = Math.floor((tmp-diff.sec)/60);	// Nombre de minutes (partie entière)
+    diff.min = tmp % 60;					// Extraction du nombre de minutes
+
+    tmp = Math.floor((tmp-diff.min)/60);	// Nombre d'heures (entières)
+    diff.hour = tmp % 24;					// Extraction du nombre d'heures
+    
+    tmp = Math.floor((tmp-diff.hour)/24);	// Nombre de jours restants
+    diff.day = tmp;
+
+    if (diff.sec > 1) {
+        if (diff.min > 1) {
+            if (diff.hour > 1) {
+                if (diff.day > 1) {
+                    return diff.day + ' Days'
+                }
+                return diff.hour + ' hours'
+            }
+            return diff.min + ' min'
+        }
+        return diff.sec + ' sec'
+    }
 }
