@@ -7,18 +7,15 @@ export function connWebSocket(userClient) {
     //Creating the front websocket connection 
     if (window["WebSocket"]) {
         conn = new WebSocket("ws://" + document.location.host + "/ws")
-        let output = document.querySelector("#output")
+
         conn.onopen = function (e) {
             console.log("WS working")
         }
         conn.onclose = function (e) { //Display that the user was disconnected of the ws 
             console.log("Closed WS")
         }
-        conn.onerror = function (e) {
-            output.textContent = "error : " + e.data
-        }
         conn.onmessage = function (e) { //Will be splitted in further cases depending on the nature of the message
-            output.textContent = "received : " + e.data
+            // output.textContent = "received : " + e.data
             let parsedData = JSON.parse(e.data)
             const redirect = {
                 userListProcess: userListProcess,
@@ -26,12 +23,6 @@ export function connWebSocket(userClient) {
                 typingDiv, typingDiv,
             }
             redirect[parsedData["Method"]](parsedData, conn, userClient)
-        }
-        // Gestion du bouton de test WebSocket
-        document.getElementById("testbutWS").onclick = function (e) {
-            let textinputdata = document.querySelector("#testWS").value
-            let obj = {user_from: userClient.Id, user_to: 2, content: textinputdata, date: "aujourd'hui"}
-            conn.send(JSON.stringify(obj))
         }
     } else {
         console.log("Your browser does not support WebSockets")

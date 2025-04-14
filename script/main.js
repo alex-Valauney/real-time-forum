@@ -109,16 +109,6 @@ function onClicksFunctions() {
       window.location.replace("/logout")
     }
   }
-  if (document.getElementById('chatButton')) {
-    document.getElementById('chatButton').onclick = function (e) {
-      if (document.getElementById('chat').classList.contains('hidden')) {
-        onLoadPage('chat')
-        openChatBox()
-      } else {
-        onLoadPage(undefined, 'chat')
-      }
-    }
-  }
 }
 export function attachPostClickEvents() {
   const table = document.getElementById("indexTable")

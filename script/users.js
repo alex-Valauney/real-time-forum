@@ -63,7 +63,7 @@ function createUserElem(userTo, online, pmClient, conn, userClient) {
 
     const userDiv = document.createElement("div")
     userDiv.id = `user-${userTo.Id}`
-    userDiv.classList.add('trucMoche')
+    userDiv.classList.add('UserDiv')
 
     const usernameDiv = document.createElement("div")
     const usernameText = document.createElement("span")
@@ -88,20 +88,14 @@ function createUserElem(userTo, online, pmClient, conn, userClient) {
     userDiv.prepend(usernameDiv)
 
     if (online) {
-        const chatButton = document.createElement("button")
-        const imgButton = document.createElement("img")
-        imgButton.classList.add("picMessage")
-        imgButton.setAttribute("src", "./pics/logo.svg")
-        chatButton.appendChild(imgButton)
-        chatButton.onclick = () => {
+        userDiv.addEventListener("click", function(){
             const existingChatBox = document.getElementById(`chat-${userTo.Id}`)
-            if (existingChatBox) {
-                existingChatBox.remove() 
-            } else {
-                openChatBox(userTo, conn, userClient)
-            }
-        }
-        userDiv.appendChild(chatButton)
+        if (existingChatBox) {
+            existingChatBox.remove() 
+        } else {
+            openChatBox(userTo, conn, userClient)
+        }});
+
     }   
 
     return userDiv
