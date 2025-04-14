@@ -56,7 +56,7 @@ async function userListProcess(userLists, conn, userClient) {
 
 let count = 0
 
-function newPM(packageMessage) {
+function newPM(packageMessage, _conn, userClient) {
     console.log(packageMessage) //à retirer
     count += 1
     const chatContent = document.getElementById("chatContent")
@@ -64,7 +64,7 @@ function newPM(packageMessage) {
     const userId = packageMessage.user_to
 
     if (chatContent) {
-        createMessage(packageMessage, chatContent, {Id : userId})
+        createMessage(packageMessage, chatContent, userClient)
         count = 0
 
     } else {
