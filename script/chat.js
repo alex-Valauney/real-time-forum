@@ -184,7 +184,6 @@ export function dateConvertor(time) {
     const minutes = pad(date.getMinutes());
     const seconds = pad(date.getSeconds());
 
-    return `${year}, ${month}, ${day}, ${hours}, ${minutes}, ${seconds}, 0`
+    return `${year}-${month}-${day}${hours}:${minutes}:${seconds}`;
 
-    return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
 }
