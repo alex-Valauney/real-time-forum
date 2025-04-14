@@ -1,18 +1,18 @@
 import { openChatBox } from "./chat.js"
 
-function dateConvertor(timestamp) {
-    const date = new Date(timestamp);
+// function dateConvertor(time) {
+//     const date = new Date(time);
     
-    const pad = (num) => (num < 10 ? '0' + num : num);
-    const day = pad(date.getDate());
-    const month = pad(date.getMonth() + 1); // Les mois commencent à 0
-    const year = date.getFullYear();
-    const hours = pad(date.getHours());
-    const minutes = pad(date.getMinutes());
-    const seconds = pad(date.getSeconds());
+//     const pad = (num) => (num < 10 ? '0' + num : num);
+//     const day = pad(date.getDate());
+//     const month = pad(date.getMonth() + 1); // Les mois commencent à 0
+//     const year = date.getFullYear();
+//     const hours = pad(date.getHours());
+//     const minutes = pad(date.getMinutes());
+//     const seconds = pad(date.getSeconds());
 
-    return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
-}
+//     return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+// }
 
 export function sortUser(allUsers, onlineUsers, pmClient, currentClient) {
     let offlineUsers = allUsers.filter(user => !onlineUsers.some(onlineUser => onlineUser.Id === user.Id))
@@ -57,9 +57,12 @@ function createUserElem(userTo, online, pmClient, conn, userClient) {
     let pmIndexUser = pmClient.filter(pm => userTo.Id === pm.User_from || userTo.Id === pm.User_to)
     
     let lastDate = undefined
+
     if (pmIndexUser.length !== 0) {
         lastDate = pmIndexUser[0].Date
     }
+
+    console.log(lastDate)
 
     const userDiv = document.createElement("div")
     userDiv.id = `user-${userTo.Id}`
@@ -70,20 +73,16 @@ function createUserElem(userTo, online, pmClient, conn, userClient) {
     usernameText.textContent = userTo.Nickname
     usernameDiv.appendChild(usernameText)
     
-    if (lastDate) {
+    const lastMessageDiv = document.createElement("div")
+    const lastMessageLabel = document.createElement("span")
+    lastMessageLabel.textContent = "Last contact: "
+    const lastMessageText = document.createElement("span")
 
-        const lastMessageDiv = document.createElement("div")
-        const lastMessageLabel = document.createElement("span")
-        lastMessageLabel.textContent = "Last contact: "
-        const lastMessageText = document.createElement("span")
-        
-        
-        lastMessageText.textContent = ecartTemps(dateConvertor(lastDate)) || ""
+    lastMessageText.textContent = ecartTemps((lastDate)) || ""
 
-        lastMessageDiv.appendChild(lastMessageLabel)
-        lastMessageDiv.appendChild(lastMessageText)
-        userDiv.appendChild(lastMessageDiv)
-    }
+    lastMessageDiv.appendChild(lastMessageLabel)
+    lastMessageDiv.appendChild(lastMessageText)
+    userDiv.appendChild(lastMessageDiv)
    
     userDiv.prepend(usernameDiv)
 
@@ -101,9 +100,15 @@ function createUserElem(userTo, online, pmClient, conn, userClient) {
     return userDiv
 }
 function ecartTemps(dateStosk) {
+
+    console.log('ecartTemps')
+    
     const maintenan = new Date(Date.now())
     const avant = new Date(dateStosk)
 
+    console.log(maintenan)
+    console.log(avant)
+    
     var diff = {}							// Initialisation du retour
     var tmp = maintenan - avant;
 
@@ -125,10 +130,13 @@ function ecartTemps(dateStosk) {
                 if (diff.day > 1) {
                     return diff.day + ' Days'
                 }
+                console.log('pomme')
                 return diff.hour + ' hours'
             }
+            console.log('poire')
             return diff.min + ' min'
         }
+        console.log('banane')
         return diff.sec + ' sec'
     }
 }
