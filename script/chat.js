@@ -96,7 +96,7 @@ export function createMessage(objPM, source, userClient) {
     let messageAuth = document.createElement("span")
     messageAuth.textContent = `${objPM.auth}`
     
-    if (objPM.user_from === userClient.Id) {
+    if (objPM.user_from == userClient.Id) {
         divMessage.classList.add('msgEnvoi')
     } else {
         divMessage.classList.add('msgReçu')

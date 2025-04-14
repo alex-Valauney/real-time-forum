@@ -61,9 +61,7 @@ function newPM(packageMessage) {
     count += 1
     const chatContent = document.getElementById("chatContent")
     
-    const userId = packageMessage.user_from
-
-    console.log(userId)
+    const userId = packageMessage.user_to
 
     if (chatContent) {
         createMessage(packageMessage, chatContent, {Id : userId})
