@@ -3,6 +3,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+  background-color: #C6CAED;
   }
   /* Header */
   header {
@@ -16,7 +17,7 @@ body {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background-color: #eee;
+  background-color: #ADA8BE;
   padding: 10px 0;
   }
   .nav-btn {
@@ -34,12 +35,6 @@ body {
   .nav-btn:hover {
   background-color: #b04ae0;
   }
-  .chat-btn {
-  background-color: #70d334;
-  }
-  .chat-btn:hover {
-  background-color: #8ac04e;
-  }
   /* Contenu principal */
   .content {
   display: flex;
@@ -47,12 +42,12 @@ body {
   /* Sidebar */
   .sidebar {
   border-radius: 20px;
-  background-color: #70d334;
+  background-color: #ADA8BE;
   width: 250px;
   height: 100vh;
   padding: 20px;
   box-sizing: border-box;
-  color: #fff;
+
   box-shadow: 0 4px 20px rgba(0, 0, 0, 1);
   overflow-wrap: break-word;
   font-family: 'Courier New', Courier, monospace;
@@ -73,6 +68,8 @@ body {
     display: flex;
     background-color: #9734d3;
     word-wrap: break-word;
+    color: white;
+    align-self: flex-end;
   }
 
   /* Grille principale */
@@ -219,7 +216,7 @@ body {
   width: 90vw; /* ↓ Réduit pour éviter le débordement */
   max-width: 1100px;
   margin: 0 auto;
-  background-color: #fdfbff;
+  background-color: #f3e8ff;
   border: 2px solid #9734d3;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -230,7 +227,7 @@ body {
   }
   #indexTable tr:hover {
   transform: translateY(-3px);
-  background-color: #f3e8ff;
+  background-color: #F5F5F5;
   }
   #indexTable td {
   display: block;
@@ -267,7 +264,7 @@ body {
   /* === NOMBRE DE COMMENTAIRES (stylé et mis en valeur) === */
   #indexTable td:nth-child(3) {
   font-weight: 600;
-  color: #70d334;
+  color: #ADA8BE;
   font-style: normal;
   position: relative;
   padding-left: 22px;
@@ -287,7 +284,7 @@ body {
   }
   #commentList li {
   background-color: #ffffff;
-  border-left: 4px solid #70d334;
+  border-left: 4px solid #ADA8BE;
   border-radius: 6px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.07);
   margin: 15px 0;
@@ -427,7 +424,7 @@ body {
   /* Titre sans bande violette */
   #postArticle h2 {
   font-size: 28px;
-  color: #9734d3;
+  color: black;
   margin-bottom: 20px;
   text-align: left;
   background: none;
@@ -444,7 +441,7 @@ body {
   /* INFOS AUTEUR + DATE SOUS LE TEXTE */
   #postArticle footer {
   margin-top: 20px;
-  background-color: #f3e8ff;
+  background-color: #F5F5F5;
   border-left: 5px solid #9734d3;
   padding: 12px 16px;
   font-size: 14px;
@@ -454,7 +451,7 @@ body {
   text-align: right;
   }
   #postArticle footer strong {
-  color: #70d334;
+  color: #ADA8BE;
   }
   /* ZONE COMMENTAIRES */
   .commentList {
@@ -464,7 +461,7 @@ body {
   /* COMMENTAIRE UNIQUE */
   #commentList li {
   background-color: #fff;
-  border-left: 5px solid #70d334;
+  border-left: 5px solid #ADA8BE;
   border-radius: 6px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
   margin: 15px 0;
@@ -545,6 +542,7 @@ body {
   width: 20px;
   height: 20px;
   background-color: #9734d3;
+  cursor: pointer;
 }
 
 /* === trois petit point de chargement === */
@@ -593,12 +591,13 @@ img.troisPoints {
 
   /* === message envoier === */
 .msgEnvoi {
-  background-color: #70d334;
+  background-color: #ADA8BE;
   align-items: self-end;
   align-self: flex-end;
   color: #fff;
   justify-self: end;
   text-align: right;
+  margin: 4%;
 }
 
   /* === message reçu === */
@@ -609,6 +608,7 @@ img.troisPoints {
   justify-self: start;
   text-align: left;
   color: #888;
+  margin: 4%;
 }
 
   /* === Infos auteur + date === */
@@ -655,7 +655,36 @@ img.troisPoints {
   /* ===  === */
 
   .UserDiv {
-    border-style: solid;
-    border-color: black;
-    border-radius: 1%;
+    display: flex;
+    flex-direction: row;
+    color: #9734d3;
+    background-color: #f3e8ff; 
+    border: 2px solid #9734d3;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease; /* Ajoute une transition fluide */
+    margin: 2%;
+    padding: 3%;
   }
+  
+  .UserDiv:hover {
+    transform: scale(1.05);
+    background-color: #F5F5F5;
+  }
+  
+  .UserDiv :first-child{
+    word-break: break-all;
+    width: 60px;
+    min-height: 40px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.test {
+  min-width: 60px;
+  margin-right: 10px;
+  margin-left: 10px;
+  word-break: break-word;
+}
