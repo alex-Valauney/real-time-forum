@@ -11,6 +11,7 @@ Real time forum est un projet qui nous a fait utiliser dans diférente partie le
 * SQL (Base de donnée)
 
 ## 02 Cahier des charges
+
 Pour se forum les contrainte était :
 * Le site ne dois utiliser q'une page HTML
 * La premierre intéraction dois ètre de ce connecter ou s'inscrire
@@ -33,8 +34,24 @@ Pour se forum les contrainte était :
      1. Le pseudo de l'émeteur
      2. La date d'envoie du message
   * Les messages sont afficher 10 par 10
-
- ## 03 Le code
-
- ### La Page de conection et inscription :
  
+## 03 Le forum
+
+### La Page de conection et inscription :
+ 
+La page premierre page quand on arrive
+
+### Point commun
+
+* Sur le coté gauche liste des menbres conecter et non connecter
+* Sur le header navigation des "différente" page (index, create post, deconection)
+* en bas a droite chat en direct
+
+### La Page Index
+
+une foit connecter cette page permet voir les différent poste avec les quelle on peut commenter
+
+### create post
+
+Serre a créée des posts
+
