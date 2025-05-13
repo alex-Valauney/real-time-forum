@@ -1,10 +1,28 @@
 # Real-time-forum
-## 01 La page de connection
 
-## 02 la page index
+## 01 Introduction
+Real time forum est un projet qui nous a fait utiliser dans diférente partie les technologie suivante :
+* Go (Gestion du server et Coordination des fichier)
+* JavaScript
+* CSS
+* HTML
+* WebSocket (Chat en temps Réel)
+* SQL (Base de donnée)
 
-## 03 crate post
-
-## 04 post
-
-bonjour
+## 02 Cahier des charges
+Pour se forum les contrainte était :
+* Le site ne dois utiliser q'une page HTML
+* La premierre intéraction dois ètre de ce connecter ou s'inscrire
+  * La persone dois s'inscrire avec les information suivente:
+    1. Pseudo
+    2. Age (Minimun 13 ans)
+    3. Genre
+    4. Prénom
+    5. nom de famille
+    6. Boite mail
+    7. Mot de passe
+  * La personne doit pouvoir ce conecter avec :
+    1. Pseudo ou email
+    2. Mot de passe
+* On dois pouvoir se déconnecter partout
+* On dois voir la liste des personnes actuellement connecter et une liste des personnes déconecter
