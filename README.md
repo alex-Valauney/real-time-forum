@@ -1,6 +1,7 @@
 # Real-time-forum
 
 ## 01 Introduction
+
 Real time forum est un projet qui nous a fait utiliser dans diférente partie les technologie suivante :
 * Go (Gestion du server et Coordination des fichier)
 * JavaScript
@@ -24,5 +25,16 @@ Pour se forum les contrainte était :
   * La personne doit pouvoir ce conecter avec :
     1. Pseudo ou email
     2. Mot de passe
-* On dois pouvoir se déconnecter partout
-* On dois voir la liste des personnes actuellement connecter et une liste des personnes déconecter
+* On doit pouvoir se déconnecter partout
+* On doit voir la liste des personnes actuellement connecter et une liste des personnes déconecter
+  * La liste doit être dans classé par audre du deernier message envoiée
+* Dans les messages privée:
+  * Les messages dois comportée :
+     1. Le pseudo de l'émeteur
+     2. La date d'envoie du message
+  * Les messages sont afficher 10 par 10
+
+ ## 03 Le code
+
+ ### La Page de conection et inscription :
+ 
