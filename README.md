@@ -31,8 +31,8 @@ Pour se forum les contrainte était :
  
 ## 03 Choix des thecnologie
 
-- JavaScript (imposer par le client)
+- JavaScript (imposer par le client, pour le front)
 - HTML / CSS
-- SQLite (aventage par rapor a MySQL, il est plus simple dutilisation et comme nous avons une petite base de donée)
-- bcrypt (pour la sécuritée)
-- 
+- SQLite (aventage par rapor a MySQL, il est plus simple dutilisation, sans serveur donc juste un fichier et pas besoin de le comfiguré, il est aussie recomender pour les petit site web)
+- bcrypt (pour la sécuritée, imposer par le client)
+- GO (intéraction base de donée, gestion de )
