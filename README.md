@@ -29,10 +29,10 @@ Pour se forum les contrainte était :
      2. La date d'envoie du message
   * Les messages sont afficher 10 par 10
  
-## 03 Choix des thecnologie
+## 03 Choix des thechnologie
 
 - JavaScript (imposer par le client, pour le front)
 - HTML / CSS
 - SQLite (aventage par rapor a MySQL, il est plus simple dutilisation, sans serveur donc juste un fichier et pas besoin de le comfiguré, il est aussie recomender pour les petit site web)
 - bcrypt (pour la sécuritée, imposer par le client)
-- GO (intéraction base de donée, gestion de )
+- GO (intéraction base de donée, gestion du serveur)
