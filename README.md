@@ -2,13 +2,7 @@
 
 ## 01 Introduction
 
-Real time forum est un projet qui nous a fait utiliser dans diférente partie les technologie suivante :
-* Go (Gestion du server et Coordination des fichier)
-* JavaScript
-* CSS
-* HTML
-* WebSocket (Chat en temps Réel)
-* SQL (Base de donnée)
+
 
 ## 02 Cahier des charges
 
@@ -35,23 +29,10 @@ Pour se forum les contrainte était :
      2. La date d'envoie du message
   * Les messages sont afficher 10 par 10
  
-## 03 Le forum
+## 03 Choix des thecnologie
 
-### La Page de conection et inscription :
- 
-La page premierre page quand on arrive
-
-### Point commun
-
-* Sur le coté gauche liste des menbres conecter et non connecter
-* Sur le header navigation des "différente" page (index, create post, deconection)
-* en bas a droite chat en direct
-
-### La Page Index
-
-une foit connecter cette page permet voir les différent poste avec les quelle on peut commenter
-
-### create post
-
-Serre a créée des posts
-
+- JavaScript (imposer par le client)
+- HTML / CSS
+- SQLite (aventage par rapor a MySQL, il est plus simple dutilisation et comme nous avons une petite base de donée)
+- bcrypt (pour la sécuritée)
+- 
